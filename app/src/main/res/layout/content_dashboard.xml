@@ -89,7 +89,7 @@
             android:id="@+id/textViewNotifications"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@android:color/holo_red_light"
+            android:background="@color/Green"
             android:padding="10dp"
             android:text="NOTIFICATIONS"
             android:textAlignment="center"
@@ -100,13 +100,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"/>
-
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/activeLearningPlansContainer">
+            <include layout="@layout/dashboard_notification_fragment"/>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textViewActiveLearningPlans"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@android:color/holo_red_light"
+            android:background="@color/Green"
             android:padding="10dp"
             android:text="ACTIVE LEARNING PLANS"
             android:textAlignment="center"
@@ -121,6 +126,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/activeLearningPlansContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
@@ -139,4 +145,5 @@
             <include layout="@layout/dashboard_activeplan_fragment"/>
         </LinearLayout>
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

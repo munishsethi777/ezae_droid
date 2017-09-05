@@ -1469,6 +1469,7 @@
     <color name="Green">#96c06a</color>
     <color name="Red">#ff0000</color>
     <color name="Orange">#ff9500</color>
+    <color name="LightGrey">#eaeaea</color>
     <color name="Grey">#d7d7d7</color>
     <color name="Darkgrey">#808080</color>
     <color name="White">#FFFFFF</color>
