@@ -158,15 +158,17 @@ public class DashboardActivity extends AppCompatActivity
                 String pendingCount = pendingTraingsJSON.getString("pendingCount");
 
                 String totalScoreStr = totalScores+"/" + maxScore + System.lineSeparator() + "Score Earned";
-                mScores.setText(totalScores);
-
+                mScores.setText(totalScoreStr);
+                if(profileRank == "null"){
+                    profileRank = "0";
+                }
                 String profileRankStr = profileRank + System.lineSeparator() + "Profile Rank";
                 mProfileRank.setText(profileRankStr);
 
                 String pendingTrainingsStr = pendingCount + System.lineSeparator() + "Pending Trainings";
                 mPendingTrainings.setText(pendingTrainingsStr);
 
-                String completedTrainingsStr = completedTrainings + System.lineSeparator() + "Completed Trainings";
+                String completedTrainingsStr = completedTrainings + System.lineSeparator() + "Compltd Trainings";
                 mCompletedTrainings.setText(completedTrainingsStr);
             }
         }catch (Exception e){
