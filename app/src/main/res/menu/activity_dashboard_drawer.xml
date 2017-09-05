@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_trainings"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="My Trainings" />
+        <item
+            android:id="@+id/nav_achivements"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="My Achievements" />
+        <item
+            android:id="@+id/nav_messages"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Messages" />
+        <item
+            android:id="@+id/nav_notes"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Notes" />
+        <item
+            android:id="@+id/nav_chatroom"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Chatrooms" />
+    </group>
+
+    <item android:title="Profile">
+        <menu>
+            <item
+                android:id="@+id/nav_update_profile"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Update Profile" />
+            <item
+                android:id="@+id/nav_change_password"
+                android:icon="@drawable/ic_menu_send"
+                android:title="change Password" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Logout" />
+        </menu>
+    </item>
+
+</menu>
