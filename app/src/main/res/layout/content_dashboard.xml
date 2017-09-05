@@ -11,69 +11,128 @@
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="0dp"
-        android:layout_height="90dp"
+        android:layout_height="60dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <TextView
-            android:id="@+id/textView_score"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@color/Grey">
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@android:color/holo_blue_light"
-            android:padding="10dp"
-
-            android:text="30/50\nScores Earned"
-            android:textAlignment="center"
-            android:textColor="@android:color/background_light"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:orientation="vertical"
             android:layout_weight="1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/textView_profile_rank"/>
-        <TextView
-            android:id="@+id/textView_profile_rank"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="2dp">
+            <TextView
+                android:id="@+id/textView_score"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:padding="5dp"
+                android:text="30/50"
+                android:gravity="bottom"
+                android:textAlignment="center"
+                android:textColor="@color/White"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/White"
+                android:textAlignment="center"
+                android:text="Scores"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@android:color/holo_blue_light"
-            android:padding="10dp"
-            android:text="1\nProfile Rank"
-            android:textAlignment="center"
-            android:textColor="@android:color/background_light"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:orientation="vertical"
             android:layout_weight="1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/textView_pending_trainings" />
-        <TextView
-            android:id="@+id/textView_pending_trainings"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="2dp">
+            <TextView
+                android:id="@+id/textView_profile_rank"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:padding="5dp"
+                android:text="30/50"
+                android:gravity="bottom"
+                android:textAlignment="center"
+                android:textColor="@color/White"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/White"
+                android:textAlignment="center"
+                android:text="Rank"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@android:color/holo_blue_light"
-            android:padding="10dp"
-            android:text="12\nPending Trainings"
-            android:textAlignment="center"
-            android:textColor="@android:color/background_light"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:orientation="vertical"
             android:layout_weight="1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/textView_completed_trainings" />
-        <TextView
-            android:id="@+id/textView_completed_trainings"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="2dp">
+            <TextView
+                android:id="@+id/textView_pending_trainings"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:padding="5dp"
+                android:text="30/50"
+                android:gravity="bottom"
+                android:textAlignment="center"
+                android:textColor="@color/White"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/White"
+                android:textAlignment="center"
+                android:text="Pending"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@android:color/holo_blue_light"
-            android:padding="10dp"
-            android:text="2\nCompltd Trainings"
-            android:textAlignment="center"
-            android:textColor="@android:color/background_light"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:orientation="vertical"
             android:layout_weight="1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginBottom="2dp">
+            <TextView
+                android:id="@+id/textView_completed_trainings"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:padding="5dp"
+                android:text="30/50"
+                android:gravity="bottom"
+                android:textAlignment="center"
+                android:textColor="@color/White"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/White"
+                android:textAlignment="center"
+                android:text="Completed"/>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
