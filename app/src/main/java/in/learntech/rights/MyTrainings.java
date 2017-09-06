@@ -31,17 +31,17 @@ public class MyTrainings extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout_loginsignup4);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_loginsignup4);
-        LoginSignup4Adapter adapter = new LoginSignup4Adapter(getSupportFragmentManager());
+        MyTrainingsAdapter adapter = new MyTrainingsAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }
 
 
 
-    public class LoginSignup4Adapter extends FragmentPagerAdapter {
+    public class MyTrainingsAdapter extends FragmentPagerAdapter {
         private List<Fragment> fragments;
 
-        public LoginSignup4Adapter(FragmentManager fm){
+        public MyTrainingsAdapter(FragmentManager fm){
             super(fm);
             this.fragments = new ArrayList<>();
             fragments.add(new MyTrainings_LearningPlansFragment());
