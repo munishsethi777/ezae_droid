@@ -33,4 +33,7 @@ public class StringConstants {
     //LearningPlan Actions
     public static final String GET_LEARNING_PLANS = ACTION_API_URL + "LearningPlanAction.php?call=getLearningPlans&userSeq={0}&companySeq={1}";
 
+    //Badge Actions
+    public static final String GET_MYACHIEVEMENT_MY_BADGES = ACTION_API_URL + "BadgeAction.php?call=myAchievementMyBadges&userSeq={0}&companyseq={1}";
+
 }
