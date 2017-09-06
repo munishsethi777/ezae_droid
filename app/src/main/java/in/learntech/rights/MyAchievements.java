@@ -55,10 +55,10 @@ public class MyAchievements extends AppCompatActivity implements IServiceHandler
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        ImageView img1 = (ImageView) findViewById(R.id.image1);
-//        String urlPost1 = BuildConfig.IMAGE_URL + "activity/style-1/Activity-1-img-1.jpg";
-//
-//        loadImageCircleRequest(img1, urlPost1);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         mUserMgr = UserMgr.getInstance(this);
         initViews();
         makeServiceCalls();
@@ -129,7 +129,7 @@ public class MyAchievements extends AppCompatActivity implements IServiceHandler
         LinearLayout mainLinearLayout = (LinearLayout) mainLayout.findViewById(R.id.mainLayout);
         LinearLayout fragmentLayout = null;
         int count = 0;
-        for (int i=0; i < 0; i++) {
+        for (int i=0; i < badgesJSONArray.length(); i++) {
             JSONObject jsonObject = badgesJSONArray.getJSONObject(i);
             String badgeNameStr = jsonObject.getString("title");
             String badgeDetailStr = jsonObject.getString("detail");
@@ -152,14 +152,13 @@ public class MyAchievements extends AppCompatActivity implements IServiceHandler
 
             mainLinearLayout.addView(fragmentLayout);
         }
-        //if(badgesJSONArray.length() == 0){
+        if(badgesJSONArray.length() == 0){
             TextView noBadgesTextView = new TextView(this);
+            noBadgesTextView.setPadding(10,10,10,10);
             noBadgesTextView.setText("No Badges Found");
-            noBadgesTextView.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-            noBadgesTextView.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
             noBadgesTextView.setTextAlignment(ViewGroup.TEXT_ALIGNMENT_CENTER);
             mainLinearLayout.addView(noBadgesTextView);
-        //}
+        }
     }
 
     @Override
@@ -172,5 +171,11 @@ public class MyAchievements extends AppCompatActivity implements IServiceHandler
                 .load(url)
                 .transform(new ImageViewCircleTransform(this))
                 .into(img);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
