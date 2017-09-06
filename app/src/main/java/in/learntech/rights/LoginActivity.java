@@ -134,6 +134,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void setCallName(String call) {
+
+    }
+
     public void loginWithGCMID() {
         new AsyncTask<Void, Void, String>() {
             GoogleCloudMessaging gcm;
@@ -182,9 +187,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_field_required));
-            focusView = mPasswordView;
-            cancel = true;
+         //   mPasswordView.setError(getString(R.string.error_field_required));
+          //  focusView = mPasswordView;
+         //   cancel = true;
         }
 
         // Check for a valid email address.
@@ -201,6 +206,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+            username = "ETC_321";
+            password = "9656525263";
             Object[] args = {username,password,mGcmid};
             String loginUrl = MessageFormat.format(StringConstants.LOGIN_URL,args);
             mAuthTask = new ServiceHandler(loginUrl,this);

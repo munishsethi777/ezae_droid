@@ -7,4 +7,5 @@ import org.json.JSONObject;
  */
 public interface IServiceHandler {
     public void processServiceResponse(JSONObject response);
+    public void setCallName(String call);
 }

@@ -20,17 +20,22 @@ public class ServiceHandler extends AsyncTask<Void, Void, JSONObject>{
     private final String mApiUrl;
     private final IServiceHandler mIActivity;
     private final String mRequestType;
+    private final String mCall;
 
     public ServiceHandler(String apiUrl,IServiceHandler activity) {
         mApiUrl = apiUrl;
         mIActivity = activity;
         mRequestType = StringConstants.GET;
+        mCall = null;
     }
-    public ServiceHandler(String apiUrl,IServiceHandler activity,String requestType) {
+
+    public ServiceHandler(String apiUrl,IServiceHandler activity,String call) {
         mApiUrl = apiUrl;
         mIActivity = activity;
-        mRequestType = requestType;
+        mRequestType = StringConstants.GET;
+        mCall = call;
     }
+
     @Override
     protected JSONObject doInBackground(Void... params){
         HttpURLConnection urlConnection = null;
@@ -57,7 +62,7 @@ public class ServiceHandler extends AsyncTask<Void, Void, JSONObject>{
                 response += temp;
             }
             object = (JSONObject) new JSONTokener(response).nextValue();
-            //Thread.sleep(2000);
+            Thread.sleep(100);
         } catch (Exception e) {
             if(e instanceof UnknownHostException){
                 object = new JSONObject();
@@ -75,8 +80,10 @@ public class ServiceHandler extends AsyncTask<Void, Void, JSONObject>{
 
     @Override
     protected void onPostExecute(final JSONObject response) {
+        mIActivity.setCallName(mCall);
         mIActivity.processServiceResponse(response);
     }
+
 
     @Override
     protected void onCancelled() {
