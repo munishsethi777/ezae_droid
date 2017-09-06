@@ -175,7 +175,7 @@
 
         <TextView
             android:id="@+id/textViewActiveLearningPlans"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@color/Green"
             android:padding="10dp"
