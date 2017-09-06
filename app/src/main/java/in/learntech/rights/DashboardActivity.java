@@ -6,6 +6,9 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -27,6 +30,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import in.learntech.rights.Managers.UserMgr;
@@ -48,6 +53,9 @@ public class DashboardActivity extends AppCompatActivity
     private TextView mPendingTrainings;
     private TextView mCompletedTrainings;
     private String mCallName;
+    private static final String[] pageTitle = {"Notifications"};
+    private int mLoggedInUserSeq;
+    private int mLoggedInCompanySeq;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,10 +78,16 @@ public class DashboardActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         mUserMgr = UserMgr.getInstance(this);
+        mLoggedInUserSeq = mUserMgr.getLoggedInUserSeq();
+        mLoggedInCompanySeq = mUserMgr.getLoggedInUserCompanySeq();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         initViews();
         populateDashboardCounts();
+        String paramI = "";
+        String param2 = "";
+        android.app.Fragment fragment = NotificationsFragment.newInstance(mLoggedInUserSeq,mLoggedInCompanySeq);
+        getFragmentManager().beginTransaction().replace(R.id.layout_notifications,fragment).commit();
     }
 
     private void initViews(){
@@ -81,12 +95,12 @@ public class DashboardActivity extends AppCompatActivity
         mProfileRank = (TextView) findViewById(R.id.textView_profile_rank);
         mPendingTrainings = (TextView) findViewById(R.id.textView_pending_trainings);
         mCompletedTrainings = (TextView) findViewById(R.id.textView_completed_trainings);
-
     }
+
     private void populateDashboardCounts(){
         int loggedInUserSeq = mUserMgr.getLoggedInUserSeq();
         int loggedInUserCompanySeq = mUserMgr.getLoggedInUserCompanySeq();
-        Object[] args = {loggedInUserSeq,46};
+        Object[] args = {loggedInUserSeq,loggedInUserCompanySeq};
         String dashboardCountUrl = MessageFormat.format(StringConstants.GET_DASHBOARD_COUNTS,args);
         String learningPlanUrl = MessageFormat.format(StringConstants.GET_LEARNING_PLANS,args);
         mAuthTask = new ServiceHandler(dashboardCountUrl,this, GET_DASHBOARD_COUNT);
@@ -244,21 +258,6 @@ public class DashboardActivity extends AppCompatActivity
         }
 
     }
-//
-//    private LinearLayout getLinearLayout(int i){
-//        LinearLayout parent = new LinearLayout(this);
-//        parent.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-//        parent.setOrientation(LinearLayout.VERTICAL);
-//        parent.setId(i);
-//        return parent;
-//    }
-//
-//    private LinearLayout getVerticalLinearLayout(){
-//        LinearLayout verticalParent = new LinearLayout(this);
-//        verticalParent.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,1));
-//        verticalParent.setOrientation(LinearLayout.VERTICAL);
-//        return verticalParent;
-//    }
 
     @Override
     public void setCallName(String call) {
