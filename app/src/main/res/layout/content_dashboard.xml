@@ -7,7 +7,8 @@
     android:id="@+id/dashboard_layout"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="in.learntech.rights.DashboardActivity"
-    tools:showIn="@layout/app_bar_dashboard">
+    tools:showIn="@layout/app_bar_dashboard"
+    android:background="@color/profile16background">
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -16,126 +17,133 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@color/Grey"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintLeft_creator="1">
-        <LinearLayout
+
+        <android.support.v7.widget.CardView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@android:color/holo_blue_light"
-            android:orientation="vertical"
             android:layout_weight="1"
-            android:layout_marginLeft="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginBottom="2dp">
-            <TextView
-                android:id="@+id/textView_score"
+            android:layout_margin="3dp">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:padding="5dp"
-                android:text="30/50"
-                android:gravity="bottom"
-                android:textAlignment="center"
-                android:textColor="@color/White"
-                android:textSize="22sp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:textColor="@color/White"
-                android:textAlignment="center"
-                android:text="Scores"/>
-        </LinearLayout>
-        <LinearLayout
+                android:layout_height="match_parent"
+                android:background="@color/Green"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textView_score"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:padding="5dp"
+                    android:text="0"
+                    android:gravity="bottom"
+                    android:textAlignment="center"
+                    android:textColor="@color/White"
+                    android:textSize="22sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/White"
+                    android:textAlignment="center"
+                    android:text="Scores"/>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@android:color/holo_blue_light"
-            android:orientation="vertical"
             android:layout_weight="1"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginBottom="2dp">
-            <TextView
-                android:id="@+id/textView_profile_rank"
+            android:layout_margin="3dp">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:padding="5dp"
-                android:text="30/50"
-                android:gravity="bottom"
-                android:textAlignment="center"
-                android:textColor="@color/White"
-                android:textSize="22sp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:textColor="@color/White"
-                android:textAlignment="center"
-                android:text="Rank"/>
-        </LinearLayout>
-        <LinearLayout
+                android:layout_height="match_parent"
+                android:background="@color/Green"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textView_profile_rank"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:padding="5dp"
+                    android:text="0"
+                    android:gravity="bottom"
+                    android:textAlignment="center"
+                    android:textColor="@color/White"
+                    android:textSize="22sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/White"
+                    android:textAlignment="center"
+                    android:text="Rank"/>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@android:color/holo_blue_light"
-            android:orientation="vertical"
             android:layout_weight="1"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginBottom="2dp">
-            <TextView
-                android:id="@+id/textView_pending_trainings"
+            android:layout_margin="3dp">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:padding="5dp"
-                android:text="30/50"
-                android:gravity="bottom"
-                android:textAlignment="center"
-                android:textColor="@color/White"
-                android:textSize="22sp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:textColor="@color/White"
-                android:textAlignment="center"
-                android:text="Pending"/>
-        </LinearLayout>
-        <LinearLayout
+                android:layout_height="match_parent"
+                android:background="@color/Green"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textView_pending_trainings"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:padding="5dp"
+                    android:text="0"
+                    android:gravity="bottom"
+                    android:textAlignment="center"
+                    android:textColor="@color/White"
+                    android:textSize="22sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/White"
+                    android:textAlignment="center"
+                    android:text="Pending"/>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@android:color/holo_blue_light"
-            android:orientation="vertical"
             android:layout_weight="1"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginBottom="2dp">
-            <TextView
-                android:id="@+id/textView_completed_trainings"
+            android:layout_margin="3dp">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:padding="5dp"
-                android:text="30/50"
-                android:gravity="bottom"
-                android:textAlignment="center"
-                android:textColor="@color/White"
-                android:textSize="22sp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:textColor="@color/White"
-                android:textAlignment="center"
-                android:text="Completed"/>
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:background="@color/Green"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textView_completed_trainings"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:padding="5dp"
+                    android:text="0"
+                    android:gravity="bottom"
+                    android:textAlignment="center"
+                    android:textColor="@color/White"
+                    android:textSize="22sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/White"
+                    android:textAlignment="center"
+                    android:text="Completed"/>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 
     <LinearLayout
@@ -153,7 +161,7 @@
             android:id="@+id/textViewNotifications"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/Green"
+            android:background="@color/Blue"
             android:padding="10dp"
             android:text="NOTIFICATIONS"
             android:textAlignment="center"
@@ -177,7 +185,7 @@
             android:id="@+id/textViewActiveLearningPlans"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/Green"
+            android:background="@color/Blue"
             android:padding="10dp"
             android:text="ACTIVE LEARNING PLANS"
             android:textAlignment="center"
@@ -200,7 +208,8 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent">
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:paddingTop="6dp">
 
             <!--<include layout="@layout/dashboard_activeplan_fragment"/>-->
     </LinearLayout>

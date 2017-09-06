@@ -248,7 +248,7 @@ public class DashboardActivity extends AppCompatActivity
             boolean isLast = i == learningPlansData.length()-1;
             if(count == 2 || isLast) {
                 if(count != 2 && isLast){
-                    View layout = fragmentLayout.findViewById(R.id.activePlansLayout1_2);
+                    View layout = fragmentLayout.findViewById(R.id.activePlansLayoutGroup2);
                     layout.setVisibility(View.GONE);
                 }
                 linerLayout.addView(fragmentLayout);
