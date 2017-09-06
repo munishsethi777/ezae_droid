@@ -1,5 +1,6 @@
 package in.learntech.rights;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -132,9 +133,11 @@ public class DashboardActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_trainings) {
-            // Handle the camera action
+            Intent intent = new Intent(this,MyTrainings.class);
+            startActivity(intent);
         } else if (id == R.id.nav_achivements) {
-
+            Intent intent = new Intent(this,MyAchievements.class);
+            startActivity(intent);
         } else if (id == R.id.nav_messages) {
 
         } else if (id == R.id.nav_notes) {

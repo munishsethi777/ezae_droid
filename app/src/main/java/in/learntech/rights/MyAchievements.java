@@ -10,9 +10,12 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONObject;
+
+import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.utils.ImageViewCircleTransform;
 
-public class MyAchievements extends AppCompatActivity {
+public class MyAchievements extends AppCompatActivity implements IServiceHandler {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,5 +43,10 @@ public class MyAchievements extends AppCompatActivity {
                 .load(url)
                 .transform(new ImageViewCircleTransform(this))
                 .into(img);
+    }
+
+    @Override
+    public void processServiceResponse(JSONObject response) {
+        
     }
 }
