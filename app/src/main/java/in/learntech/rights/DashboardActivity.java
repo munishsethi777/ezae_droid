@@ -1,8 +1,11 @@
 package in.learntech.rights;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,7 +15,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.MessageFormat;
+import java.util.Objects;
 
 import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.services.Interface.IServiceHandler;
@@ -31,12 +38,15 @@ public class DashboardActivity extends AppCompatActivity
     private static final String SUCCESS = "success";
     private static final String DASHBOARD_DATA = "dashboardData";
     private static final String MESSAGE = "message";
+    public static final String GET_DASHBOARD_COUNT = "getDashboardCount";
+    public static final String GET_LEARNING_PLANS = "getLearningPlans";
     private ServiceHandler mAuthTask = null;
     private UserMgr mUserMgr ;
     private TextView mScores;
     private TextView mProfileRank;
     private TextView mPendingTrainings;
     private TextView mCompletedTrainings;
+    private String mCallName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,8 +86,11 @@ public class DashboardActivity extends AppCompatActivity
         int loggedInUserSeq = mUserMgr.getLoggedInUserSeq();
         int loggedInUserCompanySeq = mUserMgr.getLoggedInUserCompanySeq();
         Object[] args = {loggedInUserSeq,46};
-        String loginUrl = MessageFormat.format(StringConstants.GET_DASHBOARD_COUNTS,args);
-        mAuthTask = new ServiceHandler(loginUrl,this);
+        String dashboardCountUrl = MessageFormat.format(StringConstants.GET_DASHBOARD_COUNTS,args);
+        String learningPlanUrl = MessageFormat.format(StringConstants.GET_LEARNING_PLANS,args);
+        mAuthTask = new ServiceHandler(dashboardCountUrl,this, GET_DASHBOARD_COUNT);
+        mAuthTask.execute();
+        mAuthTask = new ServiceHandler(learningPlanUrl,this, GET_LEARNING_PLANS);
         mAuthTask.execute();
     }
 
@@ -148,35 +161,104 @@ public class DashboardActivity extends AppCompatActivity
             success = response.getInt(SUCCESS) == 1 ? true : false;
             message = response.getString(MESSAGE);
             if(success){
-                JSONObject dashboardData = response.getJSONObject(DASHBOARD_DATA);
-                String totalScores = dashboardData.getString("totalScores");
-                String completedTrainings = dashboardData.getString("completedTrainings");
-                JSONObject pendingTraingsJSON = dashboardData.getJSONObject("pendingTrainings");
-
-                String maxScore = pendingTraingsJSON.getString("maxScore");
-                String profileRank = dashboardData.getString("userRank");
-                String pendingCount = pendingTraingsJSON.getString("pendingCount");
-
-                String totalScoreStr = totalScores+"/" + maxScore + System.lineSeparator() + "Score Earned";
-                mScores.setText(totalScoreStr);
-                if(profileRank == "null"){
-                    profileRank = "0";
+                if(mCallName.equals(GET_DASHBOARD_COUNT)){
+                    populateDashboardCounts(response);
+                }else if(mCallName.equals(GET_LEARNING_PLANS)){
+                    populateLearningPlans(response);
                 }
-                String profileRankStr = profileRank + System.lineSeparator() + "Profile Rank";
-                mProfileRank.setText(profileRankStr);
-
-                String pendingTrainingsStr = pendingCount + System.lineSeparator() + "Pending Trainings";
-                mPendingTrainings.setText(pendingTrainingsStr);
-
-                String completedTrainingsStr = completedTrainings + System.lineSeparator() + "Compltd Trainings";
-                mCompletedTrainings.setText(completedTrainingsStr);
             }
         }catch (Exception e){
 
             message = "Error :- " + e.getMessage();
         }
-        if(message != null){
+        if(message != null && !message.equals("")){
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void populateDashboardCounts(JSONObject response)throws  Exception{
+        JSONObject dashboardData = response.getJSONObject(DASHBOARD_DATA);
+        String totalScores = dashboardData.getString("totalScores");
+        String completedTrainings = dashboardData.getString("completedTrainings");
+        JSONObject pendingTraingsJSON = dashboardData.getJSONObject("pendingTrainings");
+
+        String maxScore = pendingTraingsJSON.getString("maxScore");
+        String profileRank = dashboardData.getString("userRank");
+        String pendingCount = pendingTraingsJSON.getString("pendingCount");
+
+        String totalScoreStr = totalScores+"/" + maxScore + System.lineSeparator() + "Score Earned";
+        mScores.setText(totalScoreStr);
+        if(profileRank == "null"){
+            profileRank = "0";
+        }
+        String profileRankStr = profileRank + System.lineSeparator() + "Profile Rank";
+        mProfileRank.setText(profileRankStr);
+
+        String pendingTrainingsStr = pendingCount + System.lineSeparator() + "Pending Trainings";
+        mPendingTrainings.setText(pendingTrainingsStr);
+
+        String completedTrainingsStr = completedTrainings + System.lineSeparator() + "Compltd Trainings";
+        mCompletedTrainings.setText(completedTrainingsStr);
+    }
+
+    private void populateLearningPlans(JSONObject response)throws Exception{
+        JSONArray learningPlansData = response.getJSONArray("learningPlans");
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(this.LAYOUT_INFLATER_SERVICE);
+        ConstraintLayout mainLayout = (ConstraintLayout) this.findViewById(R.id.dashboard_layout);
+        LinearLayout linerLayout = (LinearLayout) mainLayout.findViewById(R.id.activeLearningPlansContainer);
+        LinearLayout fragmentLayout = null;
+        int count = 0;
+        for (int i=0; i < learningPlansData.length(); i++) {
+            JSONObject jsonObject = learningPlansData.getJSONObject(i);
+            String learningPlanName = jsonObject.getString("learningPlanName");
+            int progress = jsonObject.getInt("percentCompleted");
+            int view_progress_id = R.id.progressBarALP_1_2;
+            int text_view_id = R.id.textViewALP_1_2;
+            int percent_view_id = R.id.textView_percent2;
+            if(count == 0){
+                fragmentLayout = (LinearLayout)inflater.inflate(R.layout.dashboard_activeplan_fragment, null);
+                view_progress_id = R.id.progressBarALP_1_1;
+                text_view_id = R.id.textViewALP_1_1;
+                percent_view_id = R.id.textView_percent1;
+            }
+            ProgressBar view_progress = (ProgressBar) fragmentLayout.findViewById(view_progress_id);
+            view_progress.setProgress(progress);
+            TextView lpName = (TextView) fragmentLayout.findViewById(text_view_id);
+            lpName.setText(learningPlanName);
+            TextView percent_text = (TextView) fragmentLayout.findViewById(percent_view_id);
+            percent_text.setText(progress + "%");
+            count++;
+            boolean isLast = i == learningPlansData.length()-1;
+            if(count == 2 || isLast) {
+                if(count != 2 && isLast){
+                    View layout = fragmentLayout.findViewById(R.id.activePlansLayout1_2);
+                    layout.setVisibility(View.GONE);
+                }
+                linerLayout.addView(fragmentLayout);
+                count = 0;
+            }
+
+        }
+
+    }
+//
+//    private LinearLayout getLinearLayout(int i){
+//        LinearLayout parent = new LinearLayout(this);
+//        parent.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//        parent.setOrientation(LinearLayout.VERTICAL);
+//        parent.setId(i);
+//        return parent;
+//    }
+//
+//    private LinearLayout getVerticalLinearLayout(){
+//        LinearLayout verticalParent = new LinearLayout(this);
+//        verticalParent.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,1));
+//        verticalParent.setOrientation(LinearLayout.VERTICAL);
+//        return verticalParent;
+//    }
+
+    @Override
+    public void setCallName(String call) {
+        mCallName = call;
     }
 }

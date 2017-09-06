@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/dashboard_layout"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="in.learntech.rights.DashboardActivity"
     tools:showIn="@layout/app_bar_dashboard">
@@ -201,7 +202,7 @@
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent">
 
-            <include layout="@layout/dashboard_activeplan_fragment"/>
+            <!--<include layout="@layout/dashboard_activeplan_fragment"/>-->
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
