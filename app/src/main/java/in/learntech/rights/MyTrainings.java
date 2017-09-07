@@ -9,13 +9,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import in.learntech.rights.Managers.UserMgr;
 
-public class MyTrainings extends AppCompatActivity {
+public class MyTrainings extends AppCompatActivity implements View.OnClickListener{
     private static final String[] pageTitle = {"LEARNING PLANS","MY MODULES"};
     private int mUserSeq;
     private int mCompanySeq;
@@ -24,7 +26,6 @@ public class MyTrainings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_trainings);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -43,6 +44,10 @@ public class MyTrainings extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
+    @Override
+    public void onClick(View view) {
+
+    }
 
 
     public class MyTrainingsAdapter extends FragmentPagerAdapter{
@@ -71,8 +76,17 @@ public class MyTrainings extends AppCompatActivity {
             return pageTitle[arrayPos];
         }
     }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
-
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.loginsignup_menu, menu);
+        return true;
+    }
 
 }
