@@ -15,7 +15,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <ProgressBar
-                android:id="@+id/progressBar"
+                android:id="@+id/progressBar_lp"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="50px"
@@ -26,7 +26,7 @@
                 android:progress="50" />
 
             <TextView
-                android:id="@+id/progressText"
+                android:id="@+id/progressText_lp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -42,7 +42,7 @@
             android:layout_weight="4"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/learningPlanName"
+                android:id="@+id/textView_learningPlanName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
@@ -51,7 +51,7 @@
                 android:text="NEW HIRE LEARNERS TRAINING WITH LATEST TECHNIQUES"
                 android:textColor="@color/White"/>
             <TextView
-                android:id="@+id/totalModules"
+                android:id="@+id/textView_lpTotalModules"
                 android:layout_marginTop="6px"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

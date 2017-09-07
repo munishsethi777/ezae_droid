@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/moduleImage"
+                        android:id="@+id/imageView_moduleImage"
                         android:src="@mipmap/loginsignup6_bg"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
@@ -70,7 +70,7 @@
                         android:layout_marginRight="10dp"/>
 
                     <TextView
-                        android:id="@+id/moduleName"
+                        android:id="@+id/textView_moduleName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -86,7 +86,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/progress"
+                        android:id="@+id/textView_moduleProgress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
@@ -96,7 +96,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/score"
+                        android:id="@+id/textView_moduleScore"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="4"

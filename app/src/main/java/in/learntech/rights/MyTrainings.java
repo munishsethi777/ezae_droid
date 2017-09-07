@@ -13,8 +13,13 @@ import android.support.v7.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.learntech.rights.Managers.UserMgr;
+
 public class MyTrainings extends AppCompatActivity {
     private static final String[] pageTitle = {"LEARNING PLANS","MY MODULES"};
+    private int mUserSeq;
+    private int mCompanySeq;
+    private UserMgr mUserMgr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +33,9 @@ public class MyTrainings extends AppCompatActivity {
             actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setTitle("Welcome");
         }
-
+        mUserMgr = UserMgr.getInstance(this);
+        mUserSeq = mUserMgr.getLoggedInUserSeq();
+        mCompanySeq = mUserMgr.getLoggedInUserCompanySeq();
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout_loginsignup4);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_loginsignup4);
         MyTrainingsAdapter adapter = new MyTrainingsAdapter(getSupportFragmentManager());
@@ -38,14 +45,16 @@ public class MyTrainings extends AppCompatActivity {
 
 
 
-    public class MyTrainingsAdapter extends FragmentPagerAdapter {
+    public class MyTrainingsAdapter extends FragmentPagerAdapter{
         private List<Fragment> fragments;
 
         public MyTrainingsAdapter(FragmentManager fm){
             super(fm);
             this.fragments = new ArrayList<>();
-            fragments.add(new MyTrainings_LearningPlansFragment());
-            fragments.add(new MyTrainings_MyModulesFragment());
+            Fragment moduleFragment = MyTrainings_MyModulesFragment.newInstance(mUserSeq,mCompanySeq);
+            Fragment lpFragment = MyTrainings_LearningPlansFragment.newInstance(mUserSeq,mCompanySeq);
+            fragments.add(lpFragment);
+            fragments.add(moduleFragment);
         }
         @Override
         public Fragment getItem(int position) {

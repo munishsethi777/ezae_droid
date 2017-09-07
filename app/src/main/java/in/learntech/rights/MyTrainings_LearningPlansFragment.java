@@ -3,33 +3,78 @@ package in.learntech.rights;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.MessageFormat;
+
+import in.learntech.rights.services.Interface.IServiceHandler;
+import in.learntech.rights.services.ServiceHandler;
 import in.learntech.rights.utils.ImageViewCircleTransform;
+import in.learntech.rights.utils.LayoutHelper;
+import in.learntech.rights.utils.StringConstants;
 
 /**
  * Created by munishsethi on 04/09/17.
  */
 @SuppressLint("ValidFragment")
-public class MyTrainings_LearningPlansFragment extends Fragment {
+public class MyTrainings_LearningPlansFragment extends Fragment implements IServiceHandler{
+    private static final String ARG_USER_SEQ = "userSeq";
+    private static final String ARG_COMPANY_SEQ = "companySeq";
+    private ServiceHandler mAuthTask = null;
+    private int mUserSeq;
+    private int mCompanySeq;
+    private LayoutInflater mInflater;
+    private ViewGroup mContainer;
+    private LinearLayout mPrentLayout;
+    private LayoutHelper mLayoutHelper;
+    public static MyTrainings_LearningPlansFragment newInstance(int userSeq, int companySeq) {
+        MyTrainings_LearningPlansFragment fragment = new MyTrainings_LearningPlansFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_USER_SEQ, userSeq);
+        args.putInt(ARG_COMPANY_SEQ, companySeq);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mUserSeq = getArguments().getInt(ARG_USER_SEQ);
+            mCompanySeq = getArguments().getInt(ARG_COMPANY_SEQ);
+        }
+    }
+
+    private void executeGetLPDetail(){
+        Object[] args = {mUserSeq,mCompanySeq};
+        String getLPDetailUrl = MessageFormat.format(StringConstants.GET_LEARNING_PLAN_DETAIL,args);
+        mAuthTask = new ServiceHandler(getLPDetailUrl,this);
+        mAuthTask.execute();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.my_training_learningplans_fragment, container, false);
-//        ImageView img1 = (ImageView) view.findViewById(R.id.image1);
-//        ImageView img2 = (ImageView) view.findViewById(R.id.image2);
-//        ImageView img3 = (ImageView) view.findViewById(R.id.image3);
-//        String urlPost1 = BuildConfig.IMAGE_URL + "activity/style-1/Activity-1-img-1.jpg";
-//        String urlPost2 = BuildConfig.IMAGE_URL + "activity/style-1/Activity-1-img-2.jpg";
-//        String urlPost3 = BuildConfig.IMAGE_URL + "activity/style-3/Activity-3-img.jpg";
-
-//        loadImageCircleRequest(img1, urlPost1);
-//        loadImageCircleRequest(img2, urlPost2);
-//        loadImageCircleRequest(img3, urlPost3);
-        return view;
+        View drawerLayout = inflater.inflate(R.layout.my_training_learningplans_fragment, container, false);
+        mPrentLayout = (LinearLayout) drawerLayout.findViewById(R.id.layout_lp);
+        mContainer = container;
+        mInflater = inflater;
+        mLayoutHelper = new LayoutHelper(getActivity(),mInflater,mContainer);
+        executeGetLPDetail();
+        return drawerLayout;
     }
 
     private void loadImageCircleRequest(ImageView img, String url){
@@ -46,5 +91,54 @@ public class MyTrainings_LearningPlansFragment extends Fragment {
                 .centerCrop()
                 .crossFade()
                 .into(bg);
+    }
+
+    @Override
+    public void processServiceResponse(JSONObject response) {
+        mAuthTask = null;
+        //showProgress(false);
+        boolean success = false;
+        String message = null;
+        try{
+            success = response.getInt(StringConstants.SUCCESS) == 1 ? true : false;
+            message = response.getString(StringConstants.MESSAGE);
+            if(success){
+                JSONArray lpJsonArr = response.getJSONArray("learningPlanDetails");
+                int count = lpJsonArr.length();
+                for (int i=0; i < count; i++) {
+                    JSONObject lpJson = lpJsonArr.getJSONObject(i);
+                    int progress = lpJson.getInt("percentCompleted");
+                    String title = lpJson.getString("title");
+                    LinearLayout lpInternalLayout = (LinearLayout)
+                            mInflater.inflate(R.layout.my_training_learningplan_header, mContainer, false);
+                    ProgressBar progressBar = (ProgressBar) lpInternalLayout.findViewById(R.id.progressBar_lp);
+                    progressBar.setProgress(progress);
+
+                    TextView textView_progressBarText = (TextView)lpInternalLayout.findViewById(R.id.progressText_lp);
+                    textView_progressBarText.setText(String.valueOf(progress)+"%");
+
+                    TextView  textView_lpName = (TextView)lpInternalLayout.findViewById(R.id.textView_learningPlanName);
+                    textView_lpName.setText(title);
+
+                    JSONArray modulesJsonArr = lpJson.getJSONArray("modules");
+                    int moduleCount = modulesJsonArr.length();
+                    TextView  textView_totalModules = (TextView)lpInternalLayout.findViewById(R.id.textView_lpTotalModules);
+                    textView_totalModules.setText(String.valueOf(moduleCount) + " Modules");
+                    mPrentLayout.addView(lpInternalLayout);
+                    mLayoutHelper.jsonToModuleLayout(modulesJsonArr,mPrentLayout);
+                }
+            }
+        }catch (Exception e){
+
+            message = "Error :- " + e.getMessage();
+        }
+        if(message != null && !message.equals("")){
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void setCallName(String call) {
+
     }
 }

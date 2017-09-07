@@ -13,12 +13,15 @@ public class StringConstants {
     public static final String LOGGED_IN_USER_COMPANY_SEQ = "loggedInUserCompanySeq";
     public static  final String VERSION = "versionCode";
     public static final String SHORTCUT = "SHORTCUT";
+    public static final String SUCCESS = "success";
+    public static final String MESSAGE = "message";
 
     //API URL STRINGS
     public static final String ACTION_API_URL = "http://www.ezae.in/se/Actions/Mobile/";
 
     //APPLICATION URL
     public static final String WEB_URL = "http://www.ezae.in/se/";
+    public static final String IMAGE_URL = "http://www.ezae.in/se/images/";
 
 
     //User Actions
@@ -35,5 +38,12 @@ public class StringConstants {
 
     //Badge Actions
     public static final String GET_MYACHIEVEMENT_MY_BADGES = ACTION_API_URL + "BadgeAction.php?call=myAchievementMyBadges&userSeq={0}&companyseq={1}";
+
+    //Module Action
+    public static final String GET_MODULES = ACTION_API_URL + "ModuleAction.php?&call=getDirectModules&userSeq={0}&companySeq={1}";
+
+    //Learning Plan Action
+    public static final String GET_LEARNING_PLAN_DETAIL = ACTION_API_URL + "LearningPlanAction.php?userSeq={0}&companySeq={1}&call=getLearningPlanDetails";
+
 
 }

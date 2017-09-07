@@ -23,6 +23,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
+                android:id="@+id/layout_lp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:focusableInTouchMode="true"
@@ -30,8 +31,10 @@
                 android:paddingBottom="8dp">
 
 
-                <include layout="@layout/my_training_learningplan_header"/>
-                <include layout="@layout/my_training_module_fragment"/>
+               <!-- <include layout="@layout/my_training_learningplan_header"/>
+
+                <include layout="@layout/my_training_module_fragment" />
+
                 <include layout="@layout/my_training_module_fragment"/>
                 <include layout="@layout/my_training_module_fragment"/>
 
@@ -41,7 +44,7 @@
                 <include layout="@layout/my_training_learningplan_header"/>
                 <include layout="@layout/my_training_module_fragment"/>
                 <include layout="@layout/my_training_module_fragment"/>
-                <include layout="@layout/my_training_module_fragment"/>
+                <include layout="@layout/my_training_module_fragment"/>-->
 
             </LinearLayout>
 

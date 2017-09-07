@@ -23,6 +23,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
+                android:id="@+id/layout_module"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:focusableInTouchMode="true"
@@ -39,8 +40,6 @@
                     android:textStyle="bold"
                     android:textAlignment="center"
                     android:textColor="@color/White"/>
-
-                <include layout="@layout/my_training_module_fragment"/>
 
             </LinearLayout>
 
