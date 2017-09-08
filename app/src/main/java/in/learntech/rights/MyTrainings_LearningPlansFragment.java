@@ -115,7 +115,7 @@ public class MyTrainings_LearningPlansFragment extends Fragment implements IServ
                             mInflater.inflate(R.layout.my_training_learningplan_header, mContainer, false);
                     ProgressWheel progressWheel = (ProgressWheel)lpInternalLayout.findViewById(R.id.progressBar_lp);
                     progressWheel.setStepCountText(String.valueOf(progress)+"%");
-                    progressWheel.setPercentage(progress);
+                    progressWheel.setPercentage(progress*4);
 
 //                    ProgressBar progressBar = (ProgressBar) lpInternalLayout.findViewById(R.id.progressBar_lp);
 //                    progressBar.setProgress(progress);
