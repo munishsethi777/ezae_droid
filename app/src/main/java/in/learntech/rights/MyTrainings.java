@@ -1,5 +1,6 @@
 package in.learntech.rights;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,11 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import in.learntech.rights.Managers.UserMgr;
+import in.learntech.rights.utils.StringConstants;
 
 public class MyTrainings extends AppCompatActivity implements View.OnClickListener{
     private static final String[] pageTitle = {"LEARNING PLANS","MY MODULES"};
@@ -46,9 +49,29 @@ public class MyTrainings extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()){
+            case R.id.button_moduleLaunch:
+                goUserTrainingActivity(view);
+                break;
+            default:
+                break;
+        }
     }
 
+
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.loginsignup_menu, menu);
+        return true;
+    }
 
     public class MyTrainingsAdapter extends FragmentPagerAdapter{
         private List<Fragment> fragments;
@@ -76,17 +99,14 @@ public class MyTrainings extends AppCompatActivity implements View.OnClickListen
             return pageTitle[arrayPos];
         }
     }
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.loginsignup_menu, menu);
-        return true;
+    private void goUserTrainingActivity(View view){
+        int lpSeq = (int)view.getTag(R.string.lp_seq);
+        int moduleSeq = (int)view.getTag(R.string.module_seq);
+        Intent intent = new Intent(this,UserTrainingActivity.class);
+        intent.putExtra(StringConstants.LP_SEQ,lpSeq);
+        intent.putExtra(StringConstants.MODULE_SEQ,moduleSeq);
+        startActivity(intent);
     }
 
 }
