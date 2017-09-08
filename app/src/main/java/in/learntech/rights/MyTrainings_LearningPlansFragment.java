@@ -1,6 +1,7 @@
 package in.learntech.rights;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.progresviews.ProgressWheel;
 import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
@@ -111,11 +113,15 @@ public class MyTrainings_LearningPlansFragment extends Fragment implements IServ
                     String title = lpJson.getString("title");
                     LinearLayout lpInternalLayout = (LinearLayout)
                             mInflater.inflate(R.layout.my_training_learningplan_header, mContainer, false);
-                    ProgressBar progressBar = (ProgressBar) lpInternalLayout.findViewById(R.id.progressBar_lp);
-                    progressBar.setProgress(progress);
+                    ProgressWheel progressWheel = (ProgressWheel)lpInternalLayout.findViewById(R.id.progressBar_lp);
+                    progressWheel.setStepCountText(String.valueOf(progress)+"%");
+                    progressWheel.setPercentage(progress);
 
-                    TextView textView_progressBarText = (TextView)lpInternalLayout.findViewById(R.id.progressText_lp);
-                    textView_progressBarText.setText(String.valueOf(progress)+"%");
+//                    ProgressBar progressBar = (ProgressBar) lpInternalLayout.findViewById(R.id.progressBar_lp);
+//                    progressBar.setProgress(progress);
+
+                    //TextView textView_progressBarText = (TextView)lpInternalLayout.findViewById(R.id.progressText_lp);
+                    //textView_progressBarText.setText(String.valueOf(progress)+"%");
 
                     TextView  textView_lpName = (TextView)lpInternalLayout.findViewById(R.id.textView_learningPlanName);
                     textView_lpName.setText(title);

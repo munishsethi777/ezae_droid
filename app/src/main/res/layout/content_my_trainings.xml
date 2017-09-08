@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="in.learntech.rights.MyTrainings">
+    tools:context="in.learntech.rights.MyTrainings"
+    android:background="@color/profile16background">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
