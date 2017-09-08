@@ -26,6 +26,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.progresviews.ProgressWheel;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -231,19 +233,23 @@ public class DashboardActivity extends AppCompatActivity
             int progress = jsonObject.getInt("percentCompleted");
             int view_progress_id = R.id.progressBarALP_1_2;
             int text_view_id = R.id.textViewALP_1_2;
-            int percent_view_id = R.id.textView_percent2;
+            //int percent_view_id = R.id.textView_percent2;
             if(count == 0){
                 fragmentLayout = (LinearLayout)inflater.inflate(R.layout.dashboard_activeplan_fragment, null);
                 view_progress_id = R.id.progressBarALP_1_1;
                 text_view_id = R.id.textViewALP_1_1;
-                percent_view_id = R.id.textView_percent1;
+                //percent_view_id = R.id.textView_percent1;
             }
-            ProgressBar view_progress = (ProgressBar) fragmentLayout.findViewById(view_progress_id);
-            view_progress.setProgress(progress);
+            ProgressWheel progressWheel = (ProgressWheel)fragmentLayout.findViewById(view_progress_id);
+            //ProgressBar view_progress = (ProgressBar) fragmentLayout.findViewById(view_progress_id);
+            //view_progress.setProgress(progress);
+            progressWheel.setPercentage(progress);
+            progressWheel.setStepCountText(progress + "%");
+
             TextView lpName = (TextView) fragmentLayout.findViewById(text_view_id);
             lpName.setText(learningPlanName);
-            TextView percent_text = (TextView) fragmentLayout.findViewById(percent_view_id);
-            percent_text.setText(progress + "%");
+            //TextView percent_text = (TextView) fragmentLayout.findViewById(percent_view_id);
+            //percent_text.setText(progress + "%");
             count++;
             boolean isLast = i == learningPlansData.length()-1;
             if(count == 2 || isLast) {
