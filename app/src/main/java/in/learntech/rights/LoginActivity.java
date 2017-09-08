@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
+import in.learntech.rights.utils.LayoutHelper;
 import in.learntech.rights.utils.StringConstants;
 
 
@@ -131,7 +132,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }catch (Exception e){
             message = "Error :- " + e.getMessage();
         }
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        LayoutHelper.showToast(this,message);
     }
 
     @Override
@@ -206,8 +207,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            username = "ETC_321";
-            password = "9656525263";
+            //username = "ETC_321";
+            //password = "9656525263";
             Object[] args = {username,password,mGcmid};
             String loginUrl = MessageFormat.format(StringConstants.LOGIN_URL,args);
             mAuthTask = new ServiceHandler(loginUrl,this);
