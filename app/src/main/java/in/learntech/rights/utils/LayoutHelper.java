@@ -1,13 +1,16 @@
 package in.learntech.rights.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -34,6 +37,11 @@ public class LayoutHelper {
         int count = modulesJsonArr.length();
         for (int i = 0; i < count; i++) {
             JSONObject jsonObject = modulesJsonArr.getJSONObject(i);
+            int lpSeq = 0;
+            if(jsonObject.has("learningPlanSeq")) {
+                lpSeq = jsonObject.getInt("learningPlanSeq");
+            }
+            int moduleSeq = jsonObject.getInt("seq");
             String moduleTitle = jsonObject.getString("title");
             String progress = jsonObject.getString("progress");
             String isCompleted = jsonObject.getString("iscompleted");
@@ -81,6 +89,10 @@ public class LayoutHelper {
 
             TextView textView_circle = (TextView) moduleInternalLayout.findViewById(R.id.timeline_circleText);
             textView_circle.setText(circleText);
+
+            Button button_launch = (Button)moduleInternalLayout.findViewById(R.id.button_moduleLaunch);
+            button_launch.setTag(R.string.lp_seq,lpSeq);
+            button_launch.setTag(R.string.module_seq,moduleSeq);
             mParentLayout.addView(moduleInternalLayout);
         }
     }
@@ -93,5 +105,11 @@ public class LayoutHelper {
                 .crossFade()
                 .into(bg);
 
+    }
+
+    public static void showToast(Context context,String message){
+        if(message != null && !message.equals("")){
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        }
     }
 }

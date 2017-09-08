@@ -32,9 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+
 
 import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.services.Interface.IServiceHandler;
@@ -161,7 +159,7 @@ public class DashboardActivity extends AppCompatActivity
         } else if (id == R.id.nav_update_profile) {
 
         } else if (id == R.id.nav_logout) {
-
+            logout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -169,6 +167,11 @@ public class DashboardActivity extends AppCompatActivity
         return true;
     }
 
+    private void logout(){
+        mUserMgr.resentPreferences();
+        Intent intent = new Intent(this,LoginActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public void processServiceResponse(JSONObject response) {
@@ -205,18 +208,18 @@ public class DashboardActivity extends AppCompatActivity
         String profileRank = dashboardData.getString("userRank");
         String pendingCount = pendingTraingsJSON.getString("pendingCount");
 
-        String totalScoreStr = totalScores+"/" + maxScore + System.lineSeparator() + "Score Earned";
+        String totalScoreStr = totalScores+"/" + maxScore;
         mScores.setText(totalScoreStr);
         if(profileRank == "null"){
             profileRank = "0";
         }
-        String profileRankStr = profileRank + System.lineSeparator() + "Profile Rank";
+        String profileRankStr = profileRank;
         mProfileRank.setText(profileRankStr);
 
-        String pendingTrainingsStr = pendingCount + System.lineSeparator() + "Pending Trainings";
+        String pendingTrainingsStr = pendingCount;
         mPendingTrainings.setText(pendingTrainingsStr);
 
-        String completedTrainingsStr = completedTrainings + System.lineSeparator() + "Compltd Trainings";
+        String completedTrainingsStr = completedTrainings;
         mCompletedTrainings.setText(completedTrainingsStr);
     }
 
@@ -243,7 +246,7 @@ public class DashboardActivity extends AppCompatActivity
             ProgressWheel progressWheel = (ProgressWheel)fragmentLayout.findViewById(view_progress_id);
             //ProgressBar view_progress = (ProgressBar) fragmentLayout.findViewById(view_progress_id);
             //view_progress.setProgress(progress);
-            progressWheel.setPercentage(progress);
+            progressWheel.setPercentage(progress*4);
             progressWheel.setStepCountText(progress + "%");
 
             TextView lpName = (TextView) fragmentLayout.findViewById(text_view_id);

@@ -22,11 +22,12 @@
         <activity
             android:name=".MyAchievements"
             android:label="@string/title_activity_my_achievements"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".MyTrainings"
             android:label="MyTrainings"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".UserTrainingActivity"></activity>
     </application>
 
 </manifest>
