@@ -10,4 +10,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_my_achievements">MyAchievements</string>
+    <string name="lp_seq">lpSeq</string>
+    <string name="module_seq">moduleSeq</string>
 </resources>

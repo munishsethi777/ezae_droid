@@ -66,6 +66,10 @@ public class UserMgr {
         return companySeq;
     }
 
+    public void resentPreferences(){
+        mPreferencesUtil.resetPreferences();
+    }
+
 
 
 }

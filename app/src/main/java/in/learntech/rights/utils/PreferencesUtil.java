@@ -42,6 +42,11 @@ public class PreferencesUtil {
         editor.commit();
     }
 
+    public void resetPreferences(){
+        SharedPreferences.Editor editor  = mContext.getSharedPreferences(StringConstants.PREFS_NAME, mContext.MODE_PRIVATE).edit();
+        editor.clear().commit();
+    }
+
 
     public void  setLoggedInUserSeq(long userSeq){
         setPreferences(StringConstants.LOGGED_IN_USER_SEQ, String.valueOf(userSeq));

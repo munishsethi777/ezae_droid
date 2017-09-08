@@ -15,6 +15,8 @@ public class StringConstants {
     public static final String SHORTCUT = "SHORTCUT";
     public static final String SUCCESS = "success";
     public static final String MESSAGE = "message";
+    public static final String LP_SEQ = "lpSeq";
+    public static final String MODULE_SEQ = "moduleSeq";
 
     //API URL STRINGS
     public static final String ACTION_API_URL = "http://www.ezae.in/se/Actions/Mobile/";
@@ -41,6 +43,7 @@ public class StringConstants {
 
     //Module Action
     public static final String GET_MODULES = ACTION_API_URL + "ModuleAction.php?&call=getDirectModules&userSeq={0}&companySeq={1}";
+    public static final String GET_MODULE_DETAILS = ACTION_API_URL + "ModuleAction.php?call=getModuleDetails&userSeq={0}&moduleSeq={1}&learningPlanSeq={2}";
 
     //Learning Plan Action
     public static final String GET_LEARNING_PLAN_DETAIL = ACTION_API_URL + "LearningPlanAction.php?userSeq={0}&companySeq={1}&call=getLearningPlanDetails";
