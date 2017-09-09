@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/loginsignup23_bg"
-    android:fitsSystemWindows="true"
+    android:layout_marginTop="0dp"
     tools:openDrawer="start">
 
     <android.support.design.widget.CoordinatorLayout

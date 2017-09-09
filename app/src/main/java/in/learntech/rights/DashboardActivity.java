@@ -84,8 +84,6 @@ public class DashboardActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         initViews();
         populateDashboardCounts();
-        String paramI = "";
-        String param2 = "";
         android.app.Fragment fragment = NotificationsFragment.newInstance(mLoggedInUserSeq,mLoggedInCompanySeq);
         getFragmentManager().beginTransaction().replace(R.id.layout_notifications,fragment).commit();
     }
@@ -171,6 +169,7 @@ public class DashboardActivity extends AppCompatActivity
         mUserMgr.resentPreferences();
         Intent intent = new Intent(this,LoginActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override

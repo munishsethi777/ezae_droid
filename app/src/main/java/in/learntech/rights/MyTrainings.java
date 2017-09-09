@@ -35,7 +35,7 @@ public class MyTrainings extends AppCompatActivity implements View.OnClickListen
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(true);
-            actionBar.setTitle("Welcome");
+            actionBar.setTitle("My Trainings");
         }
         mUserMgr = UserMgr.getInstance(this);
         mUserSeq = mUserMgr.getLoggedInUserSeq();
