@@ -122,11 +122,11 @@ public class UserTrainingFragment extends Fragment {
         texInput.setImeOptions(EditorInfo.IME_FLAG_NO_ENTER_ACTION);
         texInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         texInput.setLines(10);
-        texInput.setMaxLines(15);
         texInput.setVerticalScrollBarEnabled(true);
         texInput.setMovementMethod(ScrollingMovementMethod.getInstance());
         texInput.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
         texInput.setText(selectedAnsText);
+        texInput.setTextSize(14);
         mOptionsLayout.addView(texInput);
     }
     private void addSingleMultiOptionsViews()throws Exception{
