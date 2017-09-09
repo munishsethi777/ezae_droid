@@ -5,15 +5,12 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/loginsignup23_bg"
     android:layout_marginTop="0dp"
     tools:openDrawer="start">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/scroll"
