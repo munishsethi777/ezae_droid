@@ -1,11 +1,15 @@
 package in.learntech.rights.utils;
 
+import android.animation.Animator;
+import android.animation.TimeInterpolator;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +38,7 @@ public class LayoutHelper {
 
     }
     public void jsonToModuleLayout(JSONArray modulesJsonArr, LinearLayout mParentLayout) throws Exception {
+        int moduleCardMargins = 18;
         int count = modulesJsonArr.length();
         for (int i = 0; i < count; i++) {
             JSONObject jsonObject = modulesJsonArr.getJSONObject(i);
@@ -73,7 +78,7 @@ public class LayoutHelper {
                      mInflater.inflate(R.layout.my_training_module_fragment, mContainer, false);
 
             ImageView imageView = (ImageView) moduleInternalLayout.findViewById(R.id.imageView_moduleImage);
-            loadImageRequest(imageView, imageUrl);
+            loadImageRequest(imageView, imageUrl, true);
 
             TextView textView_moduleName = (TextView) moduleInternalLayout.findViewById(R.id.textView_moduleName);
             textView_moduleName.setText(moduleTitle);
@@ -93,18 +98,42 @@ public class LayoutHelper {
             Button button_launch = (Button)moduleInternalLayout.findViewById(R.id.button_moduleLaunch);
             button_launch.setTag(R.string.lp_seq,lpSeq);
             button_launch.setTag(R.string.module_seq,moduleSeq);
+
+            CardView moduleCardView = (CardView) moduleInternalLayout.findViewById(R.id.moduleCardView);
+            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams)moduleCardView.getLayoutParams();
+            marginLayoutParams.setMargins(moduleCardMargins,moduleCardMargins,moduleCardMargins,moduleCardMargins);
+            if(i==0){
+                marginLayoutParams.setMargins(moduleCardMargins,moduleCardMargins*2,moduleCardMargins,moduleCardMargins);
+            }
+            if(i==count-1){
+                marginLayoutParams.setMargins(moduleCardMargins,moduleCardMargins,moduleCardMargins,moduleCardMargins*2);
+            }
+            moduleCardView.requestLayout();
+            Animation animation = AnimationUtils.loadAnimation(mActivity,R.anim.fade_in);
+            moduleCardView.startAnimation(animation);
             mParentLayout.addView(moduleInternalLayout);
         }
     }
 
-    private void loadImageRequest(ImageView bg, String url) {
-        Glide.with(mActivity)
-                .load(url)
-                .thumbnail(0.01f)
-                .centerCrop()
-                .crossFade()
-                .into(bg);
+    private void loadImageRequest(ImageView bg, String url, boolean isCircle) {
+        if(isCircle) {
+            Animation animation = AnimationUtils.loadAnimation(mActivity,R.anim.fade_in);
 
+            Glide.with(mActivity)
+                    .load(url)
+                    .thumbnail(0.01f)
+                    .centerCrop()
+                    .crossFade()
+                    .animate(animation)
+                    .transform(new ImageViewCircleTransform(mActivity))
+                    .into(bg);
+        }else{
+            Glide.with(mActivity)
+                    .load(url)
+                    .thumbnail(0.01f)
+                    .crossFade()
+                    .into(bg);
+        }
     }
 
     public static void showToast(Context context,String message){

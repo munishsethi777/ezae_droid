@@ -1472,6 +1472,8 @@
     <color name="LightGrey">#eaeaea</color>
     <color name="Grey">#d7d7d7</color>
     <color name="Darkgrey">#808080</color>
+    <color name="DarkDarkgrey">#565656</color>
     <color name="White">#FFFFFF</color>
     <color name="Blue">#50c2ff</color>
+    <color name="Blue_Light">#c5dbe7</color>
 </resources>
