@@ -66,12 +66,7 @@ public class MyTrainings extends AppCompatActivity implements View.OnClickListen
         return true;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.loginsignup_menu, menu);
-        return true;
-    }
+
 
     public class MyTrainingsAdapter extends FragmentPagerAdapter{
         private List<Fragment> fragments;
