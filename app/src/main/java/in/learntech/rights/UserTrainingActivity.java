@@ -161,12 +161,6 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.btnGetStarted:
-                Toast.makeText(this, "Button Get Started clicked!", Toast.LENGTH_SHORT).show();
-                break;
-            default:
-                break;
-        }
+
     }
 }

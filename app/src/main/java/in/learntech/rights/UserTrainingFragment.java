@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
@@ -15,6 +16,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -48,7 +50,8 @@ public class UserTrainingFragment extends Fragment {
     private JSONArray mQuizProgress;
     private JSONArray mAnswers;
     private String mQuestionType;
-    private LinearLayout mParentLayout;
+    private ConstraintLayout mParentLayout;
+    private LinearLayout mOptionsLayout;
     private boolean isQuizProgressExists;
     public UserTrainingFragment(int position,JSONArray questions) {
         this.wizard_page_position = position;
@@ -59,8 +62,9 @@ public class UserTrainingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         int layout_id = R.layout.user_training_fragment;
         mActivity = getActivity();
-        mParentLayout= (LinearLayout)inflater.inflate(layout_id, container, false);
+        mParentLayout= (ConstraintLayout)inflater.inflate(layout_id, container, false);
         TextView textView_question = (TextView)mParentLayout.findViewById(R.id.textView_question);
+        mOptionsLayout = (LinearLayout)mParentLayout.findViewById(R.id.optionsLayout);
         try{
             JSONObject question = mQuestions.getJSONObject(wizard_page_position);
             mQuestionType = question.getString("type");
@@ -102,7 +106,7 @@ public class UserTrainingFragment extends Fragment {
         }
         Switch switchYesNo = new Switch(mActivity);
         switchYesNo.setChecked(selectedAnsTitle.equals("yes"));
-        mParentLayout.addView(switchYesNo);
+        mOptionsLayout.addView(switchYesNo);
     }
 
     private void addLongQuestionView()throws Exception{
@@ -121,7 +125,7 @@ public class UserTrainingFragment extends Fragment {
         texInput.setMovementMethod(ScrollingMovementMethod.getInstance());
         texInput.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
         texInput.setText(selectedAnsText);
-        mParentLayout.addView(texInput);
+        mOptionsLayout.addView(texInput);
     }
     private void addSingleMultiOptionsViews()throws Exception{
         RadioGroup radioGroup = new RadioGroup(mActivity);
@@ -143,7 +147,7 @@ public class UserTrainingFragment extends Fragment {
                 checkBox.setText(title);
                 checkBox.setTag(seq);
                 checkBox.setChecked(checked);
-                mParentLayout.addView(checkBox);
+                mOptionsLayout.addView(checkBox);
             }else{
                 RadioButton radioButton = new RadioButton(mActivity);
                 radioButton.setText(title);
@@ -154,7 +158,7 @@ public class UserTrainingFragment extends Fragment {
 
         }
         if(mQuestionType.equals(SINGLE)){
-            mParentLayout.addView(radioGroup);
+            mOptionsLayout.addView(radioGroup);
         }
     }
 
@@ -167,7 +171,7 @@ public class UserTrainingFragment extends Fragment {
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.BOTTOM;
         button.setLayoutParams(params);
-        mParentLayout.addView(button);
+        //mParentLayout.addView(button);
     }
 
 

@@ -160,9 +160,9 @@
         <TextView
             android:id="@+id/textViewNotifications"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:background="@color/Blue"
-            android:padding="10dp"
+            android:padding="8dp"
             android:text="NOTIFICATIONS"
             android:textAlignment="center"
             android:textColor="@android:color/background_light"
@@ -184,9 +184,9 @@
         <TextView
             android:id="@+id/textViewActiveLearningPlans"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:background="@color/Blue"
-            android:padding="10dp"
+            android:padding="8dp"
             android:text="ACTIVE LEARNING PLANS"
             android:textAlignment="center"
             android:textColor="@android:color/background_light"
