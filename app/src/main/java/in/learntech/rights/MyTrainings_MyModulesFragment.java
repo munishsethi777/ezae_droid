@@ -71,7 +71,7 @@ public class MyTrainings_MyModulesFragment extends Fragment implements IServiceH
     private void executeGetModule(){
         Object[] args = {mUserSeq,mCompanySeq};
         String getModulesUrl = MessageFormat.format(StringConstants.GET_MODULES,args);
-        mAuthTask = new ServiceHandler(getModulesUrl,this);
+        mAuthTask = new ServiceHandler(getModulesUrl,this,getActivity());
         mAuthTask.execute();
     }
 

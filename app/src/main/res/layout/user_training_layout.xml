@@ -8,13 +8,14 @@
 
 
     <LinearLayout
+        android:id="@+id/layout_launched_module_header"
         android:orientation="vertical"
         android:layout_gravity="top"
         android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/textView_module_title"
             android:text="PVPC Installation Training."
             android:textSize="18sp"
             android:gravity="center_horizontal"
@@ -26,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp">
             <TextView
+                android:id="@+id/textView_question_no"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -33,13 +35,13 @@
                 android:gravity="left"
                 android:textSize="12dp"/>
             <TextView
+                android:id="@+id/textView_marks"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="Total Marks:100"
                 android:gravity="right"
                 android:textSize="12dp"/>
-
         </LinearLayout>
         <View style="@style/Divider"/>
     </LinearLayout>

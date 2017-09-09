@@ -92,9 +92,9 @@ public class DashboardActivity extends AppCompatActivity
         Object[] args = {loggedInUserSeq,loggedInUserCompanySeq};
         String dashboardCountUrl = MessageFormat.format(StringConstants.GET_DASHBOARD_COUNTS,args);
         String learningPlanUrl = MessageFormat.format(StringConstants.GET_LEARNING_PLANS,args);
-        mAuthTask = new ServiceHandler(dashboardCountUrl,this, GET_DASHBOARD_COUNT);
+        mAuthTask = new ServiceHandler(dashboardCountUrl,this, GET_DASHBOARD_COUNT,this);
         mAuthTask.execute();
-        mAuthTask = new ServiceHandler(learningPlanUrl,this, GET_LEARNING_PLANS);
+        mAuthTask = new ServiceHandler(learningPlanUrl,this, GET_LEARNING_PLANS,this);
         mAuthTask.execute();
     }
 

@@ -76,9 +76,9 @@ public class MyAchievements extends AppCompatActivity implements IServiceHandler
         Object[] args = {loggedInUserSeq,loggedInUserCompanySeq};
         String achievementsCountUrl = MessageFormat.format(StringConstants.GET_MYACHIEVEMENT_COUNTS,args);
         String myBadgesURL = MessageFormat.format(StringConstants.GET_MYACHIEVEMENT_MY_BADGES,args);
-        mAuthTask = new ServiceHandler(achievementsCountUrl,this, GET_MY_ACHIEVEMENTS);
+        mAuthTask = new ServiceHandler(achievementsCountUrl,this, GET_MY_ACHIEVEMENTS,this);
         mAuthTask.execute();
-        mAuthTask = new ServiceHandler(myBadgesURL,this, GET_MY_ACHIEVEMENT_BADGES);
+        mAuthTask = new ServiceHandler(myBadgesURL,this, GET_MY_ACHIEVEMENT_BADGES,this);
         mAuthTask.execute();
     }
 

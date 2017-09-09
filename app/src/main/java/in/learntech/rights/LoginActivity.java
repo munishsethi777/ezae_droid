@@ -211,7 +211,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //password = "9656525263";
             Object[] args = {username,password,mGcmid};
             String loginUrl = MessageFormat.format(StringConstants.LOGIN_URL,args);
-            mAuthTask = new ServiceHandler(loginUrl,this);
+            mAuthTask = new ServiceHandler(loginUrl,this,this);
             mAuthTask.execute();
         }
     }
@@ -221,5 +221,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void goToDashboardActivity(){
         Intent intent = new Intent(this,DashboardActivity.class);
         startActivity(intent);
+        finish();
     }
 }

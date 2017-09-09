@@ -101,7 +101,7 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
     public void executeGetNotificationCall(){
         Object[] args = {mUserSeq,mCompanySeq};
         String notificationUrl = MessageFormat.format(StringConstants.GET_NOTIFICATIONS,args);
-        mAuthTask = new ServiceHandler(notificationUrl,this);
+        mAuthTask = new ServiceHandler(notificationUrl,this,getActivity());
         mAuthTask.execute();
     }
 

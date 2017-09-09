@@ -9,6 +9,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -37,7 +40,10 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
     private ServiceHandler mAuthTask;
     private int WIZARD_PAGES_COUNT = 4;
     private JSONArray mModuleQuestionsJson;
-
+    private TextView mModuleTitleTextview;
+    private LinearLayout mHeaderLayout;
+    private TextView mQuestionNoTextView;
+    private TextView mQuestionMarksTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,15 +57,19 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
         indicator2 = findViewById(R.id.indicator2);
         indicator3 = findViewById(R.id.indicator3);
         indicator4 = findViewById(R.id.indicator4);
+        mModuleTitleTextview = (TextView)findViewById(R.id.textView_module_title);
+        mHeaderLayout = (LinearLayout)findViewById(R.id.layout_launched_module_header);
+        mQuestionNoTextView = (TextView)findViewById(R.id.textView_question_no);
+        mQuestionMarksTextView = (TextView)findViewById(R.id.textView_marks);
         executeGetModuleDetailsCall();
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        updateIndicators(0);
+
     }
 
     private void executeGetModuleDetailsCall(){
         Object[] args = {mUserSeq,mModuleSeq,mLpSeq};
         String notificationUrl = MessageFormat.format(StringConstants.GET_MODULE_DETAILS,args);
-        mAuthTask = new ServiceHandler(notificationUrl,this);
+        mAuthTask = new ServiceHandler(notificationUrl,this,this);
         mAuthTask.execute();
     }
 
@@ -73,10 +83,12 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
             message = response.getString(StringConstants.MESSAGE);
             JSONObject jsonObject = response.getJSONObject("module");
             if(success){
+                mModuleTitleTextview.setText(jsonObject.getString("title"));
                 mModuleQuestionsJson = jsonObject.getJSONArray("questions");
                 WIZARD_PAGES_COUNT = mModuleQuestionsJson.length();
                 viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
                 viewPager.addOnPageChangeListener(new WizardPageChangeListener());
+                updateIndicators(0);
             }
         }catch (Exception e){
             message = "Error :- " + e.getMessage();
@@ -99,7 +111,7 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
 
         @Override
         public Fragment getItem(int position) {
-            return new UserTrainingFragment(position,mModuleQuestionsJson);
+            return new UserTrainingFragment(position,mModuleQuestionsJson,mHeaderLayout);
         }
 
         @Override
@@ -157,6 +169,16 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
                 indicator4.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot));
                 break;
         }
+        String questionNoStr = position + 1 + " of " + mModuleQuestionsJson.length() + " Questions";
+        mQuestionNoTextView.setText(questionNoStr);
+        try{
+            JSONObject ques = mModuleQuestionsJson.getJSONObject(position);
+            mQuestionMarksTextView.setText("Marks: " + ques.getInt("maxMarks"));
+        }catch (Exception e){
+
+        }
+
+
     }
 
     @Override

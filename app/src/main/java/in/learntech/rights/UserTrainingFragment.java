@@ -53,9 +53,11 @@ public class UserTrainingFragment extends Fragment {
     private ConstraintLayout mParentLayout;
     private LinearLayout mOptionsLayout;
     private boolean isQuizProgressExists;
-    public UserTrainingFragment(int position,JSONArray questions) {
+    private LinearLayout mHeaderLayout;
+    public UserTrainingFragment(int position,JSONArray questions,LinearLayout headerLayout) {
         this.wizard_page_position = position;
         this.mQuestions = questions;
+        this.mHeaderLayout = headerLayout;
     }
 
     @Override

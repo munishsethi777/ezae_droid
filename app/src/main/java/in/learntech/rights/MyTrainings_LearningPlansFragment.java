@@ -64,7 +64,7 @@ public class MyTrainings_LearningPlansFragment extends Fragment implements IServ
     private void executeGetLPDetail(){
         Object[] args = {mUserSeq,mCompanySeq};
         String getLPDetailUrl = MessageFormat.format(StringConstants.GET_LEARNING_PLAN_DETAIL,args);
-        mAuthTask = new ServiceHandler(getLPDetailUrl,this);
+        mAuthTask = new ServiceHandler(getLPDetailUrl,this,getActivity());
         mAuthTask.execute();
     }
 
@@ -117,12 +117,6 @@ public class MyTrainings_LearningPlansFragment extends Fragment implements IServ
                     progressWheel.setStepCountText(String.valueOf(progress)+"%");
                     progressWheel.setPercentage(progress*4);
 
-//                    ProgressBar progressBar = (ProgressBar) lpInternalLayout.findViewById(R.id.progressBar_lp);
-//                    progressBar.setProgress(progress);
-
-                    //TextView textView_progressBarText = (TextView)lpInternalLayout.findViewById(R.id.progressText_lp);
-                    //textView_progressBarText.setText(String.valueOf(progress)+"%");
-
                     TextView  textView_lpName = (TextView)lpInternalLayout.findViewById(R.id.textView_learningPlanName);
                     textView_lpName.setText(title);
 
@@ -130,6 +124,7 @@ public class MyTrainings_LearningPlansFragment extends Fragment implements IServ
                     int moduleCount = modulesJsonArr.length();
                     TextView  textView_totalModules = (TextView)lpInternalLayout.findViewById(R.id.textView_lpTotalModules);
                     textView_totalModules.setText(String.valueOf(moduleCount) + " Modules");
+
                     mPrentLayout.addView(lpInternalLayout);
                     mLayoutHelper.jsonToModuleLayout(modulesJsonArr,mPrentLayout);
                 }
