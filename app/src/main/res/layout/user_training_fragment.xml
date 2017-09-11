@@ -43,7 +43,7 @@
         android:textStyle="bold"
         android:textColor="@color/White"
         android:layout_gravity="bottom"
-        style="@style/ButtonMagenta"
+        style="@style/ButtonYellow"
         android:layout_margin="@dimen/activity_horizontal_margin"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
