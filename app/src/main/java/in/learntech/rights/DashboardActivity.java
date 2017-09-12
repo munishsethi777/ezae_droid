@@ -144,7 +144,8 @@ public class DashboardActivity extends AppCompatActivity
         } else if (id == R.id.nav_messages) {
 
         } else if (id == R.id.nav_notes) {
-
+            Intent notesIntent = new Intent(this,NotesActivity.class);
+            startActivity(notesIntent);
         } else if (id == R.id.nav_update_profile) {
 
         } else if (id == R.id.nav_logout) {

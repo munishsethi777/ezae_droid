@@ -17,20 +17,24 @@
         </activity>
         <activity
             android:name=".DashboardActivity"
-            android:label="@string/title_activity_dashboard"
             android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".MyAchievements"
-            android:label="@string/title_activity_my_achievements"
             android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_my_achievements"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".MyTrainings"
-            android:label="MyTrainings"
             android:configChanges="orientation|screenSize"
+            android:label="MyTrainings"
             android:theme="@style/AppTheme" />
-        <activity android:name=".UserTrainingActivity"></activity>
+        <activity android:name=".UserTrainingActivity" />
+        <activity
+            android:name=".NotesActivity"
+            android:label="@string/title_activity_notes"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

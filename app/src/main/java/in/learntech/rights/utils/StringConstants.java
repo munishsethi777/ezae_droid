@@ -19,11 +19,11 @@ public class StringConstants {
     public static final String MODULE_SEQ = "moduleSeq";
 
     //API URL STRINGS
-    public static final String ACTION_API_URL = "http://www.ezae.in/se/Actions/Mobile/";
+    public static final String ACTION_API_URL = "http://www.ezae.in/Actions/Mobile/";
 
     //APPLICATION URL
-    public static final String WEB_URL = "http://www.ezae.in/se/";
-    public static final String IMAGE_URL = "http://www.ezae.in/se/images/";
+    public static final String WEB_URL = "http://www.ezae.in/";
+    public static final String IMAGE_URL = "http://www.ezae.in/images/";
 
 
     //User Actions
