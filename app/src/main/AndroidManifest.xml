@@ -30,7 +30,8 @@
             android:configChanges="orientation|screenSize"
             android:label="MyTrainings"
             android:theme="@style/AppTheme" />
-        <activity android:name=".UserTrainingActivity" />
+        <activity android:name=".UserTrainingActivity"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".NotesActivity"
             android:label="@string/title_activity_notes"

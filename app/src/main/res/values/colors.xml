@@ -11,6 +11,7 @@
     <color name="button_gray">#f1f5f8</color>
     <color name="button_magenta">#ea2064</color>
     <color name="button_yellow">#ff9807</color>
+    <color name="button_light_gray">#b6b6b6</color>
 
     <color name="accent">#caffeb3b</color>
     <color name="accent_translucent">#caffeb3b</color>
