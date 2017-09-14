@@ -1477,4 +1477,7 @@
     <color name="White">#FFFFFF</color>
     <color name="Blue">#50c2ff</color>
     <color name="Blue_Light">#c5dbe7</color>
+
+    <color name="FeedbackGreen">#f3ffe7</color>
+    <color name="FeedbackRed">#fadede</color>
 </resources>

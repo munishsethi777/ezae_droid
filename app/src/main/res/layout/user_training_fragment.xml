@@ -31,18 +31,30 @@
         android:orientation="vertical"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_question"
-        app:layout_constraintBottom_toTopOf="@+id/butt">
-
-
+        app:layout_constraintTop_toBottomOf="@+id/textView_question">
     </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/container"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/feedbackError"
+        android:layout_width="304dp"
+        android:layout_height="wrap_content"
+        android:background="@color/FeedbackRed"
+        android:text="Feedback text"
+        android:textAlignment="center"
+        android:padding="4dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/optionsLayout" />
+    <TextView
+        android:id="@+id/feedbackSuccess"
+        android:layout_width="304dp"
+        android:layout_height="wrap_content"
+        android:background="@color/FeedbackGreen"
+        android:text="Feedback text"
+        android:textAlignment="center"
+        android:padding="4dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/feedbackError"/>
     <Button
         android:id="@+id/button_submit_progress"
         android:layout_width="0dp"

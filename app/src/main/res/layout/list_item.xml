@@ -28,12 +28,11 @@
         android:layout_height="match_parent"
         android:layout_alignBottom="@+id/item_layout"
         android:layout_alignTop="@+id/item_layout"
-        android:background="#ff0000"
         android:gravity="start|center_vertical"
-        android:padding="16dp"
+        android:padding="10dp"
         android:text="Red"
         android:textColor="@android:color/white"
-        android:textSize="20sp"/>
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/item_right"
@@ -41,12 +40,11 @@
         android:layout_height="match_parent"
         android:layout_alignBottom="@+id/item_layout"
         android:layout_alignTop="@+id/item_layout"
-        android:background="#0000ff"
         android:gravity="end|center_vertical"
-        android:padding="16dp"
+        android:padding="10dp"
         android:text="Blue"
         android:textColor="@android:color/white"
-        android:textSize="20sp"/>
+        android:textSize="14sp"/>
 
     <LinearLayout
         android:id="@id/item_layout"
@@ -54,7 +52,9 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="10dp"
+        android:background="@color/White"
+        android:layout_marginBottom="4dp">
 
         <ImageView
             android:id="@+id/image"
@@ -62,7 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/ic_move"
+            android:alpha="0.4"/>
 
         <TextView
             android:id="@+id/text"
