@@ -23,36 +23,47 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-import in.learntech.rights.R;
+
 import com.woxthebox.draglistview.DragItem;
 import com.woxthebox.draglistview.DragListView;
-import com.woxthebox.draglistview.swipe.ListSwipeHelper;
-import com.woxthebox.draglistview.swipe.ListSwipeItem;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Random;
+
+import in.learntech.rights.R;
+import in.learntech.rights.utils.LayoutHelper;
 
 public class ListFragment extends Fragment {
 
     private ArrayList<Pair<Long, String>> mItemArray;
     private DragListView mDragListView;
-    private ListSwipeHelper mSwipeHelper;
     private MySwipeRefreshLayout mRefreshLayout;
-
-    public static ListFragment newInstance() {
+    private static JSONArray mOptions;
+    private static boolean mIsShuffle;
+    public static ListFragment newInstance(JSONArray options,boolean isShuffle) {
+        mOptions = options;
+        mIsShuffle = isShuffle;
         return new ListFragment();
     }
-
+    public static ListFragment newInstance() {
+        mOptions = null;
+        return new ListFragment();
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+    public ArrayList<Pair<Long, String>>getSortedItemArray(){
+        return mItemArray;
     }
 
     @Override
@@ -65,21 +76,39 @@ public class ListFragment extends Fragment {
             @Override
             public void onItemDragStarted(int position) {
                 mRefreshLayout.setEnabled(false);
-                Toast.makeText(mDragListView.getContext(), "Start - position: " + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mDragListView.getContext(), "Start - position: " + position, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onItemDragEnded(int fromPosition, int toPosition) {
                 mRefreshLayout.setEnabled(true);
                 if (fromPosition != toPosition) {
-                    Toast.makeText(mDragListView.getContext(), "End - position: " + toPosition, Toast.LENGTH_SHORT).show();
+                    try{
+                        mItemArray =  (ArrayList<Pair<Long, String>>) mDragListView.getAdapter().getItemList();
+                        JSONObject optionJson = mOptions.getJSONObject(fromPosition);
+                        int seq = optionJson.getInt("seq");
+                        //Toast.makeText(mDragListView.getContext(), "Start - position: " + seq, Toast.LENGTH_SHORT).show();
+                    }catch (Exception e){
+                        LayoutHelper.showToast(getActivity(),e.getMessage());
+                    }
+
                 }
             }
         });
 
         mItemArray = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            mItemArray.add(new Pair<>((long) i, "Item " + i));
+        try {
+            if(mIsShuffle) {
+                mOptions = shuffleJsonArray(mOptions);
+            }
+            for (int i = 0; i < mOptions.length(); i++) {
+                    JSONObject optionJson = mOptions.getJSONObject(i);
+                    int seq = optionJson.getInt("seq");
+                    String title = optionJson.getString("title");
+                    mItemArray.add(new Pair<>((long) seq, title));
+            }
+        }catch (Exception e){
+                LayoutHelper.showToast(getActivity(),e.getMessage());
         }
 
         mRefreshLayout.setScrollingView(mDragListView.getRecyclerView());
@@ -119,13 +148,26 @@ public class ListFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("List and Grid");
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("List and Grid");
+//    }
+
+
+    public static JSONArray shuffleJsonArray (JSONArray array) throws Exception {
+        // Implementing Fisher–Yates shuffle
+        Random rnd = new Random();
+        for (int i = array.length() - 1; i >= 0; i--)
+        {
+            int j = rnd.nextInt(i + 1);
+            // Simple swap
+            Object object = array.get(j);
+            array.put(j, array.get(i));
+            array.put(i, object);
+        }
+        return array;
     }
-
-
 
     private void setupListRecyclerView() {
         mDragListView.setLayoutManager(new LinearLayoutManager(getContext()));

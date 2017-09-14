@@ -48,5 +48,10 @@ public class StringConstants {
     //Learning Plan Action
     public static final String GET_LEARNING_PLAN_DETAIL = ACTION_API_URL + "LearningPlanAction.php?userSeq={0}&companySeq={1}&call=getLearningPlanDetails";
 
+    //QuizProgress Action
+    public static final String SUBMIT_QUIZ_PROGRESS = ACTION_API_URL + "QuizProgressAction.php?call=saveQuizProgress&answers={0}";
+    //Activity Action
+    public static final String SAVE_ACTIVITY = ACTION_API_URL + "ActivityAction.php?call=saveActivity&activityData={0}";
+
 
 }

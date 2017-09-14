@@ -1,7 +1,5 @@
 package in.learntech.rights.utils;
 
-import android.animation.Animator;
-import android.animation.TimeInterpolator;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -140,5 +138,16 @@ public class LayoutHelper {
         if(message != null && !message.equals("")){
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static JSONArray mergeTwoJsonArray(JSONArray jsonArray1,JSONArray jsonArray2)throws  Exception{
+        JSONArray mergedJsonArr = new JSONArray();
+        for(int i = 0;i<jsonArray1.length();i++){
+            mergedJsonArr.put(jsonArray1.getJSONObject(i));
+        }
+        for(int i = 0;i<jsonArray2.length();i++){
+            mergedJsonArr.put(jsonArray2.getJSONObject(i));
+        }
+        return  mergedJsonArr;
     }
 }

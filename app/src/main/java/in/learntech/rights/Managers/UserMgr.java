@@ -1,10 +1,12 @@
 package in.learntech.rights.Managers;
+
 import android.content.Context;
+
 import org.json.JSONObject;
+
 import in.learntech.rights.BusinessObjects.User;
-import in.learntech.rights.utils.PreferencesUtil;
-import in.learntech.rights.utils.StringConstants;
 import in.learntech.rights.DataStoreMgr.UserDataStore;
+import in.learntech.rights.utils.PreferencesUtil;
 /**
  * Created by baljeetgaheer on 02/09/17.
  */

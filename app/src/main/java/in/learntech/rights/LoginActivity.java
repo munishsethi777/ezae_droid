@@ -1,8 +1,5 @@
 package in.learntech.rights;
 
-import java.io.IOException;
-import java.text.MessageFormat;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,6 +20,9 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.text.MessageFormat;
 
 import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.services.Interface.IServiceHandler;

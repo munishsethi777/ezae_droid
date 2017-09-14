@@ -17,10 +17,7 @@ public class UserDataStore{
     private Context mContext;
     private DBUtil mDBUtil;
 
-    public UserDataStore(Context context){
-        mContext = context;
-        mDBUtil = DBUtil.getInstance(mContext);
-    }
+
 
 
     public static final String COLUMN_SEQ = "id";
@@ -44,7 +41,10 @@ public class UserDataStore{
     public static final String FIND_BY_SEQ = "Select * from users where " + COLUMN_SEQ + "={0}";
     public static final String COUNT_USER_BY_SEQ = "Select * from users where " + COLUMN_USER_SEQ + "={0}";
 
-
+    public UserDataStore(Context context){
+        mContext = context;
+        mDBUtil = DBUtil.getInstance(mContext);
+    }
     public long save(User user){
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_SEQ,user.getUserSeq());

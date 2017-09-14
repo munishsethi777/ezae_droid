@@ -1,16 +1,14 @@
 package in.learntech.rights;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,16 +16,22 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
+import in.learntech.rights.Controls.CustomViewPager;
+import in.learntech.rights.Controls.SwipeDirection;
+import in.learntech.rights.Managers.QuestionProgressMgr;
 import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
+import in.learntech.rights.utils.LayoutHelper;
 import in.learntech.rights.utils.StringConstants;
 
 public class UserTrainingActivity extends AppCompatActivity implements IServiceHandler ,View.OnClickListener {
 
 
-    private ViewPager viewPager;
+    public CustomViewPager viewPager;
     private View indicator1;
     private View indicator2;
     private View indicator3;
@@ -41,9 +45,10 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
     private int WIZARD_PAGES_COUNT = 4;
     private JSONArray mModuleQuestionsJson;
     private TextView mModuleTitleTextview;
-    private LinearLayout mHeaderLayout;
     private TextView mQuestionNoTextView;
     private TextView mQuestionMarksTextView;
+    private QuestionProgressMgr mQuesMgr;
+    private List<Integer> loadedQuestionSeq;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,16 +58,17 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
         mModuleSeq = mIntent.getIntExtra(StringConstants.MODULE_SEQ,0);
         mUserMgr = UserMgr.getInstance(this);
         mUserSeq = mUserMgr.getLoggedInUserSeq();
+        loadedQuestionSeq = new ArrayList<Integer>();
         indicator1 = findViewById(R.id.indicator1);
         indicator2 = findViewById(R.id.indicator2);
         indicator3 = findViewById(R.id.indicator3);
         indicator4 = findViewById(R.id.indicator4);
         mModuleTitleTextview = (TextView)findViewById(R.id.textView_module_title);
-        mHeaderLayout = (LinearLayout)findViewById(R.id.layout_launched_module_header);
         mQuestionNoTextView = (TextView)findViewById(R.id.textView_question_no);
         mQuestionMarksTextView = (TextView)findViewById(R.id.textView_marks);
         executeGetModuleDetailsCall();
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager = (CustomViewPager) findViewById(R.id.viewPager);
+        mQuesMgr = QuestionProgressMgr.getInstance(this);
 
     }
 
@@ -111,7 +117,7 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
 
         @Override
         public Fragment getItem(int position) {
-            return new UserTrainingFragment(position,mModuleQuestionsJson,mHeaderLayout);
+            return new UserTrainingFragment(position,mModuleQuestionsJson);
         }
 
         @Override
@@ -122,17 +128,16 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
     }
 
     private class WizardPageChangeListener implements ViewPager.OnPageChangeListener {
+        private boolean scrollStarted, checkDirection;
 
         @Override
         public void onPageScrollStateChanged(int position) {
             // TODO Auto-generated method stub
-
         }
 
         @Override
         public void onPageScrolled(int position, float positionOffset,
                                    int positionOffsetPixels) {
-            // TODO Auto-generated method stub
 
         }
 
@@ -173,9 +178,18 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
         mQuestionNoTextView.setText(questionNoStr);
         try{
             JSONObject ques = mModuleQuestionsJson.getJSONObject(position);
+            JSONArray progressArray = ques.getJSONArray("progress");
+            Integer quesSeq = ques.getInt("seq");
+            JSONArray localProgress = mQuesMgr.getProgressJsonArr(ques.getInt("seq"));
+            progressArray = LayoutHelper.mergeTwoJsonArray(progressArray,localProgress);
             mQuestionMarksTextView.setText("Marks: " + ques.getInt("maxMarks"));
+            if(progressArray.length() > 0){
+                viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+            }else{
+                viewPager.setAllowedSwipeDirection(SwipeDirection.left);
+            }
         }catch (Exception e){
-
+            LayoutHelper.showToast(getApplicationContext(),e.getMessage());
         }
 
 

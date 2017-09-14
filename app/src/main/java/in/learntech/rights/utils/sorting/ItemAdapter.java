@@ -23,10 +23,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import in.learntech.rights.R;
 import com.woxthebox.draglistview.DragItemAdapter;
 
 import java.util.ArrayList;
+
+import in.learntech.rights.R;
 
 public class ItemAdapter extends DragItemAdapter<Pair<Long, String>, ItemAdapter.ViewHolder> {
 

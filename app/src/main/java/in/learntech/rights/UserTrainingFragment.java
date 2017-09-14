@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.Pair;
 import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
@@ -16,36 +18,41 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
-
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import in.learntech.rights.BuildConfig;
+import java.net.URLEncoder;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import in.learntech.rights.Controls.SwipeDirection;
+import in.learntech.rights.Managers.QuestionProgressMgr;
+import in.learntech.rights.services.Interface.IServiceHandler;
+import in.learntech.rights.services.ServiceHandler;
+import in.learntech.rights.utils.LayoutHelper;
+import in.learntech.rights.utils.StringConstants;
+import in.learntech.rights.utils.sorting.ListFragment;
 
 /**
  * Created by wahyu on 15/11/16.
  */
 
 @SuppressLint("ValidFragment")
-public class UserTrainingFragment extends Fragment {
+public class UserTrainingFragment extends Fragment implements IServiceHandler {
     public static final String SINGLE = "single";
     public static final String MULTI = "multi";
     public static final String LONG_QUESTION = "longQuestion";
     public static final String YES_NO = "yesNo";
+    public static final String SAVE_ACTIVITY = "saveActivity";
+    public static final String SAVE_QUIZ_PROGRESS = "saveQuizProgress";
     int wizard_page_position;
-    private JSONArray mQuestions;
     private Activity mActivity;
     private JSONArray mQuizProgress;
     private JSONArray mAnswers;
@@ -53,11 +60,22 @@ public class UserTrainingFragment extends Fragment {
     private ConstraintLayout mParentLayout;
     private LinearLayout mOptionsLayout;
     private boolean isQuizProgressExists;
-    private LinearLayout mHeaderLayout;
-    public UserTrainingFragment(int position,JSONArray questions,LinearLayout headerLayout) {
+    private JSONObject currentQuestion;
+    private ArrayList mSelectedAnsSeqs;
+    private QuestionProgressMgr mQuesProgressMgr;
+    private Button submitButton;
+    private UserTrainingActivity mParentActivity;
+    private JSONArray allQuestions ;
+    private TextView textView_long_question;
+    private Switch switchYesNo;
+    private ListFragment listFragment;
+    private ServiceHandler mAuthTask;
+    private String mCallName;
+    private boolean isSavedActivityData;
+    public  UserTrainingFragment(int position,JSONArray questions) {
         this.wizard_page_position = position;
-        this.mQuestions = questions;
-        this.mHeaderLayout = headerLayout;
+        this.allQuestions = questions;
+        isSavedActivityData = false;
     }
 
     @Override
@@ -67,21 +85,35 @@ public class UserTrainingFragment extends Fragment {
         mParentLayout= (ConstraintLayout)inflater.inflate(layout_id, container, false);
         TextView textView_question = (TextView)mParentLayout.findViewById(R.id.textView_question);
         mOptionsLayout = (LinearLayout)mParentLayout.findViewById(R.id.optionsLayout);
+        mQuesProgressMgr = QuestionProgressMgr.getInstance(getActivity());
         try{
-            JSONObject question = mQuestions.getJSONObject(wizard_page_position);
-            mQuestionType = question.getString("type");
-            mAnswers = question.getJSONArray("answers");
-            mQuizProgress = question.getJSONArray("progress");
+            currentQuestion = allQuestions.getJSONObject(wizard_page_position);
+            mQuestionType = currentQuestion.getString("type");
+            mAnswers = currentQuestion.getJSONArray("answers");
+            mQuizProgress = currentQuestion.getJSONArray("progress");
+            JSONArray serverProgress = mQuizProgress;
+            JSONArray localProgress =  mQuesProgressMgr.getProgressJsonArr(currentQuestion.getInt("seq"));
+            mQuizProgress = LayoutHelper.mergeTwoJsonArray(serverProgress,localProgress);
             isQuizProgressExists = mQuizProgress.length() > 0;
+            mParentActivity = (UserTrainingActivity)getActivity();
+            mSelectedAnsSeqs =  new ArrayList();
             if(mQuestionType.equals(SINGLE) || mQuestionType.equals(MULTI)){
                 addSingleMultiOptionsViews();
             }else if(mQuestionType.equals(LONG_QUESTION)){
                 addLongQuestionView();
             }else if(mQuestionType.equals(YES_NO)){
                 addYesNoViews();
+            }else if(mQuestionType.equals("sequencing")){
+                addSequencesViewFragment();
             }
-            textView_question.setText(wizard_page_position + 1 + ". " +question.getString("title") + " ?");
+            textView_question.setText(wizard_page_position + 1 + ". " +currentQuestion.getString("title") + " ?");
             addButton();
+            submitButton = (Button)mParentLayout.findViewById(R.id.button_submit_progress);
+            handleSubmitButton(isQuizProgressExists);
+            if(wizard_page_position == 0) {
+                executeSaveActivityCall();
+            }
+
         }catch (Exception e){
             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -96,7 +128,6 @@ public class UserTrainingFragment extends Fragment {
                 .into(img);
     }
 
-
     private void addYesNoViews()throws Exception{
         String selectedAnsTitle = "";
         if(isQuizProgressExists){
@@ -106,8 +137,9 @@ public class UserTrainingFragment extends Fragment {
             if(ans != null)
             selectedAnsTitle = ans.getString("title");
         }
-        Switch switchYesNo = new Switch(mActivity);
+        switchYesNo = new Switch(mActivity);
         switchYesNo.setChecked(selectedAnsTitle.equals("yes"));
+        switchYesNo.setEnabled(!isQuizProgressExists);
         mOptionsLayout.addView(switchYesNo);
     }
 
@@ -117,18 +149,21 @@ public class UserTrainingFragment extends Fragment {
             JSONObject progress = mQuizProgress.getJSONObject(0);
             selectedAnsText = progress.getString("answerText");
         }
-        EditText texInput = new EditText(mActivity);
-        texInput.setSingleLine(false);
-        texInput.setImeOptions(EditorInfo.IME_FLAG_NO_ENTER_ACTION);
-        texInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        texInput.setLines(10);
-        texInput.setVerticalScrollBarEnabled(true);
-        texInput.setMovementMethod(ScrollingMovementMethod.getInstance());
-        texInput.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
-        texInput.setText(selectedAnsText);
-        texInput.setTextSize(14);
-        mOptionsLayout.addView(texInput);
+        textView_long_question = new EditText(mActivity);
+        textView_long_question.setSingleLine(false);
+        textView_long_question.setImeOptions(EditorInfo.IME_FLAG_NO_ENTER_ACTION);
+        textView_long_question.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        textView_long_question.setLines(10);
+        textView_long_question.setVerticalScrollBarEnabled(true);
+        textView_long_question.setMovementMethod(ScrollingMovementMethod.getInstance());
+        textView_long_question.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
+        textView_long_question.setText(selectedAnsText);
+        textView_long_question.setId(R.id.textView_long_question);
+        textView_long_question.setTextSize(14);
+        textView_long_question.setEnabled(!isQuizProgressExists);
+        mOptionsLayout.addView(textView_long_question);
     }
+
     private void addSingleMultiOptionsViews()throws Exception{
         RadioGroup radioGroup = new RadioGroup(mActivity);
         boolean checked = false;
@@ -138,9 +173,7 @@ public class UserTrainingFragment extends Fragment {
             if(isQuizProgressExists){
                 checked = isAnswerExistsInProgressArr(seq);
             }
-
             String title = answer.getString("title");
-
             String feedback = answer.getString("feedback");
             int marks = answer.getInt("marks");
             int negativeMarks = answer.getInt("negativeMarks");
@@ -150,20 +183,24 @@ public class UserTrainingFragment extends Fragment {
                 checkBox.setTag(seq);
                 checkBox.setChecked(checked);
                 mOptionsLayout.addView(checkBox);
+                checkBox.setEnabled(!isQuizProgressExists);
+                addClickListener(checkBox);
             }else{
                 RadioButton radioButton = new RadioButton(mActivity);
                 radioButton.setText(title);
                 radioButton.setTag(seq);
                 radioButton.setChecked(checked);
+                radioButton.setEnabled(!isQuizProgressExists);
                 radioGroup.addView(radioButton);
+                addClickListener(radioButton);
             }
 
         }
         if(mQuestionType.equals(SINGLE)){
             mOptionsLayout.addView(radioGroup);
+
         }
     }
-
 
     private void addButton(){
         Button button = new Button(mActivity);
@@ -176,7 +213,6 @@ public class UserTrainingFragment extends Fragment {
         //mParentLayout.addView(button);
     }
 
-
     private JSONObject getAnswerBySeqFromArr(int seq)throws Exception{
         for (int i=0; i < mAnswers.length(); i++) {
             JSONObject ansJson = mAnswers.getJSONObject(i);
@@ -187,6 +223,29 @@ public class UserTrainingFragment extends Fragment {
         }
         return null;
     }
+
+    private JSONObject getAnswerByTitleFromArr(String title)throws Exception{
+        for (int i=0; i < mAnswers.length(); i++) {
+            JSONObject ansJson = mAnswers.getJSONObject(i);
+            String ansTitle = ansJson.getString("title");
+            if(ansTitle.equals(title)){
+                return ansJson;
+            }
+        }
+        return null;
+    }
+
+    private int getSelectedAnswersScore()throws Exception{
+        int score = 0;
+        for(Object ansSeq : mSelectedAnsSeqs){
+            int seq = (int)ansSeq;
+            JSONObject ans = getAnswerBySeqFromArr(seq);
+            score += ans.getInt("marks");
+        }
+        return score;
+    }
+
+
 
     private boolean isAnswerExistsInProgressArr(int seq)throws Exception{
         boolean flag = false;
@@ -199,5 +258,155 @@ public class UserTrainingFragment extends Fragment {
             }
         }
         return flag;
+    }
+
+    private void addClickListener(View view ){
+        view.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                mSelectedAnsSeqs.add(v.getTag().toString());
+            }
+        });
+    }
+
+    public void saveProgress(){
+        try {
+            String questionType = currentQuestion.getString("type");
+            if(questionType.equals("yesNo")){
+                String ansTitle = "no";
+                if(switchYesNo.isEnabled()){
+                    ansTitle = "yes";
+                }
+                JSONObject ans = getAnswerByTitleFromArr(ansTitle);
+                int seq = ans.getInt("seq");
+                mSelectedAnsSeqs.add(0,seq);
+            }
+            if(questionType.equals("sequencing")){
+                addSortedItemSeq();
+            }
+            if (questionType.equals("longQuestion")) {
+                String ansText = textView_long_question.getText().toString();
+                mQuesProgressMgr.saveQuestionProgress(currentQuestion,ansText);
+            }else{
+                mQuesProgressMgr.saveQuestionProgress(currentQuestion,mSelectedAnsSeqs);
+            }
+            handleSubmitButton(true);
+            if(wizard_page_position == allQuestions.length()-1){
+                executeTrainingSubmitCall();
+            }
+
+        }catch (Exception e){
+            LayoutHelper.showToast(getActivity(),e.getMessage());
+        }
+
+    }
+    private void  getScore(){
+
+    }
+    private void handleSubmitButton(boolean flag){
+        submitButton.setEnabled(!flag);
+        if(flag) {
+            submitButton.setBackgroundColor(getResources().getColor(R.color.button_light_gray));
+            mParentActivity.viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+        }else{
+            submitButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    LayoutHelper.showToast(getActivity(),"Submitted");
+                    saveProgress();
+                }
+            });
+            submitButton.setBackgroundColor(getResources().getColor(R.color.button_magenta));
+        }
+
+    }
+
+    private void addSequencesViewFragment()throws Exception {
+        JSONArray ansArr = mAnswers;
+        if(isQuizProgressExists){
+            ansArr = new JSONArray();
+            for(int i = 0;i < mQuizProgress.length();i++) {
+                JSONObject progress = mQuizProgress.getJSONObject(i);
+                JSONObject ansJson = getAnswerBySeqFromArr(progress.getInt("answerSeq"));
+                ansArr.put(ansJson);
+            }
+        }
+        listFragment = ListFragment.newInstance(ansArr,!isQuizProgressExists);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.add(R.id.optionsLayout, listFragment, "fragment").commit();
+    }
+
+    private void addSortedItemSeq(){
+        ArrayList<Pair<Long,String>> itemList = listFragment.getSortedItemArray();
+        for (Pair<Long,String>item : itemList){
+            mSelectedAnsSeqs.add(item.first);
+        }
+    }
+
+    private void executeTrainingSubmitCall(){
+        try {
+            int moduleSeq = currentQuestion.getInt("moduleSeq");
+            int learningPlanSeq = currentQuestion.getInt("learningPlanSeq");
+            JSONArray progressArr = mQuesProgressMgr.getProgressListByModule(moduleSeq,learningPlanSeq);
+            String jsonArrString = progressArr.toString();
+            jsonArrString = URLEncoder.encode(jsonArrString, "UTF-8");
+            Object[] args = {jsonArrString};
+            String notificationUrl = MessageFormat.format(StringConstants.SUBMIT_QUIZ_PROGRESS,args);
+            mAuthTask = new ServiceHandler(notificationUrl, this, SAVE_QUIZ_PROGRESS, getActivity());
+            mAuthTask.execute();
+        }catch (Exception e){
+            LayoutHelper.showToast(getActivity(),e.getMessage());
+        }
+    }
+
+    private void executeSaveActivityCall(){
+        if(!isQuizProgressExists && !isSavedActivityData) {
+            try {
+                int moduleSeq = currentQuestion.getInt("moduleSeq");
+                int learningPlanSeq = currentQuestion.getInt("learningPlanSeq");
+                JSONObject activityJson = mQuesProgressMgr.getActivityData(moduleSeq, learningPlanSeq);
+                String jsonString = activityJson.toString();
+                jsonString = URLEncoder.encode(jsonString, "UTF-8");
+                Object[] args = {jsonString};
+                String notificationUrl = MessageFormat.format(StringConstants.SAVE_ACTIVITY, args);
+                mAuthTask = new ServiceHandler(notificationUrl, this, SAVE_ACTIVITY, getActivity());
+                mAuthTask.execute();
+            } catch (Exception e) {
+                LayoutHelper.showToast(getActivity(), e.getMessage());
+            }
+        }
+    }
+    @Override
+    public void processServiceResponse(JSONObject response) {
+        mAuthTask = null;
+        boolean success;
+        String message;
+        try {
+            success = response.getInt(StringConstants.SUCCESS) == 1 ? true : false;
+            message = response.getString(StringConstants.MESSAGE);
+            if(success){
+                if(mCallName.equals(SAVE_QUIZ_PROGRESS)) {
+                    int moduleSeq = currentQuestion.getInt("moduleSeq");
+                    int learningPlanSeq = currentQuestion.getInt("learningPlanSeq");
+                    mQuesProgressMgr.deleteByModule(moduleSeq, learningPlanSeq);
+                    LayoutHelper.showToast(getActivity(),message);
+                }else{
+                    isSavedActivityData = true;
+                }
+            }
+        }catch (Exception e){
+            message = e.getMessage();
+            LayoutHelper.showToast(getActivity(),message);
+        }
+
+    }
+
+    @Override
+    public void setCallName(String call) {
+        mCallName = call;
     }
 }

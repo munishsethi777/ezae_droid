@@ -20,6 +20,7 @@ public class DBUtil extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "jumpkingapp";
     private static final int DATABASE_VERSION = 3;
     private static DBUtil sInstance;
+    private static String CREATE_TABLE;
 
     public DBUtil(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -45,6 +46,9 @@ public class DBUtil extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_USER_TABLE = UserDataStore.CREATE_TABLE;
         db.execSQL(CREATE_USER_TABLE);
+
+        String CREATE_QUESTION_PROGRESS = QuestionProgressDataStore.CREATE_TABLE;
+        db.execSQL(CREATE_QUESTION_PROGRESS);
     }
 
     // Called when the database needs to be upgraded.

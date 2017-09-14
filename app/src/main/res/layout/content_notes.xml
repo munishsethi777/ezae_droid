@@ -72,15 +72,15 @@
             <View style="@style/Divider"/>
         </LinearLayout>-->
 
-        <!--
-        SORTING FRAME
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/container"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        </FrameLayout>
-        -->
+        </LinearLayout>
+
 
         <!-- PDF Viewer
         <WebView
@@ -90,24 +90,24 @@
 
         </WebView>-->
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:padding="10dp"
-            tools:context="com.coderzheaven.customseekbar.MainActivity">
+        <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+            <!--xmlns:tools="http://schemas.android.com/tools"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@android:color/white"-->
+            <!--android:padding="10dp"-->
+            <!--tools:context="com.coderzheaven.customseekbar.MainActivity">-->
 
 
-            <LinearLayout
-                android:id="@+id/lin1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:orientation="vertical"></LinearLayout>
+            <!--<LinearLayout-->
+                <!--android:id="@+id/lin1"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:orientation="vertical"></LinearLayout>-->
 
 
-        </RelativeLayout>
+        <!--</RelativeLayout>-->
 
     </LinearLayout>
 
