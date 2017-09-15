@@ -25,7 +25,7 @@
     <TextView
         android:id="@+id/item_left"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/item_layout"
         android:layout_alignTop="@+id/item_layout"
         android:gravity="start|center_vertical"
@@ -37,7 +37,7 @@
     <TextView
         android:id="@+id/item_right"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/item_layout"
         android:layout_alignTop="@+id/item_layout"
         android:gravity="end|center_vertical"
