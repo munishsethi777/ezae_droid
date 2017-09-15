@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import in.learntech.rights.BusinessObjects.QuestionProgress;
@@ -31,7 +32,7 @@ public class QuestionProgressMgr {
         return sInstance;
     }
 
-    public void saveQuestionProgress(JSONObject question,ArrayList ansSeqs,int Score)throws Exception{
+    public void saveQuestionProgress(JSONObject question,ArrayList ansSeqs,HashMap<Integer,Integer> scores)throws Exception{
         int moduleSeq = question.getInt("moduleSeq");
         int questionSeq = question.getInt("seq");
         int learningPlanSeq = question.getInt("learningPlanSeq");
@@ -46,13 +47,18 @@ public class QuestionProgressMgr {
             questionProgress.setTimeUp(false);
             questionProgress.setUploaded(false);
             questionProgress.setLearningPlanSeq(learningPlanSeq);
+            int score = 0;
+            if(scores.containsKey(selectedAnsSeq)){
+                score = scores.get(selectedAnsSeq);
+            }
+            questionProgress.setScore(score);
             int userSeq = mPreferencesUtil.getLoggedInUserSeq();
             questionProgress.setUserSeq(userSeq);
             dataStore.save(questionProgress);
         }
 
     }
-    public void saveQuestionProgress(JSONObject question,String anText)throws Exception{
+    public void saveQuestionProgress(JSONObject question,String anText,int score)throws Exception{
             int moduleSeq = question.getInt("moduleSeq");
             int questionSeq = question.getInt("seq");
             int learningPlanSeq = question.getInt("learningPlanSeq");
@@ -66,6 +72,7 @@ public class QuestionProgressMgr {
             questionProgress.setTimeUp(false);
             questionProgress.setUploaded(false);
             questionProgress.setLearningPlanSeq(learningPlanSeq);
+            questionProgress.setScore(score);
             int userSeq = mPreferencesUtil.getLoggedInUserSeq();
             questionProgress.setUserSeq(userSeq);
             dataStore.save(questionProgress);
@@ -101,6 +108,7 @@ public class QuestionProgressMgr {
                 progressJson.put("startDate",questionProgress.getStartDate());
                 progressJson.put("isTimeUp",questionProgress.isTimeUp());
                 progressJson.put("userSeq",questionProgress.getUserSeq());
+                progressJson.put("score",questionProgress.getScore());
                 progressArr.put(progressJson);
             }catch (Exception e){
                 String message = e.getMessage();

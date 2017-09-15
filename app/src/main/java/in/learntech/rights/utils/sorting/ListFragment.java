@@ -46,7 +46,7 @@ public class ListFragment extends Fragment {
     private ArrayList<Pair<Long, String>> mItemArray;
     private DragListView mDragListView;
     private MySwipeRefreshLayout mRefreshLayout;
-    private static JSONArray mOptions;
+    private static JSONArray mOptions = new JSONArray();
     private static boolean mIsShuffle;
     public static ListFragment newInstance(JSONArray options,boolean isShuffle) {
         mOptions = options;
