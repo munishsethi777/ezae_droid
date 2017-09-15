@@ -19,15 +19,12 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.SimpleResource;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,7 +33,8 @@ import java.net.URLEncoder;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Iterator;
+import java.util.List;
 
 import in.learntech.rights.Controls.SwipeDirection;
 import in.learntech.rights.Managers.QuestionProgressMgr;
@@ -59,6 +57,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     public static final String YES_NO = "yesNo";
     public static final String SAVE_ACTIVITY = "saveActivity";
     public static final String SAVE_QUIZ_PROGRESS = "saveQuizProgress";
+    public static final String SUBMITTED_SUCCESSFULLY = "Submitted successfully";
     int wizard_page_position;
     private Activity mActivity;
     private JSONArray mQuizProgress;
@@ -81,6 +80,11 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     private boolean isSavedActivityData;
     private int mUserSeq;
     private int mCompanySeq;
+    private TextView textVew_feedback_success;
+    private TextView textVew_feedback_error;
+    List<String> feedbacks_success_list;
+    List<String> feedbacks_error_list;
+
     public  UserTrainingFragment(int position,JSONArray questions) {
         this.wizard_page_position = position;
         this.allQuestions = questions;
@@ -98,6 +102,8 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
         UserMgr userMgr = UserMgr.getInstance(getActivity());
         mUserSeq = userMgr.getLoggedInUserSeq();
         mCompanySeq = userMgr.getLoggedInUserCompanySeq();
+        feedbacks_success_list = new ArrayList<>();
+        feedbacks_error_list = new ArrayList<>();
         try{
             currentQuestion = allQuestions.getJSONObject(wizard_page_position);
             mQuestionType = currentQuestion.getString("type");
@@ -121,38 +127,40 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             textView_question.setText(wizard_page_position + 1 + ". " +currentQuestion.getString("title") + " ?");
             addButton();
             submitButton = (Button)mParentLayout.findViewById(R.id.button_submit_progress);
+            textVew_feedback_success = (TextView)mParentLayout.findViewById(R.id.textView_feedbackSuccess);
+            textVew_feedback_error = (TextView)mParentLayout.findViewById(R.id.textView_feedbackError);
             handleSubmitButton(isQuizProgressExists);
+            if(isQuizProgressExists){
+                showFeedback();
+            }
             if(wizard_page_position == 0) {
                 executeSaveActivityCall();
             }
-
         }catch (Exception e){
             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         return mParentLayout;
     }
 
-    private void loadImageRequest(ImageView img, String url) {
-        Glide.with(getActivity())
-                .load(url)
-                .thumbnail(0.01f)
-                .centerCrop()
-                .into(img);
-    }
-
     private void addYesNoViews()throws Exception{
         String selectedAnsTitle = "";
+        boolean isChecked = false;
         if(isQuizProgressExists){
             JSONObject progress = mQuizProgress.getJSONObject(0);
             int ansSeq = progress.getInt("answerSeq");
             JSONObject ans = getAnswerBySeqFromArr(ansSeq);
             if(ans != null)
             selectedAnsTitle = ans.getString("title");
+            isChecked = selectedAnsTitle.equals("yes");
+            mSelectedAnsSeqs.add(ans.getString("seq"));
         }
         switchYesNo = new Switch(mActivity);
-        switchYesNo.setChecked(selectedAnsTitle.equals("yes"));
+        switchYesNo.setChecked(isChecked);
         switchYesNo.setEnabled(!isQuizProgressExists);
         mOptionsLayout.addView(switchYesNo);
+        if(isQuizProgressExists){
+            getSelectedAnswersScore();
+        }
     }
 
     private void addLongQuestionView()throws Exception{
@@ -160,6 +168,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
         if(isQuizProgressExists){
             JSONObject progress = mQuizProgress.getJSONObject(0);
             selectedAnsText = progress.getString("answerText");
+            feedbacks_success_list.add(SUBMITTED_SUCCESSFULLY);
         }
         textView_long_question = new EditText(mActivity);
         textView_long_question.setSingleLine(false);
@@ -173,6 +182,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
         textView_long_question.setId(R.id.textView_long_question);
         textView_long_question.setTextSize(14);
         textView_long_question.setEnabled(!isQuizProgressExists);
+        textView_long_question.setGravity(Gravity.TOP);
         mOptionsLayout.addView(textView_long_question);
     }
 
@@ -184,11 +194,11 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             int seq = answer.getInt(("seq"));
             if(isQuizProgressExists){
                 checked = isAnswerExistsInProgressArr(seq);
+                if(checked) {
+                    mSelectedAnsSeqs.add(String.valueOf(seq));
+                }
             }
             String title = answer.getString("title");
-            String feedback = answer.getString("feedback");
-            int marks = answer.getInt("marks");
-            int negativeMarks = answer.getInt("negativeMarks");
             if(mQuestionType.equals(MULTI)){
                 CheckBox checkBox = new CheckBox(mActivity);
                 checkBox.setText(title);
@@ -212,6 +222,9 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             mOptionsLayout.addView(radioGroup);
 
         }
+        if(isQuizProgressExists) {
+            getSelectedAnswersScore();
+        }
     }
 
     private void addButton(){
@@ -228,16 +241,23 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     private void addSequencesViewFragment()throws Exception {
         JSONArray ansArr = new JSONArray(currentQuestion.getString("answers"));
         if(isQuizProgressExists){
-            ansArr = new JSONArray();
+            JSONArray existingAns = new JSONArray();
             for(int i = 0;i < mQuizProgress.length();i++) {
                 JSONObject progress = mQuizProgress.getJSONObject(i);
                 JSONObject ansJson = getAnswerBySeqFromArr(progress.getInt("answerSeq"));
-                ansArr.put(ansJson);
+                existingAns.put(ansJson);
             }
+            if(ansArr.toString().equals(existingAns.toString())){
+                feedbacks_success_list.add("Correct Sequence");
+                ;
+            }else{
+                feedbacks_error_list.add("Incorrect Sequence");
+            }
+            ansArr = existingAns;
         }
         listFragment = ListFragment.newInstance(ansArr,!isQuizProgressExists);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.add(R.id.optionsLayout, listFragment, "fragment").commit();
+        transaction.replace(R.id.optionsLayout, listFragment, "fragment").commit();
     }
 
     private boolean addSortedItemSeq()throws Exception{
@@ -286,7 +306,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
                     saveProgress();
                 }
             });
-            submitButton.setBackgroundColor(getResources().getColor(R.color.button_magenta));
+            submitButton.setBackgroundColor(getResources().getColor(R.color.button_yellow));
         }
 
     }
@@ -300,10 +320,11 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
                 String ansText = textView_long_question.getText().toString();
                 score = currentQuestion.getInt("maxMarks");
                 mQuesProgressMgr.saveQuestionProgress(currentQuestion,ansText,score);
+                feedbacks_success_list.add(SUBMITTED_SUCCESSFULLY);
             }else{
                 if(questionType.equals("yesNo")){
                     String ansTitle = "no";
-                    if(switchYesNo.isEnabled()){
+                    if(switchYesNo.isChecked()){
                         ansTitle = "yes";
                     }
                     JSONObject ans = getAnswerByTitleFromArr(ansTitle);
@@ -326,6 +347,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             if(wizard_page_position == allQuestions.length()-1){
                 executeTrainingSubmitCall();
             }
+            showFeedback();
         }catch (Exception e){
             LayoutHelper.showToast(getActivity(),e.getMessage());
         }
@@ -427,10 +449,43 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
         for(Object ansSeq : mSelectedAnsSeqs){
             int seq = Integer.parseInt((String)ansSeq);
             JSONObject ans = getAnswerBySeqFromArr(seq);
-            if(ans != null)
-            scores.put(seq,ans.getInt("marks"));
+            int score = ans.getInt("marks");
+            scores.put(seq,score);
+            String feedback = ans.getString("feedback");
+            if(score > 0){
+                if(feedback == null || feedback == "null"){
+                    feedback = "Correct";
+                }
+                feedbacks_success_list.add(feedback);
+            }else{
+                if(feedback == null || feedback == "null"){
+                    feedback = "Incorrect";
+                }
+                feedbacks_error_list.add(feedback);
+            }
         }
         return scores;
+    }
+    private void showFeedback(){
+        String successText = "";
+        for(String feedback : feedbacks_success_list){
+             successText += feedback + System.lineSeparator();
+        }
+
+        String errorText = "";
+        for(String feedback : feedbacks_error_list){
+            errorText += feedback + System.lineSeparator();
+        }
+        if(successText != null && !successText.equals("")) {
+            successText = successText.substring(0,successText.length()-1);
+            textVew_feedback_success.setText(successText);
+            textVew_feedback_success.setVisibility(View.VISIBLE);
+        }
+        if(errorText != null && !errorText.equals("")) {
+            errorText = errorText.substring(0,errorText.length()-1);
+            textVew_feedback_error.setText(errorText);
+            textVew_feedback_error.setVisibility(View.VISIBLE);
+        }
     }
     private boolean isAnswerExistsInProgressArr(int seq)throws Exception{
         boolean flag = false;
