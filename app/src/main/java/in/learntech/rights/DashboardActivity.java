@@ -140,6 +140,9 @@ public class DashboardActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_logout) {
             logout();
+        } else if(id == R.id.nav_change_password){
+            Intent intent = new Intent(this,ChangePasswordActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

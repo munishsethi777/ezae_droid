@@ -29,10 +29,9 @@ public class StringConstants {
     //User Actions
     public static final String LOGIN_URL = ACTION_API_URL + "UserAction.php?call=login&username={0}&password={1}&gcmid={2}";
     public static final String GET_DASHBOARD_COUNTS = ACTION_API_URL+"UserAction.php?call=getDashboardStats&userSeq={0}&companySeq={1}";
-
     public static final String GET_MYACHIEVEMENT_COUNTS = ACTION_API_URL + "UserAction.php?call=myAchievements&userSeq={0}&companyseq={1}";
-
     public static final String GET_NOTIFICATIONS = ACTION_API_URL + "UserAction.php?userSeq={0}&companySeq={1}&call=getNotifications";
+    public static final String CHANGE_PASSWORD = ACTION_API_URL + "UserAction.php?call=changePassword&userSeq={0}&companySeq={1}&earlierPassword={2}&newPassword={3}";
 
 
     //LearningPlan Actions
