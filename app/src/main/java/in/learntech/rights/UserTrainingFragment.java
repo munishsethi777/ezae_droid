@@ -87,7 +87,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     private TextView textVew_feedback_error;
     List<String> feedbacks_success_list;
     List<String> feedbacks_error_list;
-
+    private RadioGroup radioGroup;
     public  UserTrainingFragment(int position,JSONObject moduleJson) {
         this.wizard_page_position = position;
         mModuleJson = moduleJson;
@@ -146,7 +146,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
                 executeSaveActivityCall();
             }
         }catch (Exception e){
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
         return mParentLayout;
     }
@@ -196,7 +196,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     }
 
     private void addSingleMultiOptionsViews()throws Exception{
-        RadioGroup radioGroup = new RadioGroup(mActivity);
+        radioGroup = new RadioGroup(mActivity);
         boolean checked = false;
         for (int i=0; i < mAnswers.length(); i++) {
             JSONObject answer = mAnswers.getJSONObject(i);
@@ -313,6 +313,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
                 {
                     LayoutHelper.showToast(getActivity(),"Submitted");
                     saveProgress(currentQuestion,false);
+                    enableDisableAllViews(false);
                 }
             });
             submitButton.setBackgroundColor(getResources().getColor(R.color.button_yellow));
@@ -513,5 +514,15 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
         return flag;
     }
 
+    private void enableDisableAllViews(boolean isEnable){
+        for ( int i = 0; i < mOptionsLayout.getChildCount();  i++ ){
+            View view = mOptionsLayout.getChildAt(i);
+            view.setEnabled(isEnable); // Or whatever you want to do with the view.
+        }
+        for ( int i = 0; i < radioGroup.getChildCount();  i++ ){
+            View view = radioGroup.getChildAt(i);
+            view.setEnabled(isEnable); // Or whatever you want to do with the view.
+        }
+    }
 
 }
