@@ -17,7 +17,7 @@ public class StringConstants {
     public static final String MESSAGE = "message";
     public static final String LP_SEQ = "lpSeq";
     public static final String MODULE_SEQ = "moduleSeq";
-
+    public static final String USER_DUMMY_IMAGE_NAME = "dummy.jpg";
     //API URL STRINGS
     public static final String ACTION_API_URL = "http://www.ezae.in/Actions/Mobile/";
 

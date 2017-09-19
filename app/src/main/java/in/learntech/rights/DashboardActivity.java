@@ -2,6 +2,7 @@ package in.learntech.rights;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,20 +14,24 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.progresviews.ProgressWheel;
+import com.google.android.gms.ads.formats.NativeAd;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.MessageFormat;
 
+import in.learntech.rights.BusinessObjects.User;
 import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
+import in.learntech.rights.utils.LayoutHelper;
 import in.learntech.rights.utils.StringConstants;
 
 public class DashboardActivity extends AppCompatActivity
@@ -46,6 +51,11 @@ public class DashboardActivity extends AppCompatActivity
     private static final String[] pageTitle = {"Notifications"};
     private int mLoggedInUserSeq;
     private int mLoggedInCompanySeq;
+    private ImageView mUserImageView;
+    private TextView mUserNameView;
+    private TextView mUserEmailView;
+    private LinearLayout mMenuHeaderLayout;
+    private LayoutHelper mLayoutHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,17 +73,30 @@ public class DashboardActivity extends AppCompatActivity
         mLoggedInCompanySeq = mUserMgr.getLoggedInUserCompanySeq();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        mLayoutHelper = new LayoutHelper(this,null,null);
         initViews();
         populateDashboardCounts();
         android.app.Fragment fragment = NotificationsFragment.newInstance(mLoggedInUserSeq,mLoggedInCompanySeq);
         getFragmentManager().beginTransaction().replace(R.id.layout_notifications,fragment).commit();
+
     }
 
     private void initViews(){
+        mMenuHeaderLayout = (LinearLayout)getLayoutInflater().inflate(R.layout.nav_header_dashboard,null);
         mScores = (TextView) findViewById(R.id.textView_score);
         mProfileRank = (TextView) findViewById(R.id.textView_profile_rank);
         mPendingTrainings = (TextView) findViewById(R.id.textView_pending_trainings);
         mCompletedTrainings = (TextView) findViewById(R.id.textView_completed_trainings);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView.getHeaderView(0);
+        mUserImageView = (ImageView)hView.findViewById(R.id.imageView_user);
+        mUserNameView = (TextView)hView.findViewById(R.id.textView_userName);
+        mUserEmailView = (TextView)hView.findViewById(R.id.textView_userEmail);
+        String userImageUrl = mUserMgr.getLoggedInUserImageUrl();
+        mLayoutHelper.loadImageRequest(mUserImageView,userImageUrl,true);
+        User user = mUserMgr.getLoggedInUser();
+        mUserNameView.setText(user.getUserName());
+        mUserEmailView.setText(user.getEmail());
     }
 
     private void populateDashboardCounts(){
@@ -102,6 +125,7 @@ public class DashboardActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.dashboard, menu);
+
         return true;
     }
 

@@ -107,8 +107,11 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
                     timeAllowed = TimeUnit.MINUTES.toMillis(timeAllowed);
                 }
                 if(mModuleJson.has("activityData")) {
-                    JSONObject activity = mModuleJson.getJSONObject("activityData");
-                    progress = activity.getInt("progress");
+                    String activityData = mModuleJson.getString("activityData");
+                    if(!activityData.equals("[]")) {
+                        JSONObject activity = mModuleJson.getJSONObject("activityData");
+                        progress = activity.getInt("progress");
+                    }
                 }
                 if(timeAllowed > 0 && progress < 100){
                     long timeConsumed = mQuesMgr.getTimeConsumed(mModuleQuestionsJson);
@@ -222,7 +225,7 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
                 textView_timer.setText("Time left: " + hms);
             }
             public void onFinish() {
-                LayoutHelper.showToast(getApplicationContext(),"Time Over!");
+                Toast.makeText(getApplicationContext(), "Time Over!", Toast.LENGTH_LONG).show();
                 savePendingQuesProgress();
                 goToTrainingActivity();
                 textView_timer.setText("done!");
@@ -233,6 +236,7 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
     public void  goToTrainingActivity(){
         Intent intent = new Intent(this,MyTrainings.class);
         startActivity(intent);
+        finish();
     }
 
     public void savePendingQuesProgress(){

@@ -113,13 +113,12 @@ public class LayoutHelper {
         }
     }
 
-    private void loadImageRequest(ImageView bg, String url, boolean isCircle) {
+    public void loadImageRequest(ImageView bg, String url, boolean isCircle) {
         if(isCircle) {
             Animation animation = AnimationUtils.loadAnimation(mActivity,R.anim.fade_in);
-
             Glide.with(mActivity)
                     .load(url)
-                    .thumbnail(0.01f)
+                    .thumbnail(0.1f)
                     .centerCrop()
                     .crossFade()
                     .animate(animation)

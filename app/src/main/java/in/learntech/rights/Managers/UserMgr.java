@@ -7,6 +7,8 @@ import org.json.JSONObject;
 import in.learntech.rights.BusinessObjects.User;
 import in.learntech.rights.DataStoreMgr.UserDataStore;
 import in.learntech.rights.utils.PreferencesUtil;
+import in.learntech.rights.utils.StringConstants;
+
 /**
  * Created by baljeetgaheer on 02/09/17.
  */
@@ -58,6 +60,12 @@ public class UserMgr {
         return user;
     }
 
+    public User getLoggedInUser(){
+        int userSeq  = mPreferencesUtil.getLoggedInUserSeq();
+        User user = userDataStore.getUserByUserSeq(userSeq);
+        return user;
+    }
+
     public int getLoggedInUserSeq(){
         int userSeq  = mPreferencesUtil.getLoggedInUserSeq();
         return userSeq;
@@ -66,6 +74,16 @@ public class UserMgr {
     public int getLoggedInUserCompanySeq(){
         int companySeq  = mPreferencesUtil.getLoggedInUserCompanySeq();
         return companySeq;
+    }
+
+    public String getLoggedInUserImageUrl(){
+        int userSeq  = mPreferencesUtil.getLoggedInUserSeq();
+        User user = userDataStore.getUserByUserSeq(userSeq);
+        String userImage = StringConstants.USER_DUMMY_IMAGE_NAME;
+        if(user.getUserImageUrl() != null && !user.getUserImageUrl().equals("null")){
+            userImage = user.getUserImageUrl();
+        }
+        return StringConstants.IMAGE_URL + "UserImages/"+userImage;
     }
 
     public void resentPreferences(){

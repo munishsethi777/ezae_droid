@@ -20,7 +20,7 @@
             android:title="Notes" />
         <item
             android:id="@+id/nav_chatroom"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_menu_send"
             android:title="Chatrooms" />
     </group>
 
@@ -32,7 +32,7 @@
                 android:title="Update Profile" />
             <item
                 android:id="@+id/nav_change_password"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_menu_camera"
                 android:title="Change Password" />
             <item
                 android:id="@+id/nav_logout"
