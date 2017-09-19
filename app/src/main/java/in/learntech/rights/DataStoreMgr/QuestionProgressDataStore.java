@@ -32,7 +32,10 @@ public class QuestionProgressDataStore {
     public static final String COLUMN_LEARNING_PLAN_SEQ = "learningplanseq";
     public static final String COLUMN_SCORE = "score";
     public static final String TABLE_NAME = "questionprogress";
-    public static final String FIND_BY_QUESTION_SEQ = "Select * from questionprogress where " + COLUMN_USER_SEQ + "= {0} and " + COLUMN_QUESTION_SEQ + "= {1} ";
+    public static final String FIND_BY_QUESTION_SEQ = "Select * from questionprogress where " + COLUMN_USER_SEQ + "= {0} and "
+            + COLUMN_QUESTION_SEQ + "= {1} and "
+            + COLUMN_MODULE_SEQ + "= {2} and "
+            + COLUMN_LEARNING_PLAN_SEQ + "= {3} ";
     public static final String FIND_MODULE_PROGRESSES = "Select * from questionprogress where "
             + COLUMN_USER_SEQ + "= {0} and "
             + COLUMN_MODULE_SEQ + "= {1} and "
@@ -75,8 +78,8 @@ public class QuestionProgressDataStore {
         return mDBUtil.addOrUpdateUser(this.TABLE_NAME,values,String.valueOf(seq));
     }
 
-    public List<QuestionProgress> getProgressByQuestionSeq(int userSeq, int questionSeq){
-        Object[] args  = {userSeq,questionSeq};
+    public List<QuestionProgress> getProgressByQuestionSeq(int userSeq, int questionSeq,int moduleSeq, int lpSeq){
+        Object[] args  = {userSeq,questionSeq,moduleSeq,lpSeq};
         String query = MessageFormat.format(FIND_BY_QUESTION_SEQ,args);
         Cursor c = mDBUtil.executeQuery(query);
         List<QuestionProgress> questionProgressesList = new ArrayList<QuestionProgress>();

@@ -1,14 +1,18 @@
 package in.learntech.rights;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,8 +20,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import in.learntech.rights.Controls.CustomViewPager;
 import in.learntech.rights.Controls.SwipeDirection;
@@ -32,23 +36,25 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
 
 
     public CustomViewPager viewPager;
-    private View indicator1;
-    private View indicator2;
-    private View indicator3;
-    private View indicator4;
     private Intent mIntent;
     private int mLpSeq;
     private int mModuleSeq;
     private int mUserSeq;
     private UserMgr mUserMgr;
     private ServiceHandler mAuthTask;
-    private int WIZARD_PAGES_COUNT = 4;
+    private int WIZARD_PAGES_COUNT;
     private JSONArray mModuleQuestionsJson;
     private TextView mModuleTitleTextview;
     private TextView mQuestionNoTextView;
     private TextView mQuestionMarksTextView;
     private QuestionProgressMgr mQuesMgr;
-    private List<Integer> loadedQuestionSeq;
+    private JSONObject mModuleJson;
+    private LinearLayout linearLayoutIndicator;
+    private TextView textView_timer;
+    public int mSubmitQuestionCount;
+    private Fragment mChildFragment;
+    public Date mStartDate;
+    private CountDownTimer countTimer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,18 +64,14 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
         mModuleSeq = mIntent.getIntExtra(StringConstants.MODULE_SEQ,0);
         mUserMgr = UserMgr.getInstance(this);
         mUserSeq = mUserMgr.getLoggedInUserSeq();
-        loadedQuestionSeq = new ArrayList<Integer>();
-        indicator1 = findViewById(R.id.indicator1);
-        indicator2 = findViewById(R.id.indicator2);
-        indicator3 = findViewById(R.id.indicator3);
-        indicator4 = findViewById(R.id.indicator4);
         mModuleTitleTextview = (TextView)findViewById(R.id.textView_module_title);
         mQuestionNoTextView = (TextView)findViewById(R.id.textView_question_no);
         mQuestionMarksTextView = (TextView)findViewById(R.id.textView_marks);
         executeGetModuleDetailsCall();
         viewPager = (CustomViewPager) findViewById(R.id.viewPager);
         mQuesMgr = QuestionProgressMgr.getInstance(this);
-
+        linearLayoutIndicator = (LinearLayout)findViewById(R.id.layout_indicator);
+        textView_timer = (TextView)findViewById(R.id.textView_timer);
     }
 
     private void executeGetModuleDetailsCall(){
@@ -87,14 +89,32 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
         try{
             success = response.getInt(StringConstants.SUCCESS) == 1 ? true : false;
             message = response.getString(StringConstants.MESSAGE);
-            JSONObject jsonObject = response.getJSONObject("module");
+            mModuleJson = response.getJSONObject("module");
             if(success){
-                mModuleTitleTextview.setText(jsonObject.getString("title"));
-                mModuleQuestionsJson = jsonObject.getJSONArray("questions");
+                mSubmitQuestionCount = 0;
+                mModuleTitleTextview.setText(mModuleJson.getString("title"));
+                mModuleQuestionsJson = mModuleJson.getJSONArray("questions");
+
                 WIZARD_PAGES_COUNT = mModuleQuestionsJson.length();
                 viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
                 viewPager.addOnPageChangeListener(new WizardPageChangeListener());
+                addIndicators();
                 updateIndicators(0);
+                mStartDate = new Date();
+                int progress = 0;
+                long timeAllowed = mModuleJson.getLong("timeallowed");
+                if(timeAllowed > 0 ){
+                    timeAllowed = TimeUnit.MINUTES.toMillis(timeAllowed);
+                }
+                if(mModuleJson.has("activityData")) {
+                    JSONObject activity = mModuleJson.getJSONObject("activityData");
+                    progress = activity.getInt("progress");
+                }
+                if(timeAllowed > 0 && progress < 100){
+                    long timeConsumed = mQuesMgr.getTimeConsumed(mModuleQuestionsJson);
+                    timeAllowed = timeAllowed - timeConsumed;
+                    startTimer(timeAllowed);
+                }
             }
         }catch (Exception e){
             message = "Error :- " + e.getMessage();
@@ -117,7 +137,8 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
 
         @Override
         public Fragment getItem(int position) {
-            return new UserTrainingFragment(position,mModuleQuestionsJson);
+            mChildFragment = new UserTrainingFragment(position,mModuleJson);
+            return mChildFragment;
         }
 
         @Override
@@ -148,55 +169,90 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
     }
 
     public void updateIndicators(int position) {
-        switch (position) {
-            case 0:
-                indicator1.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot));
-                indicator2.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot_grey));
-                indicator3.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot_grey));
-                indicator4.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot_grey));
-                break;
-            case 1:
-                indicator1.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot_grey));
-                indicator2.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot));
-                indicator3.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot_grey));
-                indicator4.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot_grey));
-                break;
-            case 2:
-                indicator1.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot_grey));
-                indicator2.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot_grey));
-                indicator3.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot));
-                indicator4.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot_grey));
-                break;
-            case 3:
-                indicator1.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot_grey));
-                indicator2.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot_grey));
-                indicator3.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot_grey));
-                indicator4.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot));
-                break;
+        for(int i = 0 ; i < WIZARD_PAGES_COUNT;i++){
+                LinearLayout layout = (LinearLayout)linearLayoutIndicator.getChildAt(i);
+                View view  = layout.getChildAt(0);
+                if(i == position){
+                    view.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot));
+                }else{
+                    view.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot_grey));
+                }
         }
         String questionNoStr = position + 1 + " of " + mModuleQuestionsJson.length() + " Questions";
         mQuestionNoTextView.setText(questionNoStr);
         try{
             JSONObject ques = mModuleQuestionsJson.getJSONObject(position);
             JSONArray progressArray = ques.getJSONArray("progress");
-            Integer quesSeq = ques.getInt("seq");
-            JSONArray localProgress = mQuesMgr.getProgressJsonArr(ques.getInt("seq"));
+            JSONArray localProgress = mQuesMgr.getProgressJsonArr(ques.getInt("seq"),mModuleSeq,mLpSeq);
             progressArray = LayoutHelper.mergeTwoJsonArray(progressArray,localProgress);
             mQuestionMarksTextView.setText("Marks: " + ques.getInt("maxMarks"));
+
+
             if(progressArray.length() > 0){
                 viewPager.setAllowedSwipeDirection(SwipeDirection.all);
             }else{
                 viewPager.setAllowedSwipeDirection(SwipeDirection.left);
             }
+
         }catch (Exception e){
             LayoutHelper.showToast(getApplicationContext(),e.getMessage());
         }
 
-
     }
 
+    private void addIndicators(){
+        for(int i = 0 ; i< WIZARD_PAGES_COUNT;i++){
+            LinearLayout indicator = (LinearLayout) getLayoutInflater().inflate(R.layout.indicator,null);
+            linearLayoutIndicator.addView(indicator);
+        }
+    }
     @Override
     public void onClick(View view) {
 
+    }
+
+    private void startTimer(long timeInMill){
+        textView_timer.setVisibility(View.VISIBLE);
+        //long timeInMill = TimeUnit.MINUTES.toMillis(time);
+        countTimer = new CountDownTimer(timeInMill, 1000) {
+            public void onTick(long millisUntilFinished) {
+                String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % TimeUnit.HOURS.toMinutes(1),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % TimeUnit.MINUTES.toSeconds(1));
+                textView_timer.setText("Time left: " + hms);
+            }
+            public void onFinish() {
+                LayoutHelper.showToast(getApplicationContext(),"Time Over!");
+                savePendingQuesProgress();
+                goToTrainingActivity();
+                textView_timer.setText("done!");
+            }
+        }.start();
+    }
+
+    public void  goToTrainingActivity(){
+        Intent intent = new Intent(this,MyTrainings.class);
+        startActivity(intent);
+    }
+
+    public void savePendingQuesProgress(){
+        try {
+            mSubmitQuestionCount = mQuesMgr.getTotalSubmittedQuesCount(mModuleQuestionsJson);
+            int count = mSubmitQuestionCount;
+            for(int i = count;i<mModuleQuestionsJson.length();i++){
+                JSONObject jsonObject = mModuleQuestionsJson.getJSONObject(i);
+                UserTrainingFragment fragment = (UserTrainingFragment) mChildFragment;
+                fragment.saveProgress(jsonObject,true);
+            }
+        }catch (Exception e){
+            LayoutHelper.showToast(getApplicationContext(),e.getMessage());
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(countTimer != null)
+            countTimer.cancel();
     }
 }

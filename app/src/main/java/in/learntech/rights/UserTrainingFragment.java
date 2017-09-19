@@ -32,6 +32,7 @@ import org.json.JSONObject;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -51,6 +52,7 @@ import in.learntech.rights.utils.sorting.ListFragment;
 
 @SuppressLint("ValidFragment")
 public class UserTrainingFragment extends Fragment implements IServiceHandler {
+
     public static final String SINGLE = "single";
     public static final String MULTI = "multi";
     public static final String LONG_QUESTION = "longQuestion";
@@ -58,7 +60,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     public static final String SAVE_ACTIVITY = "saveActivity";
     public static final String SAVE_QUIZ_PROGRESS = "saveQuizProgress";
     public static final String SUBMITTED_SUCCESSFULLY = "Submitted successfully";
-    int wizard_page_position;
+    public int wizard_page_position;
     private Activity mActivity;
     private JSONArray mQuizProgress;
     private JSONArray mAnswers;
@@ -70,6 +72,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     private ArrayList mSelectedAnsSeqs;
     private QuestionProgressMgr mQuesProgressMgr;
     private Button submitButton;
+    private JSONObject mModuleJson;
     private UserTrainingActivity mParentActivity;
     private JSONArray allQuestions ;
     private TextView textView_long_question;
@@ -85,10 +88,13 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     List<String> feedbacks_success_list;
     List<String> feedbacks_error_list;
 
-    public  UserTrainingFragment(int position,JSONArray questions) {
+    public  UserTrainingFragment(int position,JSONObject moduleJson) {
         this.wizard_page_position = position;
-        this.allQuestions = questions;
+        mModuleJson = moduleJson;
         isSavedActivityData = false;
+        try{
+            allQuestions = moduleJson.getJSONArray("questions");
+        }catch (Exception e){}
     }
 
     @Override
@@ -109,8 +115,10 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             mQuestionType = currentQuestion.getString("type");
             mAnswers = currentQuestion.getJSONArray("answers");
             mQuizProgress = currentQuestion.getJSONArray("progress");
+            int moduleSeq = currentQuestion.getInt("moduleSeq");
+            int learningPlanSeqSeq = currentQuestion.getInt("learningPlanSeq");
             JSONArray serverProgress = mQuizProgress;
-            JSONArray localProgress =  mQuesProgressMgr.getProgressJsonArr(currentQuestion.getInt("seq"));
+            JSONArray localProgress =  mQuesProgressMgr.getProgressJsonArr(currentQuestion.getInt("seq"),moduleSeq,learningPlanSeqSeq);
             mQuizProgress = LayoutHelper.mergeTwoJsonArray(serverProgress,localProgress);
             isQuizProgressExists = mQuizProgress.length() > 0;
             mParentActivity = (UserTrainingActivity)getActivity();
@@ -130,7 +138,8 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             textVew_feedback_success = (TextView)mParentLayout.findViewById(R.id.textView_feedbackSuccess);
             textVew_feedback_error = (TextView)mParentLayout.findViewById(R.id.textView_feedbackError);
             handleSubmitButton(isQuizProgressExists);
-            if(isQuizProgressExists){
+            boolean isShowFeedback = mModuleJson.getInt("isshowfeedback") > 0;
+            if(isQuizProgressExists && isShowFeedback){
                 showFeedback();
             }
             if(wizard_page_position == 0) {
@@ -303,7 +312,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
                 public void onClick(View v)
                 {
                     LayoutHelper.showToast(getActivity(),"Submitted");
-                    saveProgress();
+                    saveProgress(currentQuestion,false);
                 }
             });
             submitButton.setBackgroundColor(getResources().getColor(R.color.button_yellow));
@@ -311,43 +320,51 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
 
     }
 
-    public void saveProgress(){
+    public void saveProgress(JSONObject currentQuestion,boolean isTimeUp){
         try {
             String questionType = currentQuestion.getString("type");
             Integer score = 0;
             HashMap<Integer,Integer> scores = new HashMap<>();
-            if (questionType.equals("longQuestion")) {
-                String ansText = textView_long_question.getText().toString();
-                score = currentQuestion.getInt("maxMarks");
-                mQuesProgressMgr.saveQuestionProgress(currentQuestion,ansText,score);
-                feedbacks_success_list.add(SUBMITTED_SUCCESSFULLY);
+            if(!isTimeUp) {
+                if (questionType.equals("longQuestion")) {
+                    String ansText = textView_long_question.getText().toString();
+                    score = currentQuestion.getInt("maxMarks");
+                    mQuesProgressMgr.saveQuestionProgress(currentQuestion, ansText, score, mParentActivity.mStartDate,isTimeUp);
+                    feedbacks_success_list.add(SUBMITTED_SUCCESSFULLY);
+                } else {
+                    if (questionType.equals("yesNo")) {
+                        String ansTitle = "no";
+                        if (switchYesNo.isChecked()) {
+                            ansTitle = "yes";
+                        }
+                        JSONObject ans = getAnswerByTitleFromArr(ansTitle);
+                        Object seq = ans.get("seq");
+                        mSelectedAnsSeqs.add(0, seq);
+                    }
+                    if (questionType.equals("sequencing")) {
+                        boolean isInRightOrder = addSortedItemSeq();
+                        if (isInRightOrder) {
+                            score = currentQuestion.getInt("maxMarks");
+                        }
+                        Long ansSeq = (Long) mSelectedAnsSeqs.get(0);
+                        scores.put(ansSeq.intValue(), score);
+                    } else {
+                        scores = getSelectedAnswersScore();
+                    }
+                    mQuesProgressMgr.saveQuestionProgress(currentQuestion, mSelectedAnsSeqs, scores, mParentActivity.mStartDate);
+
+                }
             }else{
-                if(questionType.equals("yesNo")){
-                    String ansTitle = "no";
-                    if(switchYesNo.isChecked()){
-                        ansTitle = "yes";
-                    }
-                    JSONObject ans = getAnswerByTitleFromArr(ansTitle);
-                    Object seq = ans.get("seq");
-                    mSelectedAnsSeqs.add(0,seq);
-                }
-                if(questionType.equals("sequencing")){
-                    boolean isInRightOrder = addSortedItemSeq();
-                    if(isInRightOrder){
-                        score = currentQuestion.getInt("maxMarks");
-                    }
-                    Long ansSeq = (Long)mSelectedAnsSeqs.get(0);
-                    scores.put(ansSeq.intValue(),score);
-                }else{
-                    scores = getSelectedAnswersScore();
-                }
-                mQuesProgressMgr.saveQuestionProgress(currentQuestion,mSelectedAnsSeqs,scores);
+                mQuesProgressMgr.saveQuestionProgress(currentQuestion, null, score, mParentActivity.mStartDate,isTimeUp);
             }
             handleSubmitButton(true);
-            if(wizard_page_position == allQuestions.length()-1){
+            if((!isTimeUp && wizard_page_position == allQuestions.length()-1)
+                    || mParentActivity.mSubmitQuestionCount == allQuestions.length()-1){
                 executeTrainingSubmitCall();
             }
             showFeedback();
+            mParentActivity.mStartDate = new Date();
+            mParentActivity.mSubmitQuestionCount++;
         }catch (Exception e){
             LayoutHelper.showToast(getActivity(),e.getMessage());
         }
@@ -401,7 +418,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
                     int learningPlanSeq = currentQuestion.getInt("learningPlanSeq");
                     mQuesProgressMgr.deleteByModule(moduleSeq, learningPlanSeq);
                     LayoutHelper.showToast(getActivity(),message);
-                    goToTrainingActivity();
+                    mParentActivity.goToTrainingActivity();
                 }else{
                     isSavedActivityData = true;
                 }
@@ -413,10 +430,6 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
 
     }
 
-    private void  goToTrainingActivity(){
-        Intent intent = new Intent(getActivity(),MyTrainings.class);
-        startActivity(intent);
-    }
     @Override
     public void setCallName(String call) {
         mCallName = call;
@@ -499,4 +512,6 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
         }
         return flag;
     }
+
+
 }
