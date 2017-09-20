@@ -1,6 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/LightGrey"
+    android:paddingTop="5dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="0dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="3">
+            <TextView
+                android:id="@+id/notesHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:text="How to go through new Training"
+                android:textSize="16dp"
+                android:layout_gravity="start"/>
 
+            <Button
+                android:id="@+id/btnNoteDetails"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/ic_right_black"
+                android:background="@android:color/transparent"
+                android:onClick="onClick"
+                android:layout_gravity="end"/>
+
+            <Button
+                android:id="@+id/btnNoteDelete"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_delete_black"
+                android:background="@android:color/transparent"
+                android:onClick="onClick"
+                android:visibility="visible"
+                android:alpha="1"/>
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/notesCreatedOn"
+            android:textColor="@color/DarkDarkgrey"
+            android:layout_marginBottom="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:layout_gravity="left"
+            android:gravity="left"
+            android:text="01/01/17"
+            android:layout_marginLeft="2dp"
+            android:drawablePadding="@dimen/cardview_compat_inset_shadow"
+            android:drawableLeft="@mipmap/ic_clock_small"/>
+    </LinearLayout>
+    <View style="@style/Divider"/>
 </LinearLayout>

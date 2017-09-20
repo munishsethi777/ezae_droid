@@ -1,21 +1,14 @@
-package com.example.munishsethi.myapplication.messages;
+package in.learntech.rights.messages;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.munishsethi.myapplication.R;
-import com.tubb.smrv.SwipeHorizontalMenuLayout;
-import com.tubb.smrv.SwipeMenuLayout;
-import com.tubb.smrv.listener.SwipeFractionListener;
-
+import in.learntech.rights.R;
 import java.util.ArrayList;
 
 /**

@@ -1,12 +1,12 @@
-package com.example.munishsethi.myapplication.messages;
+package in.learntech.rights.messages;
 
-import android.app.Notification;
+import java.io.Serializable;
 
 /**
  * Created by munishsethi on 18/09/17.
  */
 
-public class MessageModel {
+public class MessageModel implements Serializable{
 
     private int seq;
     private String messageText;
@@ -18,11 +18,13 @@ public class MessageModel {
 
     public MessageModel(){}
 
-    public MessageModel(String _messageText,String _dated,String _chattingUser, String _imageURL){
+    public MessageModel(String _messageText,String _dated,String _chattingUser, String _imageURL, String chtUserType, int chtUserSeq){
         messageText = _messageText;
         dated = _dated;
         chattingUser = _chattingUser;
         imageURL = _imageURL;
+        chattingUserType = chtUserType;
+        chattingUserSeq = chtUserSeq;
     }
 
 

@@ -7,5 +7,41 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="in.learntech.rights.NotesEditor"
     tools:showIn="@layout/activity_notes_editor">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <EditText
+            android:id="@+id/noteDetails"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/activity18ChatBackground"
+            android:layout_weight="8"
+            android:padding="6dp"
+            android:gravity="top"
+            android:alpha="0.8"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <Button
+                android:onClick="onClick"
+                android:id="@+id/saveNotes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="@style/ButtonYellow"
+                android:text="SAVE"
+                android:textSize="18dp"
+                android:textColor="@color/White"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

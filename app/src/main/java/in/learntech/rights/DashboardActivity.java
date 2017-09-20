@@ -29,6 +29,7 @@ import java.text.MessageFormat;
 
 import in.learntech.rights.BusinessObjects.User;
 import in.learntech.rights.Managers.UserMgr;
+import in.learntech.rights.messages.MessageActivity;
 import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
 import in.learntech.rights.utils.LayoutHelper;
@@ -156,7 +157,8 @@ public class DashboardActivity extends AppCompatActivity
             Intent intent = new Intent(this,MyAchievements.class);
             startActivity(intent);
         } else if (id == R.id.nav_messages) {
-
+            Intent intent = new Intent(this,MessageActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_notes) {
             Intent notesIntent = new Intent(this,NotesActivity.class);
             startActivity(notesIntent);

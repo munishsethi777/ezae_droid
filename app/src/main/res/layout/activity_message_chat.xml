@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.munishsethi.myapplication.messages.MessageChatActivity">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -33,7 +32,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/time"
+                    android:id="@+id/timeLastViews"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -41,7 +40,8 @@
                     android:text="2 hours ago"
                     android:textSize="12sp" />
 
-                <com.mediatechindo.wahyu.materialuikit.tools.RoundedImageView
+                <ImageView
+                    android:id="@+id/userImage"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:layout_centerVertical="true"
@@ -65,6 +65,58 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_message_chat" />
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        style="@style/Activity29ScrollbarStyle"
+        android:background="@color/activity26background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="42dp"
+        android:paddingTop="8dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
+
+
+        <RelativeLayout
+            android:id="@+id/inputContainer"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white"
+            android:gravity="center_vertical">
+
+
+            <EditText
+                android:id="@+id/messageText"
+                style="@style/Activity26Input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/buttonSend"
+                android:layout_weight="1"
+                android:hint="Write message"
+                android:padding="12dp"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/buttonSend"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_alignParentRight="true"
+                android:onClick="onClick"
+                android:padding="6dp"
+                android:src="@drawable/activity26_send_button" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

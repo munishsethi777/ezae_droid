@@ -1,4 +1,4 @@
-package com.example.munishsethi.myapplication.messages;
+package in.learntech.rights.messages;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,13 +10,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.munishsethi.myapplication.R;
-import com.example.munishsethi.myapplication.tools.ImageViewCircleTransform;
+
+import in.learntech.rights.R;
 import com.tubb.smrv.SwipeHorizontalMenuLayout;
 import com.tubb.smrv.SwipeMenuLayout;
 import com.tubb.smrv.listener.SwipeFractionListener;
 
 import java.util.ArrayList;
+
+import in.learntech.rights.utils.ImageViewCircleTransform;
 
 /**
  * Created by munishsethi on 18/09/17.
@@ -44,7 +46,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ItemView
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         Glide.with(context)
-                .load("http://www.ezae.in/" + dataList.get(position).getImageURL())
+                .load(dataList.get(position).getImageURL())
                 .transform(new ImageViewCircleTransform(context))
                 .into(holder.imgProfile);
 

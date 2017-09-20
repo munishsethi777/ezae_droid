@@ -18,6 +18,8 @@ public class StringConstants {
     public static final String LP_SEQ = "lpSeq";
     public static final String MODULE_SEQ = "moduleSeq";
     public static final String USER_DUMMY_IMAGE_NAME = "dummy.jpg";
+    public static final String NOTE_SEQ = "noteSeq";
+
     //API URL STRINGS
     public static final String ACTION_API_URL = "http://www.ezae.in/Actions/Mobile/";
 
@@ -48,9 +50,22 @@ public class StringConstants {
     public static final String GET_LEARNING_PLAN_DETAIL = ACTION_API_URL + "LearningPlanAction.php?userSeq={0}&companySeq={1}&call=getLearningPlanDetails";
 
     //QuizProgress Action
+
     public static final String SUBMIT_QUIZ_PROGRESS = ACTION_API_URL + "QuizProgressAction.php?call=saveQuizProgress&userSeq={0}&companySeq={1}&answers={2}";
+
     //Activity Action
     public static final String SAVE_ACTIVITY = ACTION_API_URL + "ActivityAction.php?call=saveActivity&userSeq={0}&companySeq={1}&activityData={2}";
 
+    //NOTES Action
+    public static final String GET_ALL_NOTES = ACTION_API_URL + "NoteAction.php?call=getAllNotes&userSeq={0}&companySeq={1}";
+    public static final String GET_NOTES_DETAILS = ACTION_API_URL + "NoteAction.php?call=getNoteDetails&userSeq={0}&companySeq={1}&noteSeq={2}";
+    public static final String SAVE_NOTES_DETAILS = ACTION_API_URL + "NoteAction.php?call=saveNote&userSeq={0}&companySeq={1}&seq={2}&details={3}";
+    public static final String DELETE_NOTE = ACTION_API_URL + "NoteAction.php?call=deleteNote&userSeq={0}&companySeq={1}&noteSeq={2}";
+
+    //MESSAGES Action
+    public static final String GET_MESSAGES = ACTION_API_URL + "MessageAction.php?call=getMessages&userSeq={0}&companySeq={1}";
+    public static final String GET_MESSAGE_DETAILS = ACTION_API_URL + "MessageAction.php?call=getMessageDetails&userSeq={0}&companySeq={1}&chattingWithUserSeq={2}&chattingWithUserType={3}&afterMessageSeq={4}";
+    public static final String SEND_MESSAGE_CHAT = ACTION_API_URL + "MessageAction.php?call=sendMessageChat&userSeq={0}&companySeq={1}&chattingWithUserSeq={2}&chattingWithUserType={3}&message={4}&chatLoadedTillSeq={5}";
+    public static final String DELETE_CONVERSATION = ACTION_API_URL + "MessageAction.php?call=deleteChatConversation&userSeq={0}&companySeq={1}&chattingWithUserSeq={2}&chattingWithUserType={3}";
 
 }

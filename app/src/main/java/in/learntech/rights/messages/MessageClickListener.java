@@ -1,4 +1,4 @@
-package com.example.munishsethi.myapplication.messages;
+package in.learntech.rights.messages;
 
 import android.view.View;
 

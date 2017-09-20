@@ -1,8 +1,6 @@
-package com.example.munishsethi.myapplication.messages;
+package in.learntech.rights.messages;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,32 +8,68 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar;
-import com.example.munishsethi.myapplication.R;
+import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import in.learntech.rights.Managers.UserMgr;
+import in.learntech.rights.R;
+import in.learntech.rights.services.Interface.IServiceHandler;
+import in.learntech.rights.services.ServiceHandler;
+import in.learntech.rights.utils.ImageViewCircleTransform;
+import in.learntech.rights.utils.StringConstants;
+
+import java.net.URLEncoder;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
-public class MessageChatActivity extends AppCompatActivity implements View.OnClickListener,MessageClickListener {
+public class MessageChatActivity extends AppCompatActivity implements View.OnClickListener,
+                                    MessageClickListener,IServiceHandler {
+
+    private static String GET_MESSAGE_DETAILS = "getMessageDetails";
+    private static String SEND_MESSAGE_CHAT = "sendMessageChat";
+    private ServiceHandler mAuthTask = null;
+    private static final String SUCCESS = "success";
+    private static final String MESSAGE = "message";
+    private String mCallName;
+    private UserMgr mUserMgr;
+    private MessageModel mMessageModel;
     ArrayList<MessageChatModel> rowListItem;
     MessageChatAdapter rcAdapter;
     RecyclerView rView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_chat);
+        mMessageModel = (MessageModel)getIntent().getExtras().getSerializable("messageModel");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(true);
-            actionBar.setTitle("Narender Sharma");
+            actionBar.setTitle(mMessageModel.getChattingUser());
         }
-        rowListItem = getAllItemList();
+        TextView toolBarUserName = (TextView)toolbar.findViewById(R.id.name);
+        toolBarUserName.setText(mMessageModel.getChattingUser());
+
+
+
+        ImageView toolBarUserImage = (ImageView)toolbar.findViewById(R.id.userImage);
+        Glide.with(getApplicationContext())
+                .load(mMessageModel.getImageURL())
+                .transform(new ImageViewCircleTransform(getApplicationContext()))
+                .into(toolBarUserImage);
+
+        mUserMgr = UserMgr.getInstance(this);
+        rowListItem = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         rView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -46,61 +80,111 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
         rcAdapter = new MessageChatAdapter(this, rowListItem);
         rView.setAdapter(rcAdapter);
         rcAdapter.setClickListener(this);
-        rView.smoothScrollToPosition(rowListItem.size()+1);
+        //rView.smoothScrollToPosition(rowListItem.size()-1);
+        executeGetMessageDetailsCall();
     }
 
-
-    private ArrayList<MessageChatModel> getAllItemList() {
-        ArrayList<MessageChatModel> allItems = new ArrayList<>();
-        MessageChatModel dt;
-
-        dt = new MessageChatModel(1,"Hello Munish how are you today","2:40 mins",false);
-        allItems.add(dt);
-
-        dt = new MessageChatModel(1,"I am good Remi. Hope you too doing good.","2:35 mins",true);
-        allItems.add(dt);
-
-        dt = new MessageChatModel(1,"Did you got a chance to make plans for visiting the hills" +
-                " this weekend. It would be fun if we can go together","2 mins",false);
-        allItems.add(dt);
-
-        dt = new MessageChatModel(1,"Yes i have to first confirm with my appointments.","2 mins",true);
-        allItems.add(dt);
-
-        dt = new MessageChatModel(1,"Oh. i know you are too busy to go, but lets try to get hold of it","2 mins",false);
-        allItems.add(dt);
-
-        dt = new MessageChatModel(1,"Even i am too eager to visit the place, its been a since i got an off from my" +
-                "hectic schedule. Pls wait for a couple of days and i will let you kno.","2 mins",true);
-        allItems.add(dt);
-
-        dt = new MessageChatModel(1,"Ok Bye, we will talk soon","2 mins",true);
-        allItems.add(dt);
-
-        dt = new MessageChatModel(1,"Bye for now. Salaam","2 mins",false);
-        allItems.add(dt);
-
-        return allItems;
-    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonSend:
-                EditText composeMessageText = (EditText)findViewById(R.id.composeMessage);
-                MessageChatModel mcm = new MessageChatModel(0,composeMessageText.getText().toString(),"just now",true);
-                rowListItem.add(mcm);
-                rcAdapter.notifyItemInserted(rowListItem.size()-1);
-                rView.smoothScrollToPosition(rowListItem.size()-1);
+                executeSendMessageCall();
                 break;
             default:
                 break;
         }
     }
 
+    public void executeGetMessageDetailsCall(){
+        Object[] args = {mUserMgr.getLoggedInUserSeq(),mUserMgr.getLoggedInUserCompanySeq(),
+                mMessageModel.getChattingUserSeq(),mMessageModel.getChattingUserType(),0};
+        String url = MessageFormat.format(StringConstants.GET_MESSAGE_DETAILS,args);
+        mAuthTask = new ServiceHandler(url,this,GET_MESSAGE_DETAILS,this);
+        mAuthTask.execute();
+    }
+
+    public void executeSendMessageCall(){
+        EditText composeMessageText = (EditText)findViewById(R.id.messageText);
+        String messageStr = URLEncoder.encode(String.valueOf(composeMessageText.getText()));
+
+        MessageChatModel lastMCM = rowListItem.get(rowListItem.size()-1);
+        Object[] args = {mUserMgr.getLoggedInUserSeq(),mUserMgr.getLoggedInUserCompanySeq(),
+                mMessageModel.getChattingUserSeq(),mMessageModel.getChattingUserType(), messageStr,lastMCM.getSeq()};
+        String url = MessageFormat.format(StringConstants.SEND_MESSAGE_CHAT,args);
+        mAuthTask = new ServiceHandler(url,this,SEND_MESSAGE_CHAT,this);
+        mAuthTask.execute();
+    }
+
+
+    @Override
+    public void processServiceResponse(JSONObject response) {
+        mAuthTask = null;
+        boolean success = false;
+        String message = null;
+        try{
+            success = response.getInt(SUCCESS) == 1 ? true : false;
+            message = response.getString(MESSAGE);
+            if(success){
+                if(mCallName.equals(GET_MESSAGE_DETAILS)){
+                    JSONArray chatJsonArr = response.getJSONArray("messages");
+                    addMessagesChatModel(chatJsonArr);
+
+                }else if(mCallName.equals(SEND_MESSAGE_CHAT)){
+                    JSONArray chatJsonArr = response.getJSONArray("messages");
+                    addMessagesChatModel(chatJsonArr);
+                }
+            }
+        }catch (Exception e){
+            message = "Error :- " + e.getMessage();
+        }
+    }
+
+    private void addMessagesChatModel(JSONArray chatJsonArr){
+        try {
+            for (int i = 0; i < chatJsonArr.length(); i++) {
+                JSONObject jsonObject = chatJsonArr.getJSONObject(i);
+                int chatSeq = jsonObject.getInt("seq");
+                String dated = jsonObject.getString("dated");
+                String messagetext = jsonObject.getString("messagetext");
+                int fromUserSeq = 0;
+                if (jsonObject.getString("fromuserseq") != null) {
+                    fromUserSeq = jsonObject.getInt("fromuserseq");
+                }
+                boolean isSent = false;
+                if (mUserMgr.getLoggedInUserSeq() == fromUserSeq) {
+                    isSent = true;
+                }
+                MessageChatModel mcm = new MessageChatModel(chatSeq, messagetext, dated, isSent);
+                rowListItem.add(mcm);
+
+            }
+            MessageChatModel lastMCM = rowListItem.get(rowListItem.size()-1);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            TextView toolBarLastTime = (TextView)toolbar.findViewById(R.id.timeLastViews);
+            toolBarLastTime.setText(lastMCM.getTime());
+
+            rcAdapter.notifyItemInserted(rowListItem.size()-1);
+            rView.smoothScrollToPosition(rowListItem.size()-1);
+        }catch(Exception e) {
+
+        }
+    }
+
+    @Override
+    public void setCallName(String call) {
+        mCallName = call;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
     @Override
     public void itemClicked(View view, int position) {
-        int pos = position + 1;
-        Toast.makeText(this, "Position " + pos + " clicked!", Toast.LENGTH_SHORT).show();
+        //int pos = position + 1;
+        //Toast.makeText(this, "Position " + pos + " clicked!", Toast.LENGTH_SHORT).show();
     }
 }
