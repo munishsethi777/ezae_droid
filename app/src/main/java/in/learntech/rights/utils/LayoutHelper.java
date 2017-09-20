@@ -36,7 +36,7 @@ public class LayoutHelper {
 
     }
     public void jsonToModuleLayout(JSONArray modulesJsonArr, LinearLayout mParentLayout) throws Exception {
-        int moduleCardMargins = 18;
+        int moduleCardMargins = 36;
         int count = modulesJsonArr.length();
         for (int i = 0; i < count; i++) {
             JSONObject jsonObject = modulesJsonArr.getJSONObject(i);
@@ -100,11 +100,23 @@ public class LayoutHelper {
             CardView moduleCardView = (CardView) moduleInternalLayout.findViewById(R.id.moduleCardView);
             ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams)moduleCardView.getLayoutParams();
             marginLayoutParams.setMargins(moduleCardMargins,moduleCardMargins,moduleCardMargins,moduleCardMargins);
-            if(i==0){
-                marginLayoutParams.setMargins(moduleCardMargins,moduleCardMargins*2,moduleCardMargins,moduleCardMargins);
-            }
-            if(i==count-1){
-                marginLayoutParams.setMargins(moduleCardMargins,moduleCardMargins,moduleCardMargins,moduleCardMargins*2);
+
+            CardView moduleStatusView = (CardView) moduleInternalLayout.findViewById(R.id.timeline_circle);
+            ViewGroup.MarginLayoutParams moduleStatusViewParams = (ViewGroup.MarginLayoutParams)moduleStatusView.getLayoutParams();
+            moduleStatusViewParams.setMargins(moduleCardMargins,moduleCardMargins,moduleCardMargins,moduleCardMargins);
+
+
+            if(count == 1){
+                marginLayoutParams.setMargins(moduleCardMargins,moduleCardMargins*2,moduleCardMargins,moduleCardMargins*2);
+                moduleStatusViewParams.setMargins(moduleCardMargins,moduleCardMargins*2,moduleCardMargins,moduleCardMargins);
+            }else{
+                if(i==0){
+                    marginLayoutParams.setMargins(moduleCardMargins,moduleCardMargins*2,moduleCardMargins,moduleCardMargins);
+                    moduleStatusViewParams.setMargins(moduleCardMargins,moduleCardMargins*2,moduleCardMargins,moduleCardMargins);
+                }
+                if(i==count-1) {//last one
+                    marginLayoutParams.setMargins(moduleCardMargins, moduleCardMargins, moduleCardMargins, moduleCardMargins * 2);
+                }
             }
             moduleCardView.requestLayout();
             Animation animation = AnimationUtils.loadAnimation(mActivity,R.anim.fade_in);

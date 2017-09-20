@@ -122,6 +122,7 @@ public class NotesFragment extends Fragment implements IServiceHandler {
                         notesDetailsButton.setTag(R.string.noteSeq, noteSeq);
 
                         Button notesDeleteButton = (Button) childLayout.findViewById(R.id.btnNoteDelete);
+                        notesDeleteButton.setVisibility(View.INVISIBLE);
                         notesDeleteButton.setTag(R.string.noteSeq, noteSeq);
                         notesDeleteButton.setOnClickListener(new View.OnClickListener() {
                             @Override

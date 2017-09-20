@@ -30,6 +30,7 @@ public class NotesActivity extends AppCompatActivity implements View.OnClickList
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle("My Notes");
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

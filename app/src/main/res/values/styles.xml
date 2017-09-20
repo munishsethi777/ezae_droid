@@ -33,7 +33,7 @@
     </style>
 
     <style name="ButtonOrange" parent="@android:style/Widget.Button">
-        <item name="android:background">@color/button_orange</item>
+        <item name="android:background">@color/OrangeMain</item>
     </style>
 
     <style name="ButtonWhite" parent="@android:style/Widget.Button">

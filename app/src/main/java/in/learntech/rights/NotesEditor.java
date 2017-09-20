@@ -126,8 +126,10 @@ public class NotesEditor extends AppCompatActivity implements View.OnClickListen
                     //notesDetailsButton.setTag(R.string.noteSeq, noteSeq);
                 }else if(mCallName.equals(SAVE_NOTE_CALL)){
                     LayoutHelper.showToast(this,message);
-                    Intent intent = new Intent(this,NotesActivity.class);
-                    startActivity(intent);
+                    onBackPressed();
+
+                    //Intent intent = new Intent(this,NotesActivity.class);
+                    //startActivity(intent);
                     overridePendingTransition(R.anim.secondactivity_enter, R.anim.secondactivity_exit);
                 }
             }

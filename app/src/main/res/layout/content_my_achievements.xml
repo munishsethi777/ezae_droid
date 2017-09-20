@@ -28,7 +28,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/Blue"
+            android:background="@color/BlueMain"
             android:padding="10dp"
             android:text="MY POSITION"
             android:textAlignment="center"
@@ -134,7 +134,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/Blue"
+            android:background="@color/BlueMain"
             android:padding="10dp"
             android:text="MY BADGES"
             android:textAlignment="center"

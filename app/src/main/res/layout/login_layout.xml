@@ -40,30 +40,34 @@
                     android:textSize="15dp"
                     android:textAlignment="center"
                     android:textColor="@color/Grey"/>
-                <android.support.v7.widget.CardView
+                <ImageView
+                    android:id="@+id/imageView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_vertical_margin"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="60dp">
+                    android:layout_above="@+id/inputCont"
+                    app:srcCompat="@mipmap/ic_app" />
+
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:layout_marginTop="20dp">
 
                         <EditText
                             android:id="@+id/username_view"
                             style="@style/LoginSignUp2Input"
-                            android:layout_marginTop="50dp"
-                            android:hint="Username" />
+                            android:layout_marginTop="10dp"
+                            android:hint="Username"
+                            android:alpha="0.8"/>
 
                         <EditText
                             android:id="@+id/password_view"
                             style="@style/LoginSignUp2Input"
                             android:hint="Password"
-                            android:inputType="textPassword" />
+                            android:inputType="textPassword"
+                            android:alpha="0.8"/>
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -78,24 +82,16 @@
                                 android:layout_centerVertical="true"
                                 android:onClick="onClick"
                                 android:text="Forgot Password"
-                                android:textColor="@color/loginSignup11text"
-                                android:textStyle="bold" />
+                                android:textColor="@color/LightGrey" />
 
                         </RelativeLayout>
 
                     </LinearLayout>
 
-                </android.support.v7.widget.CardView>
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/inputCont"
-                android:layout_marginBottom="-200dp"
-                app:srcCompat="@mipmap/ic_app" />
+
 
             <Button
                 android:id="@+id/btnSignIn"

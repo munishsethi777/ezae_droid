@@ -11,8 +11,8 @@
     android:background="@color/profile16background">
 
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
          app:layout_constraintLeft_toLeftOf="parent"
@@ -39,7 +39,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/Green"
+                        android:background="@color/OrangeMain"
                         android:orientation="vertical">
                         <TextView
                             android:id="@+id/textView_score"
@@ -70,7 +70,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/Green"
+                        android:background="@color/OrangeMain"
                         android:orientation="vertical">
                         <TextView
                             android:id="@+id/textView_profile_rank"
@@ -101,7 +101,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/Green"
+                        android:background="@color/OrangeMain"
                         android:orientation="vertical">
                         <TextView
                             android:id="@+id/textView_pending_trainings"
@@ -132,7 +132,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/Green"
+                        android:background="@color/OrangeMain"
                         android:orientation="vertical">
                         <TextView
                             android:id="@+id/textView_completed_trainings"
@@ -172,7 +172,7 @@
                     android:id="@+id/textViewNotifications"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/Blue"
+                    android:background="@color/BlueMain"
                     android:padding="8dp"
                     android:text="NOTIFICATIONS"
                     android:textAlignment="center"
@@ -196,7 +196,7 @@
                     android:id="@+id/textViewActiveLearningPlans"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/Blue"
+                    android:background="@color/BlueMain"
                     android:padding="8dp"
                     android:text="ACTIVE LEARNING PLANS"
                     android:textAlignment="center"

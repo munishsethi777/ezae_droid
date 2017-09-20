@@ -5,7 +5,7 @@
         android:top="5dp"
         android:bottom="15dp">
         <shape>
-            <solid android:color="@color/activity26colorPrimary" />
+            <solid android:color="@color/BlueMain" />
             <corners
                 android:bottomLeftRadius="2dp"
                 android:bottomRightRadius="2dp"

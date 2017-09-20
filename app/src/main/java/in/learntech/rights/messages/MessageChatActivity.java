@@ -179,6 +179,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
+        overridePendingTransition(R.anim.secondactivity_enter, R.anim.secondactivity_exit);
         return true;
     }
 

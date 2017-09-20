@@ -54,6 +54,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle("My Messages");
         }
 
         mUserMgr = UserMgr.getInstance(this);
@@ -83,12 +84,13 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void itemClicked(View view, int position) {
         int pos = position + 1;
-        Toast.makeText(this, "Position " + pos + " clicked!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Position " + pos + " clicked!", Toast.LENGTH_SHORT).show();
 
         MessageModel mm = rowListItem.get(position);
         Intent messageChatActivity = new Intent(this,MessageChatActivity.class);
         messageChatActivity.putExtra("messageModel",mm);
         startActivity(messageChatActivity);
+        overridePendingTransition(R.anim.firstactivity_enter, R.anim.firstactivity_exit);
     }
 
     public void executeGetMessagesCall(){

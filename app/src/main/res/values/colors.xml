@@ -1480,4 +1480,9 @@
 
     <color name="FeedbackGreen">#f3ffe7</color>
     <color name="FeedbackRed">#fadede</color>
+
+    <color name="BlueMain">#2892e2</color>
+    <color name="OrangeMain">#ff9100</color>
+
+
 </resources>

@@ -27,7 +27,8 @@
                 android:layout_marginTop="8dp"
                 app:cardBackgroundColor="@color/Orange"
                 app:cardCornerRadius="10dp"
-                android:textAlignment="center">
+                android:textAlignment="center"
+                android:alpha="0.9">
                 <TextView
                     android:id="@+id/timeline_circleText"
                     android:layout_width="wrap_content"
@@ -35,7 +36,8 @@
                     android:textAlignment="center"
                     android:textSize="14dp"
                     android:paddingLeft="5dp"
-                    android:text="Q" />
+                    android:text="Q"
+                    android:textColor="@color/White"/>
             </android.support.v7.widget.CardView>
 
         </RelativeLayout>
@@ -52,10 +54,10 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
                 android:orientation="vertical"
-                android:paddingTop="3dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="3dp"
-                android:paddingBottom="3dp">
+                android:paddingTop="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp">
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -70,15 +72,17 @@
                         android:layout_marginBottom="2dp"
                         android:layout_marginTop="2dp"
                         android:scaleType="centerCrop"
-                        android:layout_marginRight="10dp"/>
+                        android:layout_marginRight="10dp"
+                        />
 
                     <TextView
                         android:id="@+id/textView_moduleName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
                         android:text="Module Title"
-                        />
+                        android:textColor="@color/DarkDarkgrey"
+                        android:alpha="0.9"
+                        android:paddingTop="3dp"/>
                 </LinearLayout>
 
 
@@ -96,7 +100,8 @@
                         android:drawableLeft="@mipmap/ic_bar_chart"
                         android:drawablePadding="3dp"
                         android:text="35%"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textColor="@color/Darkgrey"/>
 
                     <TextView
                         android:id="@+id/textView_moduleScore"
@@ -106,7 +111,8 @@
                         android:drawableLeft="@mipmap/ic_gamepad"
                         android:drawablePadding="3dp"
                         android:text="456"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textColor="@color/Darkgrey" />
 
                     <TextView
                         android:id="@+id/rank"
@@ -116,7 +122,8 @@
                         android:drawableLeft="@mipmap/ic_certificate"
                         android:drawablePadding="3dp"
                         android:text="20"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textColor="@color/Darkgrey"/>
                     <Button
                         android:id="@+id/button_moduleLaunch"
                         style="@style/ButtonGray"
@@ -128,11 +135,11 @@
                         android:onClick="onClick"
                         android:text="Launch"
                         android:textAllCaps="false"
-                        android:textColor="@color/Blue"
-                        android:textStyle="bold"
+                        android:textColor="@color/BlueMain"
                         android:layout_weight="3"
                         android:gravity="right|bottom"
-                        android:textSize="16sp"/>
+                        android:textSize="14sp"
+                        android:alpha="0.9"/>
 
 
                 </LinearLayout>

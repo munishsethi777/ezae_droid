@@ -63,7 +63,8 @@
                         android:layout_gravity="right"
                         android:drawableLeft="@mipmap/ic_clock_small"
                         android:drawablePadding="2dp"
-                        android:text="on 5th Aug 2017"
+                        android:text="12 Hours ago"
+                        android:gravity="right"
                         android:textSize="12sp"/>
 
                 </LinearLayout>

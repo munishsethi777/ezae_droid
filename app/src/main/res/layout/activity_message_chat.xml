@@ -71,7 +71,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         style="@style/Activity29ScrollbarStyle"
-        android:background="@color/activity26background"
+        android:background="@color/profile16background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="42dp"

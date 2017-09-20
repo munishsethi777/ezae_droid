@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="in.learntech.rights.NotesEditor"
-    tools:showIn="@layout/activity_notes_editor">
+    tools:showIn="@layout/activity_notes_editor"
+    android:background="@color/profile16background">
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -20,7 +21,7 @@
             android:id="@+id/noteDetails"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/activity18ChatBackground"
+            android:background="@color/profile16background"
             android:layout_weight="8"
             android:padding="6dp"
             android:gravity="top"

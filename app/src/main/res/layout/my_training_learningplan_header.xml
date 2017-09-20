@@ -8,9 +8,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/Blue_Light"
+        android:background="@color/BlueMain"
         android:layout_weight="1">
         <com.app.progresviews.ProgressWheel
+
             android:id="@+id/progressBar_lp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -18,31 +19,31 @@
             app:marginBtwText= "6dp"
             app:countText="0%"
             app:definitionText="Progress"
-            app:countTextColor="@color/Darkgrey"
-            app:defTextColor="@color/Darkgrey"
+            app:countTextColor="@color/White"
+            app:defTextColor="@color/White"
             app:rimColor="@color/LightGrey"
-            app:progressColor="@color/Blue"
+            app:progressColor="@color/OrangeMain"
             app:defTextSize="8sp"
             app:countTextSize="14sp"
             app:percentage="50"
             android:layout_weight="1"
-            android:padding="2dp"/>
+            android:padding="3dp"/>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="3dp">
             <TextView
                 android:id="@+id/textView_learningPlanName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="2dp"
                 android:textSize="16sp"
                 android:maxLines="2"
+                android:textAllCaps="true"
                 android:text="NEW HIRE WITH dfdfd LATEST"
-                android:textColor="@color/DarkDarkgrey"
-                android:textStyle="bold"/>
+                android:textColor="@color/White"/>
             <TextView
                 android:id="@+id/textView_lpTotalModules"
                 android:layout_width="match_parent"
@@ -51,7 +52,7 @@
                 android:textSize="12sp"
                 android:text="12 Modules"
                 android:textStyle="bold"
-                android:textColor="@color/Darkgrey"
+                android:textColor="@color/White"
                 android:layout_marginBottom="2dp"/>
             </LinearLayout>
 
