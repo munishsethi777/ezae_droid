@@ -17,7 +17,7 @@ public class StringConstants {
     public static final String MESSAGE = "message";
     public static final String LP_SEQ = "lpSeq";
     public static final String MODULE_SEQ = "moduleSeq";
-
+    public static final String USER_DUMMY_IMAGE_NAME = "dummy.jpg";
     //API URL STRINGS
     public static final String ACTION_API_URL = "http://www.ezae.in/Actions/Mobile/";
 
@@ -29,10 +29,9 @@ public class StringConstants {
     //User Actions
     public static final String LOGIN_URL = ACTION_API_URL + "UserAction.php?call=login&username={0}&password={1}&gcmid={2}";
     public static final String GET_DASHBOARD_COUNTS = ACTION_API_URL+"UserAction.php?call=getDashboardStats&userSeq={0}&companySeq={1}";
-
     public static final String GET_MYACHIEVEMENT_COUNTS = ACTION_API_URL + "UserAction.php?call=myAchievements&userSeq={0}&companyseq={1}";
-
     public static final String GET_NOTIFICATIONS = ACTION_API_URL + "UserAction.php?userSeq={0}&companySeq={1}&call=getNotifications";
+    public static final String CHANGE_PASSWORD = ACTION_API_URL + "UserAction.php?call=changePassword&userSeq={0}&companySeq={1}&earlierPassword={2}&newPassword={3}";
 
 
     //LearningPlan Actions
@@ -49,9 +48,9 @@ public class StringConstants {
     public static final String GET_LEARNING_PLAN_DETAIL = ACTION_API_URL + "LearningPlanAction.php?userSeq={0}&companySeq={1}&call=getLearningPlanDetails";
 
     //QuizProgress Action
-    public static final String SUBMIT_QUIZ_PROGRESS = ACTION_API_URL + "QuizProgressAction.php?call=saveQuizProgress&answers={0}";
+    public static final String SUBMIT_QUIZ_PROGRESS = ACTION_API_URL + "QuizProgressAction.php?call=saveQuizProgress&userSeq={0}&companySeq={1}&answers={2}";
     //Activity Action
-    public static final String SAVE_ACTIVITY = ACTION_API_URL + "ActivityAction.php?call=saveActivity&activityData={0}";
+    public static final String SAVE_ACTIVITY = ACTION_API_URL + "ActivityAction.php?call=saveActivity&userSeq={0}&companySeq={1}&activityData={2}";
 
 
 }
