@@ -34,7 +34,7 @@ import in.learntech.rights.utils.LayoutHelper;
 import in.learntech.rights.utils.StringConstants;
 
 public class DashboardActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,IServiceHandler {
+        implements NavigationView.OnNavigationItemSelectedListener,IServiceHandler,View.OnClickListener {
     private static final String SUCCESS = "success";
     private static final String DASHBOARD_DATA = "dashboardData";
     private static final String MESSAGE = "message";
@@ -280,5 +280,26 @@ public class DashboardActivity extends AppCompatActivity
     @Override
     public void setCallName(String call) {
         mCallName = call;
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == R.id.imageView_trainings) {
+            Intent intent = new Intent(this,MyTrainings.class);
+            startActivity(intent);
+        } else if (id == R.id.imageView_achievements) {
+            Intent intent = new Intent(this,MyAchievements.class);
+            startActivity(intent);
+        } else if (id == R.id.imageView_messages) {
+            Intent intent = new Intent(this,MessageActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.imageView_notes) {
+            Intent notesIntent = new Intent(this,NotesActivity.class);
+            startActivity(notesIntent);
+        } else if (id == R.id.imageView_updateProfile) {
+            Intent notesIntent = new Intent(this,UpdateProfileActivity.class);
+            startActivity(notesIntent);
+        }
     }
 }

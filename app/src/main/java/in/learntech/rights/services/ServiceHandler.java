@@ -26,12 +26,18 @@ public class ServiceHandler extends AsyncTask<Void, Void, JSONObject>{
     private final String mCall;
     private final Activity mActivity;
     private  ProgressDialog mProgressDialog;
+    private boolean isShowProgress;
+
+    public void setShowProgress(boolean isShowProgress){
+        this.isShowProgress = isShowProgress;
+    }
     public ServiceHandler(String apiUrl,IServiceHandler serviceHandler,Activity activity) {
         mApiUrl = apiUrl;
         mIActivity = serviceHandler;
         mRequestType = StringConstants.GET;
         mCall = null;
         mActivity = activity;
+        isShowProgress = true;
         initProgressDialog();
     }
 
@@ -41,6 +47,7 @@ public class ServiceHandler extends AsyncTask<Void, Void, JSONObject>{
         mRequestType = StringConstants.GET;
         mCall = call;
         mActivity = activity;
+        isShowProgress = true;
         initProgressDialog();
     }
 
@@ -87,13 +94,15 @@ public class ServiceHandler extends AsyncTask<Void, Void, JSONObject>{
     }
     @Override
     protected void onPreExecute() {
-        mProgressDialog.show();
+        if(mProgressDialog != null && isShowProgress)
+            mProgressDialog.show();
     }
     @Override
     protected void onPostExecute(final JSONObject response) {
         mIActivity.setCallName(mCall);
         mIActivity.processServiceResponse(response);
-        mProgressDialog.dismiss();
+        if(mProgressDialog != null && isShowProgress)
+            mProgressDialog.dismiss();
     }
 
 
@@ -102,11 +111,11 @@ public class ServiceHandler extends AsyncTask<Void, Void, JSONObject>{
 
     }
 
-    private void initProgressDialog(){
-        mProgressDialog= new ProgressDialog(mActivity);
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setMessage("Wait...");
+    private void initProgressDialog() {
+            mProgressDialog = new ProgressDialog(mActivity);
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgressDialog.setMessage("Wait...");
     }
 
 

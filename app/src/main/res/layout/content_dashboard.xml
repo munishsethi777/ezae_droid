@@ -24,47 +24,63 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:background="@color/White"
+                android:orientation="horizontal"
                 android:padding="8dp">
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_training_blue"
-                    android:background="@android:color/transparent"
-                    android:layout_weight="1"/>
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_achievement"
-                    android:background="@android:color/transparent"
-                    android:layout_weight="1"/>
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_messages_blue"
-                    android:background="@android:color/transparent"
-                    android:layout_weight="1"/>
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_chatroom_blue"
-                    android:background="@android:color/transparent"
-                    android:layout_weight="1"/>
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_notes_blue"
-                    android:background="@android:color/transparent"
-                    android:layout_weight="1"/>
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_tools_blue"
-                    android:background="@android:color/transparent"
-                    android:layout_weight="1"/>
 
+                <ImageButton
+                    android:id="@+id/imageView_trainings"
+                    android:onClick="onClick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_training_blue" />
 
+                <ImageButton
+                    android:id="@+id/imageView_achievements"
+                    android:onClick="onClick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_achievement" />
+
+                <ImageButton
+                    android:id="@+id/imageView_messages"
+                    android:onClick="onClick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_messages_blue" />
+
+                <ImageButton
+                    android:id="@+id/imageView_chat"
+                    android:onClick="onClick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_chatroom_blue" />
+
+                <ImageButton
+                    android:id="@+id/imageView_notes"
+                    android:onClick="onClick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_notes_blue" />
+
+                <ImageButton
+                    android:id="@+id/imageView_updateProfile"
+                    android:onClick="onClick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@mipmap/ic_tools_blue" />
             </LinearLayout>
 
             <LinearLayout
@@ -72,152 +88,168 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                tools:layout_constraintRight_creator="1"
-                tools:layout_constraintLeft_creator="1">
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintRight_creator="1">
 
                 <android.support.v7.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_margin="3dp">
+                    android:layout_margin="3dp"
+                    android:layout_weight="1">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/OrangeMain"
                         android:orientation="vertical">
+
                         <TextView
                             android:id="@+id/textView_score"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="2"
+                            android:gravity="bottom"
                             android:padding="5dp"
                             android:text="0"
-                            android:gravity="bottom"
                             android:textAlignment="center"
                             android:textColor="@color/White"
                             android:textSize="22sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:textColor="@color/White"
+                            android:text="Scores"
                             android:textAlignment="center"
-                            android:text="Scores"/>
+                            android:textColor="@color/White" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
+
                 <android.support.v7.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_margin="3dp">
+                    android:layout_margin="3dp"
+                    android:layout_weight="1">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/OrangeMain"
                         android:orientation="vertical">
+
                         <TextView
                             android:id="@+id/textView_profile_rank"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="2"
+                            android:gravity="bottom"
                             android:padding="5dp"
                             android:text="0"
-                            android:gravity="bottom"
                             android:textAlignment="center"
                             android:textColor="@color/White"
                             android:textSize="22sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:textColor="@color/White"
+                            android:text="Rank"
                             android:textAlignment="center"
-                            android:text="Rank"/>
+                            android:textColor="@color/White" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
+
                 <android.support.v7.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_margin="3dp">
+                    android:layout_margin="3dp"
+                    android:layout_weight="1">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/OrangeMain"
                         android:orientation="vertical">
+
                         <TextView
                             android:id="@+id/textView_pending_trainings"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="2"
+                            android:gravity="bottom"
                             android:padding="5dp"
                             android:text="0"
-                            android:gravity="bottom"
                             android:textAlignment="center"
                             android:textColor="@color/White"
                             android:textSize="22sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:textColor="@color/White"
+                            android:text="Pending"
                             android:textAlignment="center"
-                            android:text="Pending"/>
+                            android:textColor="@color/White" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
+
                 <android.support.v7.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_margin="3dp">
+                    android:layout_margin="3dp"
+                    android:layout_weight="1">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/OrangeMain"
                         android:orientation="vertical">
+
                         <TextView
                             android:id="@+id/textView_completed_trainings"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="2"
+                            android:gravity="bottom"
                             android:padding="5dp"
                             android:text="0"
-                            android:gravity="bottom"
                             android:textAlignment="center"
                             android:textColor="@color/White"
                             android:textSize="22sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:textColor="@color/White"
+                            android:text="Completed"
                             android:textAlignment="center"
-                            android:text="Completed"/>
+                            android:textColor="@color/White" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
-                tools:layout_constraintRight_creator="1"
-                tools:layout_constraintLeft_creator="1">
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintRight_creator="1">
 
                 <TextView
                     android:id="@+id/textViewNotifications"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0"
                     android:background="@color/BlueMain"
                     android:padding="8dp"
                     android:text="NOTIFICATIONS"
@@ -225,14 +257,14 @@
                     android:textColor="@android:color/background_light"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:layout_weight="0"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <LinearLayout
+                    android:id="@+id/layout_notifications"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/layout_notifications"
                     android:orientation="vertical"
                     app:layout_constraintTop_toBottomOf="@+id/activeLearningPlansContainer">
                     <!--<include layout="@layout/dashboard_notification_fragment"/>-->
@@ -242,6 +274,7 @@
                     android:id="@+id/textViewActiveLearningPlans"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0"
                     android:background="@color/BlueMain"
                     android:padding="8dp"
                     android:text="ACTIVE LEARNING PLANS"
@@ -249,26 +282,25 @@
                     android:textColor="@android:color/background_light"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:layout_weight="0"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewNotifications"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
+                    app:layout_constraintTop_toBottomOf="@+id/textViewNotifications" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/activeLearningPlansContainer"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-                android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintRight_toRightOf="parent"
-                tools:layout_constraintLeft_creator="1"
+                android:layout_marginStart="8dp"
+                android:orientation="vertical"
+                android:paddingTop="6dp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:paddingTop="6dp">
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+                tools:layout_constraintLeft_creator="1">
 
-                    <!--<include layout="@layout/dashboard_activeplan_fragment"/>-->
+                <!--<include layout="@layout/dashboard_activeplan_fragment"/>-->
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
