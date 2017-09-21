@@ -62,8 +62,10 @@ public class NotesEditor extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        Intent intent = new Intent(this,NotesActivity.class);
+        startActivity(intent);
         overridePendingTransition(R.anim.secondactivity_enter, R.anim.secondactivity_exit);
+        finish();
     }
     @Override
     public void onClick(View view) {
@@ -121,15 +123,9 @@ public class NotesEditor extends AppCompatActivity implements View.OnClickListen
                     String noteDetails = jsonObject.getString("details");
                     EditText notesDetails = (EditText) findViewById(R.id.noteDetails);
                     notesDetails.setText(noteDetails);
-
-                    //Button notesDetailsButton = (Button) findViewById(R.id.btnNoteDetails);
-                    //notesDetailsButton.setTag(R.string.noteSeq, noteSeq);
                 }else if(mCallName.equals(SAVE_NOTE_CALL)){
                     LayoutHelper.showToast(this,message);
                     onBackPressed();
-
-                    //Intent intent = new Intent(this,NotesActivity.class);
-                    //startActivity(intent);
                     overridePendingTransition(R.anim.secondactivity_enter, R.anim.secondactivity_exit);
                 }
             }
@@ -138,7 +134,7 @@ public class NotesEditor extends AppCompatActivity implements View.OnClickListen
             message = "Error :- " + e.getMessage();
         }
         if(message != null && !message.equals("")){
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
     }
     @Override

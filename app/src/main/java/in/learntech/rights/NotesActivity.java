@@ -15,12 +15,21 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.text.MessageFormat;
+
 import in.learntech.rights.Managers.UserMgr;
+import in.learntech.rights.services.ServiceHandler;
 import in.learntech.rights.utils.StringConstants;
 
 public class NotesActivity extends AppCompatActivity implements View.OnClickListener{
-    android.app.Fragment mFragment;
+
+    NotesFragment mFragment;
     Toolbar mToolbar;
+    int mDeletingNoteSeq;
+    UserMgr mUserMgr;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +51,7 @@ public class NotesActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        UserMgr mUserMgr = UserMgr.getInstance(this);
+        mUserMgr = UserMgr.getInstance(this);
         mFragment = NotesFragment.newInstance(mUserMgr);
         getFragmentManager().beginTransaction().replace(R.id.notesLayout,mFragment).commit();
 
@@ -66,13 +75,6 @@ public class NotesActivity extends AppCompatActivity implements View.OnClickList
 //        customSeekBar.addSeekBar(mSeekLin);
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.action_cancel).setVisible(false);
-        super.onPrepareOptionsMenu(menu);
-        return true;
-    }
-
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -83,8 +85,12 @@ public class NotesActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.btnNoteDetails:
+            case R.id.smContentView:
                 gotoNotedEditorActivity(view);
+                break;
+            case R.id.smMenuViewRight:
+                mDeletingNoteSeq= (int) view.getTag(R.string.noteSeq);
+                mFragment.deleteNote(mDeletingNoteSeq);
                 break;
             default:
                 break;
@@ -97,51 +103,7 @@ public class NotesActivity extends AppCompatActivity implements View.OnClickList
         intent.putExtra(StringConstants.NOTE_SEQ,noteSeq);
         startActivity(intent);
         overridePendingTransition(R.anim.firstactivity_enter, R.anim.firstactivity_exit);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.notes_menu, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_edit:
-                mToolbar.getMenu().findItem(R.id.action_edit).setVisible(false);
-                mToolbar.getMenu().findItem(R.id.action_cancel).setVisible(true);
-                showHideDeleteButtons(true);
-                break;
-            case R.id.action_cancel:
-                mToolbar.getMenu().findItem(R.id.action_edit).setVisible(true);
-                mToolbar.getMenu().findItem(R.id.action_cancel).setVisible(false);
-                showHideDeleteButtons(false);
-                break;
-            default:
-                onBackPressed();
-                break;
-        }
-        return true;
-    }
-
-    public void showHideDeleteButtons(boolean isShow) {
-        LinearLayout mainParentLayout = (LinearLayout)findViewById(R.id.notesLayout);
-        LinearLayout notesContainer = (LinearLayout)mainParentLayout.getChildAt(0);
-        for(int i=0;i<notesContainer.getChildCount();i++){
-            LinearLayout noteslayout = (LinearLayout)notesContainer.getChildAt(i);
-            Button delBtn = (Button)noteslayout.findViewById(R.id.btnNoteDelete);
-            Button detailBtn = (Button)noteslayout.findViewById(R.id.btnNoteDetails);
-            if(isShow) {
-                //detailBtn.animate().alpha(0).translationX(50).setDuration(100);
-                delBtn.setVisibility(View.VISIBLE);
-                delBtn.animate().alpha(1).translationX(-50).setDuration(100);
-            }else{
-                //detailBtn.animate().alpha(1).translationX(-50).setDuration(100);
-                delBtn.animate().alpha(0).translationX(50).setDuration(100);
-                delBtn.setVisibility(View.INVISIBLE);
-            }
-        }
-
+        finish();
     }
 
 }

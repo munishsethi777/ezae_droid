@@ -1,67 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/LightGrey"
-    android:paddingTop="5dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:paddingBottom="0dp">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <LinearLayout
+
+    <com.tubb.smrv.SwipeHorizontalMenuLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/sml"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@id/smContentView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:onClick="onClick"
+            android:layout_marginBottom="1dp"
+            android:padding="5dp"
+            android:background="@color/activity21ItemBg">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/colorMask"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@color/cardview_light_background"
+                android:padding="4dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:layout_gravity="top">
+                        <TextView
+                            android:id="@+id/notesHeader"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tony Ramirez"
+                            android:textSize="15dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="right"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_gravity="right"
+                            android:id="@+id/notesCreatedOn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="17:53"
+                            android:textColor="@color/Darkgrey"
+                            android:textSize="12sp"
+                            android:gravity="right"
+                            android:drawableRight="@mipmap/ic_clock_small"
+                            android:drawablePadding="2dp"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_right_black"
+                            android:layout_gravity="right"
+                            android:alpha="0.8"/>
+
+                    </LinearLayout>
+
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@id/smMenuViewRight"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_red_light"
             android:orientation="horizontal"
-            android:layout_weight="3">
-            <TextView
-                android:id="@+id/notesHeader"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:text="How to go through new Training"
-                android:textSize="16dp"
-                android:layout_gravity="start"/>
+            android:onClick="onClick">
 
-            <Button
-                android:id="@+id/btnNoteDetails"
-                android:layout_weight="1"
-                android:layout_width="0dp"
+            <ImageView
+                android:id="@+id/buttonDelete"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_right_black"
-                android:background="@android:color/transparent"
-                android:onClick="onClick"
-                android:layout_gravity="end"/>
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_close_white" />
 
-            <Button
-                android:id="@+id/btnNoteDelete"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_delete_black"
-                android:background="@android:color/transparent"
-                android:onClick="onClick"
-                android:visibility="visible"
-                android:alpha="1"/>
+        </RelativeLayout>
 
-        </LinearLayout>
-        <TextView
-            android:id="@+id/notesCreatedOn"
-            android:textColor="@color/DarkDarkgrey"
-            android:layout_marginBottom="3dp"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:textSize="12dp"
-            android:layout_gravity="left"
-            android:gravity="left"
-            android:text="01/01/17"
-            android:layout_marginLeft="2dp"
-            android:drawablePadding="@dimen/cardview_compat_inset_shadow"
-            android:drawableLeft="@mipmap/ic_clock_small"/>
-    </LinearLayout>
-    <View style="@style/Divider"/>
-</LinearLayout>
+    </com.tubb.smrv.SwipeHorizontalMenuLayout>
+
+
+
+

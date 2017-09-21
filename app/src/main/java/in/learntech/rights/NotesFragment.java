@@ -4,14 +4,19 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.tubb.smrv.SwipeHorizontalMenuLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,8 +44,7 @@ public class NotesFragment extends Fragment implements IServiceHandler {
     private static final String MESSAGE = "message";
     private int mUserSeq;
     private int mCompanySeq;
-    private LinearLayout mChildItemsLayout;
-    private LinearLayout mFragmentLayout;
+    private LinearLayout mNotesLayout;
     private LayoutInflater mInflater;
     private ViewGroup mContainer;
     private String mCallName;
@@ -75,8 +79,8 @@ public class NotesFragment extends Fragment implements IServiceHandler {
         // Inflate the layout for this fragment
         mInflater = inflater;
         mContainer = container;
-        mFragmentLayout =  (LinearLayout) inflater.inflate(R.layout.notes_fragment, container, false);
-        mFragmentLayout.removeAllViews();
+        ConstraintLayout mFragmentLayout =  (ConstraintLayout) inflater.inflate(R.layout.content_notes, container, false);
+        mNotesLayout = (LinearLayout) mFragmentLayout.findViewById(R.id.notesLayout);
         executeGetNotesCall();
         return mFragmentLayout;
     }
@@ -94,64 +98,42 @@ public class NotesFragment extends Fragment implements IServiceHandler {
     @Override
     public void processServiceResponse(JSONObject response) {
         mAuthTask = null;
-        //showProgress(false);
         boolean success = false;
         String message = null;
         try{
             success = response.getInt(SUCCESS) == 1 ? true : false;
             message = response.getString(MESSAGE);
-            if(success){
-                if(mCallName.equals(GET_ALL_NOTES)){
+            if(success) {
+                if (mCallName.equals(GET_ALL_NOTES)) {
                     JSONArray notesJsonArr = response.getJSONArray("notes");
-                    for (int i=0; i < notesJsonArr.length(); i++) {
+                    for (int i = 0; i < notesJsonArr.length(); i++) {
                         JSONObject jsonObject = notesJsonArr.getJSONObject(i);
                         int noteSeq = jsonObject.getInt("seq");
                         String noteDetails = jsonObject.getString("details");
                         String noteCreatedOn = jsonObject.getString("createdon");
 
-                        LinearLayout childLayout = (LinearLayout) mInflater.inflate(
+                        SwipeHorizontalMenuLayout swipeLayout = (SwipeHorizontalMenuLayout) mInflater.inflate(
                                 R.layout.notes_fragment, mContainer, false);
-                        childLayout.setId(noteSeq);
-                        TextView notesHeader = (TextView) childLayout.findViewById(R.id.notesHeader);
+                        swipeLayout.setId(noteSeq);
+                        TextView notesHeader = (TextView) swipeLayout.findViewById(R.id.notesHeader);
                         notesHeader.setText(noteDetails);
 
-                        TextView notesCreatedOn = (TextView) childLayout.findViewById(R.id.notesCreatedOn);
+                        TextView notesCreatedOn = (TextView) swipeLayout.findViewById(R.id.notesCreatedOn);
                         notesCreatedOn.setText(noteCreatedOn);
 
-                        Button notesDetailsButton = (Button) childLayout.findViewById(R.id.btnNoteDetails);
-                        notesDetailsButton.setTag(R.string.noteSeq, noteSeq);
+                        RelativeLayout contentRL = (RelativeLayout) swipeLayout.findViewById(R.id.smContentView);
+                        contentRL.setTag(R.string.noteSeq, noteSeq);
 
-                        Button notesDeleteButton = (Button) childLayout.findViewById(R.id.btnNoteDelete);
-                        notesDeleteButton.setVisibility(View.INVISIBLE);
-                        notesDeleteButton.setTag(R.string.noteSeq, noteSeq);
-                        notesDeleteButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(final View v) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                                builder.setTitle("Delete Note");
-                                builder.setMessage("Do you really want to delete the Note?");
-                                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        deleteNoteAction(v);
-                                    }
-                                });
-                                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                                AlertDialog alert = builder.create();
-                                alert.show();
-                            }
-                        });
-                        mFragmentLayout.addView(childLayout);
+                        RelativeLayout deleteRL = (RelativeLayout) swipeLayout.findViewById(R.id.smMenuViewRight);
+                        deleteRL.setTag(R.string.noteSeq, noteSeq);
+
+                        mNotesLayout.addView(swipeLayout);
                     }
-                }else if(mCallName.equals(DELETE_NOTE)){
+                } else if (mCallName.equals(DELETE_NOTE)) {
                     int noteSeq = response.getInt("noteSeq");
-                    LinearLayout layout = (LinearLayout)getActivity().findViewById(noteSeq);
-                    mFragmentLayout.removeView(layout);
-                    LayoutHelper.showToast(getActivity(),"Deleted Successfully");
+                    SwipeHorizontalMenuLayout layout = (SwipeHorizontalMenuLayout) getActivity().findViewById(noteSeq);
+                    mNotesLayout.removeView(layout);
+                    LayoutHelper.showToast(getActivity(), "Deleted Successfully");
                 }
             }
         }catch (Exception e){
@@ -168,8 +150,27 @@ public class NotesFragment extends Fragment implements IServiceHandler {
         mCallName = call;
     }
 
-    private void deleteNoteAction(View view){
-        int noteSeq = (int)view.getTag(R.string.noteSeq);
+    public void deleteNote(final int noteSeq) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Delete Note");
+        builder.setMessage("Do you really want to delete the Note?");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                deleteNoteAction(noteSeq);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public void deleteNoteAction(int noteSeq){
         Object[] args = {mUserSeq,mCompanySeq,noteSeq};
         String deleteNoteURL = MessageFormat.format(StringConstants.DELETE_NOTE,args);
         mAuthTask = new ServiceHandler(deleteNoteURL,this,DELETE_NOTE,getActivity());
