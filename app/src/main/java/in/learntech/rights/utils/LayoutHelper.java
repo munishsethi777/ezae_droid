@@ -80,6 +80,10 @@ public class LayoutHelper {
             if (score.equals("null")) {
                 score = "0";
             }
+            if(moduleImage != null && moduleImage != "null" && !moduleImage.isEmpty()){
+            }else{
+                moduleImage = "dummy.jpg";
+            }
             String imageUrl = StringConstants.IMAGE_URL + "modules/" + moduleImage;
             LinearLayout moduleInternalLayout = (LinearLayout)
                      mInflater.inflate(R.layout.my_training_module_fragment, mContainer, false);

@@ -151,7 +151,6 @@ public class NotesFragment extends Fragment implements IServiceHandler {
     }
 
     public void deleteNote(final int noteSeq) {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Delete Note");
         builder.setMessage("Do you really want to delete the Note?");
