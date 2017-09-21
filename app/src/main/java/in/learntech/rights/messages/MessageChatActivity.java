@@ -131,19 +131,22 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
                 mMessageModel.getChattingUserSeq(),mMessageModel.getChattingUserType(),afterMessageSeq};
         String url = MessageFormat.format(StringConstants.GET_MESSAGE_DETAILS,args);
         mAuthTask = new ServiceHandler(url,this,GET_MESSAGE_DETAILS,this);
+        mAuthTask.setShowProgress(false);
         mAuthTask.execute();
     }
 
     public void executeSendMessageCall(){
         EditText composeMessageText = (EditText)findViewById(R.id.messageText);
         String messageStr = URLEncoder.encode(String.valueOf(composeMessageText.getText()));
-
-        MessageChatModel lastMCM = rowListItem.get(rowListItem.size()-1);
-        Object[] args = {mUserMgr.getLoggedInUserSeq(),mUserMgr.getLoggedInUserCompanySeq(),
-                mMessageModel.getChattingUserSeq(),mMessageModel.getChattingUserType(), messageStr,lastMCM.getSeq()};
-        String url = MessageFormat.format(StringConstants.SEND_MESSAGE_CHAT,args);
-        mAuthTask = new ServiceHandler(url,this,SEND_MESSAGE_CHAT,this);
-        mAuthTask.execute();
+        if(messageStr != "" && messageStr != null) {
+            MessageChatModel lastMCM = rowListItem.get(rowListItem.size() - 1);
+            Object[] args = {mUserMgr.getLoggedInUserSeq(), mUserMgr.getLoggedInUserCompanySeq(),
+                    mMessageModel.getChattingUserSeq(), mMessageModel.getChattingUserType(), messageStr, lastMCM.getSeq()};
+            String url = MessageFormat.format(StringConstants.SEND_MESSAGE_CHAT, args);
+            mAuthTask = new ServiceHandler(url, this, SEND_MESSAGE_CHAT, this);
+            mAuthTask.setShowProgress(false);
+            mAuthTask.execute();
+        }
     }
 
 
