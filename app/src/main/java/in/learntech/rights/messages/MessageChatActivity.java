@@ -28,6 +28,8 @@ import in.learntech.rights.utils.StringConstants;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 public class MessageChatActivity extends AppCompatActivity implements View.OnClickListener,
                                     MessageClickListener,IServiceHandler {
@@ -44,6 +46,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
     MessageChatAdapter rcAdapter;
     RecyclerView rView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +62,6 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
         }
         TextView toolBarUserName = (TextView)toolbar.findViewById(R.id.name);
         toolBarUserName.setText(mMessageModel.getChattingUser());
-
-
 
         ImageView toolBarUserImage = (ImageView)toolbar.findViewById(R.id.userImage);
         Glide.with(getApplicationContext())
@@ -80,8 +81,31 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
         rcAdapter = new MessageChatAdapter(this, rowListItem);
         rView.setAdapter(rcAdapter);
         rcAdapter.setClickListener(this);
-        //rView.smoothScrollToPosition(rowListItem.size()-1);
         executeGetMessageDetailsCall();
+        refreshChatUI();
+    }
+
+    private void refreshChatUI(){
+        Thread t = new Thread() {
+
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(6000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                executeGetMessageDetailsCall();
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
+
+        t.start();
     }
 
 
@@ -97,8 +121,14 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void executeGetMessageDetailsCall(){
+        int afterMessageSeq = 0;
+        if(rowListItem.size()>0){
+            MessageChatModel lastMCM = rowListItem.get(rowListItem.size()-1);
+            afterMessageSeq = lastMCM.getSeq();
+        }
+
         Object[] args = {mUserMgr.getLoggedInUserSeq(),mUserMgr.getLoggedInUserCompanySeq(),
-                mMessageModel.getChattingUserSeq(),mMessageModel.getChattingUserType(),0};
+                mMessageModel.getChattingUserSeq(),mMessageModel.getChattingUserType(),afterMessageSeq};
         String url = MessageFormat.format(StringConstants.GET_MESSAGE_DETAILS,args);
         mAuthTask = new ServiceHandler(url,this,GET_MESSAGE_DETAILS,this);
         mAuthTask.execute();
@@ -133,6 +163,8 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
                 }else if(mCallName.equals(SEND_MESSAGE_CHAT)){
                     JSONArray chatJsonArr = response.getJSONArray("messages");
                     addMessagesChatModel(chatJsonArr);
+                    EditText composeMessageText = (EditText)findViewById(R.id.messageText);
+                    composeMessageText.setText("");
                 }
             }
         }catch (Exception e){
@@ -164,6 +196,8 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
             TextView toolBarLastTime = (TextView)toolbar.findViewById(R.id.timeLastViews);
             toolBarLastTime.setText(lastMCM.getTime());
 
+            rView.getRecycledViewPool().clear();
+            rcAdapter.notifyDataSetChanged();
             rcAdapter.notifyItemInserted(rowListItem.size()-1);
             rView.smoothScrollToPosition(rowListItem.size()-1);
         }catch(Exception e) {
@@ -188,4 +222,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
         //int pos = position + 1;
         //Toast.makeText(this, "Position " + pos + " clicked!", Toast.LENGTH_SHORT).show();
     }
+
+
 }
+
