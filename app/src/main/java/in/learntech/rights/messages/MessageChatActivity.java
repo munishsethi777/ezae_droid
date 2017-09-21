@@ -45,7 +45,19 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
     ArrayList<MessageChatModel> rowListItem;
     MessageChatAdapter rcAdapter;
     RecyclerView rView;
+    Thread refreshThread;
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        refreshThread.interrupt();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        refreshThread.interrupt();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +98,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void refreshChatUI(){
-        Thread t = new Thread() {
-
+        refreshThread = new Thread() {
             @Override
             public void run() {
                 try {
@@ -104,8 +115,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         };
-
-        t.start();
+        refreshThread.start();
     }
 
 

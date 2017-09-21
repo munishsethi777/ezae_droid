@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/White"
                 android:orientation="horizontal"
-                android:padding="8dp">
+                android:padding="2dp">
 
                 <ImageButton
                     android:id="@+id/imageView_trainings"
