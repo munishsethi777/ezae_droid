@@ -1,14 +1,19 @@
 package in.learntech.rights.utils;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
+import android.text.InputType;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +23,10 @@ import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import in.learntech.rights.R;
 
@@ -161,4 +170,53 @@ public class LayoutHelper {
         }
         return  mergedJsonArr;
     }
+
+    public LinearLayout getViewByType(String viewType,String value){
+        LinearLayout textTypeLayout = (LinearLayout) mInflater.inflate(R.layout.edit_text, null);
+        final EditText editText = (EditText) textTypeLayout.getChildAt(1);
+        final Calendar myCalendar = Calendar.getInstance();
+        if(viewType.toLowerCase().equals("date")){
+            if(value != null && !value.isEmpty()){
+                int spacePos = value.indexOf(" ");
+                if (spacePos > 0) {
+                    value= value.substring(0, spacePos);
+                }
+                String[] date = value.split("/");
+                myCalendar.set(Calendar.YEAR, Integer.valueOf(date[2]));
+                myCalendar.set(Calendar.MONTH, Integer.valueOf(date[0])-1);
+                myCalendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(date[1]));
+            }
+            final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+                @Override
+                public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                      int dayOfMonth) {
+                    // TODO Auto-generated method stub
+                    myCalendar.set(Calendar.YEAR, year);
+                    myCalendar.set(Calendar.MONTH, monthOfYear);
+                    myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    String myFormat = "MM/dd/yyyy"; //In which you need put here
+                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
+                    editText.setText(sdf.format(myCalendar.getTime()));
+                }
+            };
+
+            editText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    new DatePickerDialog(mActivity, date, myCalendar
+                            .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                            myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                }
+            });
+            editText.setFocusable(false);
+            editText.setFocusableInTouchMode(false);
+            editText.setText(value);
+        }else if(viewType.toLowerCase().equals("numeric")){
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        }
+        return textTypeLayout;
+    }
+
 }

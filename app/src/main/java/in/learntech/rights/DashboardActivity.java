@@ -2,7 +2,6 @@ package in.learntech.rights;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.progresviews.ProgressWheel;
-import com.google.android.gms.ads.formats.NativeAd;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -163,7 +161,8 @@ public class DashboardActivity extends AppCompatActivity
             Intent notesIntent = new Intent(this,NotesActivity.class);
             startActivity(notesIntent);
         } else if (id == R.id.nav_update_profile) {
-
+            Intent notesIntent = new Intent(this,UpdateProfileActivity.class);
+            startActivity(notesIntent);
         } else if (id == R.id.nav_logout) {
             logout();
         } else if(id == R.id.nav_change_password){
