@@ -118,9 +118,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
                 success = response.getInt("success") == 1 ? true : false;
                 message = response.getString("message");
                 if(success){
-                    mCurrentPasswordView.setText(null);
-                    mNewPasswordView.setText(null);
-                    mConfirmPasswordView.setText(null);
+                    resetViews();
                 }
             }catch (Exception e){
                 message = "Error :- " + e.getMessage();
@@ -137,6 +135,8 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
     public void setCallName(String call) {}
 
     private void resetViews(){
-
+        mCurrentPasswordView.setText(null);
+        mNewPasswordView.setText(null);
+        mConfirmPasswordView.setText(null);
     }
 }
