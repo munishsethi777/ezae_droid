@@ -45,7 +45,7 @@ public class LayoutHelper {
 
     }
     public void jsonToModuleLayout(JSONArray modulesJsonArr, LinearLayout mParentLayout) throws Exception {
-        int moduleCardMargins = 36;
+        int moduleCardMargins = 10;
         int count = modulesJsonArr.length();
         for (int i = 0; i < count; i++) {
             JSONObject jsonObject = modulesJsonArr.getJSONObject(i);

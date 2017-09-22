@@ -102,7 +102,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/OrangeMain"
+                        android:background="@drawable/drawer_gradient"
                         android:orientation="vertical">
 
                         <TextView
@@ -115,7 +115,7 @@
                             android:text="0"
                             android:textAlignment="center"
                             android:textColor="@color/White"
-                            android:textSize="22sp"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -137,7 +137,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/OrangeMain"
+                        android:background="@drawable/drawer_gradient"
                         android:orientation="vertical">
 
                         <TextView
@@ -150,7 +150,7 @@
                             android:text="0"
                             android:textAlignment="center"
                             android:textColor="@color/White"
-                            android:textSize="22sp"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -172,7 +172,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/OrangeMain"
+                        android:background="@drawable/drawer_gradient"
                         android:orientation="vertical">
 
                         <TextView
@@ -185,7 +185,7 @@
                             android:text="0"
                             android:textAlignment="center"
                             android:textColor="@color/White"
-                            android:textSize="22sp"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -207,7 +207,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/OrangeMain"
+                        android:background="@drawable/drawer_gradient"
                         android:orientation="vertical">
 
                         <TextView
@@ -220,7 +220,7 @@
                             android:text="0"
                             android:textAlignment="center"
                             android:textColor="@color/White"
-                            android:textSize="22sp"
+                            android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
