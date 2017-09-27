@@ -9,68 +9,112 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="in.learntech.rights.UserTrainingActivity"
     android:background="@color/profile16background">
-
-    <TextView
-        android:id="@+id/textView_question"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/button_blue"
-        android:padding="10dp"
-        android:text="Question title"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
     <LinearLayout
-        android:id="@+id/optionsLayout"
-        android:padding="8dp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_question">
-    </LinearLayout>
-    <TextView
-        android:id="@+id/textView_feedbackError"
-        android:layout_width="304dp"
-        android:layout_height="wrap_content"
-        android:background="@color/FeedbackRed"
-        android:text="Feedback text"
-        android:visibility="invisible"
-        android:textAlignment="center"
-        android:padding="4dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/optionsLayout" />
-    <TextView
-        android:id="@+id/textView_feedbackSuccess"
-        android:layout_width="304dp"
-        android:layout_height="wrap_content"
-        android:background="@color/FeedbackGreen"
-        android:text="Feedback text"
-        android:visibility="invisible"
-        android:textAlignment="center"
-        android:padding="4dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_feedbackError"
-        android:layout_marginTop="0dp" />
-    <Button
-        android:id="@+id/button_submit_progress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="SUBMIT"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        android:textColor="@color/White"
-        android:layout_gravity="bottom"
-        style="@style/ButtonYellow"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
 
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintLeft_creator="1">
+        <LinearLayout
+            android:id="@+id/questionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/answersLayout">
+            <TextView
+                android:id="@+id/textView_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/button_blue"
+                android:padding="10dp"
+                android:text="Question title"
+                android:textStyle="bold"
+                android:textSize="18dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/answersLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/questionLayout"
+            app:layout_constraintBottom_toTopOf="@+id/submitButtonLayout"
+            android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/optionsLayout"
+                    android:padding="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+                <WebView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/webView"
+                    android:visibility="gone">
+                <TextView
+                    android:id="@+id/textView_feedbackError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/FeedbackRed"
+                    android:text="Feedback text"
+                    android:visibility="invisible"
+                    android:textAlignment="center"
+                    android:padding="4dp" />
+                <TextView
+                    android:id="@+id/textView_feedbackSuccess"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/FeedbackGreen"
+                    android:text="Feedback text"
+                    android:visibility="invisible"
+                    android:textAlignment="center"
+                    android:padding="4dp"/>
+
+
+                </WebView>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/submitButtonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="end">
+            <Button
+                android:id="@+id/button_submit_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SUBMIT"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:textColor="@color/White"
+                style="@style/ButtonYellow"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                 />
+        </LinearLayout>
+        <!--<Button-->
+            <!---->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="SUBMIT"-->
+            <!--android:textSize="16dp"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textColor="@color/White"-->
+            <!--style="@style/ButtonYellow"-->
+            <!--android:layout_margin="@dimen/activity_horizontal_margin"-->
+            <!--app:layout_constraintRight_toRightOf="parent"-->
+            <!--app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--tools:layout_editor_absoluteY="0dp" />-->
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

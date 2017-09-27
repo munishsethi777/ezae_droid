@@ -10,6 +10,9 @@ public class StringConstants {
     public static final String CONNECTION_ERROR = "Connection Error.Please check network connection.";
     public static final String PREFS_NAME = "LoginAuth";
     public static final String LOGGED_IN_USER_SEQ = "loggedInUserSeq";
+    public static final String NOTIFICATION_STATE = "notificationState";
+    public static final String NOTIFICATION_ENTITY_SEQ = "notificationEntitySeq";
+    public static final String NOTIFICATION_ENTITY_TYPE = "notificationEntityType";
     public static final String LOGGED_IN_USER_COMPANY_SEQ = "loggedInUserCompanySeq";
     public static  final String VERSION = "versionCode";
     public static final String SHORTCUT = "SHORTCUT";
@@ -26,6 +29,7 @@ public class StringConstants {
     //APPLICATION URL
     public static final String WEB_URL = "http://www.ezae.in/";
     public static final String IMAGE_URL = "http://www.ezae.in/images/";
+    public static final String DOC_URL = WEB_URL + "docs/moduledocs/";
 
 
     //User Actions
