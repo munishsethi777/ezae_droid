@@ -15,14 +15,14 @@ public class CustomSeekBar {
     Context mContext;
     LinearLayout mSeekLin;
     SeekBar mSeekBar;
+    int mSelectedValue;
     ArrayMap<Integer,String> itemsMap;
     public CustomSeekBar(Context context, ArrayMap<Integer,String> itemsMap, int textColor) {
         this.mContext = context;
         this.textColor = textColor;
         this.itemsMap = itemsMap;
     }
-
-    public void addSeekBar(LinearLayout parent) {
+    public void addSeekBar(LinearLayout parent,int selectedProgress) {
 
         if (parent instanceof LinearLayout) {
 
@@ -41,7 +41,7 @@ public class CustomSeekBar {
             params.setMargins(35, 10, 35, 0);
             mSeekLin.setLayoutParams(params);
 
-
+            mSelectedValue = selectedProgress;
             addLabelsBelowSeekBar();
             parent.addView(mSeekBar);
             parent.addView(mSeekLin);
@@ -53,7 +53,11 @@ public class CustomSeekBar {
     }
 
     private void addLabelsBelowSeekBar() {
+        int i = 0;
         for(Map.Entry<Integer,String> entry : itemsMap.entrySet()){
+            if(entry.getKey().equals(mSelectedValue)){
+                mSeekBar.setProgress(i);
+            }
             TextView textView = new TextView(mContext);
             textView.setId(entry.getKey());
             textView.setText(String.valueOf(entry.getValue()));
@@ -65,7 +69,8 @@ public class CustomSeekBar {
             }else{
                 textView.setLayoutParams(getLayoutParams(1.0f));
             }
-         }
+            i++;
+        }
 
     }
 
@@ -73,5 +78,13 @@ public class CustomSeekBar {
         return new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT, weight);
+    }
+
+    public SeekBar getSeekBar(){
+        return mSeekBar;
+    }
+
+    public LinearLayout getSeekBarLayout(){
+        return mSeekLin;
     }
 }

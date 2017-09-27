@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:allowBackup="true"
@@ -13,6 +15,21 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver
+            android:name=".BroadcastReceiver.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="in.learntech.rights" />
+            </intent-filter>
+        </receiver>
+        <service android:name=".BroadcastReceiver.GcmIntentService" />
+        <receiver android:name=".BroadcastReceiver.InstallReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,6 +57,7 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".NotesActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_notes"
             android:theme="@style/AppTheme" />
         <activity
@@ -56,7 +74,7 @@
             android:name=".messages.MessageActivity"
             android:configChanges="orientation|screenSize"
             android:label="Messageactivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".messages.MessageChatActivity"
             android:configChanges="orientation|screenSize"
@@ -64,8 +82,9 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".UpdateProfileActivity"
-            android:label="@string/title_activity_update_profile"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_update_profile" />
+        <activity android:name=".WebActivity"></activity>
     </application>
 
 </manifest>
