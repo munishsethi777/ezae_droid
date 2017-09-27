@@ -28,6 +28,7 @@ import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
 import in.learntech.rights.utils.LayoutHelper;
+import in.learntech.rights.utils.PreferencesUtil;
 import in.learntech.rights.utils.StringConstants;
 
 
@@ -39,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String mGcmid;
     private ServiceHandler mAuthTask = null;
     private UserMgr mUserMgr;
-
+    private PreferencesUtil mPreferencesUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mUsernameView = (EditText) findViewById(R.id.username_view);
         mUserMgr = UserMgr.getInstance(this);
         int loggedInUserSeq = mUserMgr.getLoggedInUserSeq();
+        mPreferencesUtil = PreferencesUtil.getInstance(getApplicationContext());
         if(loggedInUserSeq > 0){
             goToDashboardActivity();
         }
@@ -151,7 +153,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
                     }
                     InstanceID instanceID = InstanceID.getInstance(getApplicationContext());
-                    regid = instanceID.getToken("18881196144",
+                    regid = instanceID.getToken("219467382005",
                             GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
                     // Persist the regID - no need to register again.
                     //storeRegistrationId(getContext(), regid);
@@ -219,8 +221,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     private void goToDashboardActivity(){
-        Intent intent = new Intent(this,DashboardActivity.class);
-        startActivity(intent);
-        finish();
+        boolean isNotificationStateOn = mPreferencesUtil.isNotificationState();
+        if(isNotificationStateOn){
+            Object data[] = mPreferencesUtil.getNotificationData();
+            String entityType = data[1].toString();
+            Integer entitySeq = Integer.parseInt(data[0].toString());
+            if(entityType.equals("module")) {
+                Intent newIntent = new Intent(this,UserTrainingActivity.class);
+                newIntent.putExtra(StringConstants.LP_SEQ,0);
+                newIntent.putExtra(StringConstants.MODULE_SEQ,entitySeq);
+                mPreferencesUtil.resetNotificationData();
+                startActivity(newIntent);
+                finish();
+            }
+        }else{
+            Intent intent = new Intent(this,DashboardActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 }
