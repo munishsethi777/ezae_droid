@@ -2,7 +2,7 @@ package in.learntech.rights;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -11,17 +11,21 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
 import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
+import android.util.ArrayMap;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +38,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import in.learntech.rights.Controls.SwipeDirection;
@@ -44,6 +47,7 @@ import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
 import in.learntech.rights.utils.LayoutHelper;
 import in.learntech.rights.utils.StringConstants;
+import in.learntech.rights.utils.seekbar.CustomSeekBar;
 import in.learntech.rights.utils.sorting.ListFragment;
 
 /**
@@ -60,6 +64,12 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     public static final String SAVE_ACTIVITY = "saveActivity";
     public static final String SAVE_QUIZ_PROGRESS = "saveQuizProgress";
     public static final String SUBMITTED_SUCCESSFULLY = "Submitted successfully";
+    public static final String SEQUENCING = "sequencing";
+    public static final String WEB_PAGE = "web_page";
+    public static final String DOC = "doc";
+    public static final String MEDIA = "media";
+    public static final String LIKAT_SCALE = "likartScale";
+    public static final String ESTIMATE_PERCENTAGE = "estimatePercentage";
     public int wizard_page_position;
     private Activity mActivity;
     private JSONArray mQuizProgress;
@@ -75,7 +85,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     private JSONObject mModuleJson;
     private UserTrainingActivity mParentActivity;
     private JSONArray allQuestions ;
-    private TextView textView_long_question;
+    private TextView mTextView_Long_question;
     private Switch switchYesNo;
     private ListFragment listFragment;
     private ServiceHandler mAuthTask;
@@ -87,6 +97,8 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     private TextView textVew_feedback_error;
     List<String> feedbacks_success_list;
     List<String> feedbacks_error_list;
+    private String mModuleType;
+    private String mAnswerText;
     private RadioGroup radioGroup;
     public  UserTrainingFragment(int position,JSONObject moduleJson) {
         this.wizard_page_position = position;
@@ -123,14 +135,23 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             isQuizProgressExists = mQuizProgress.length() > 0;
             mParentActivity = (UserTrainingActivity)getActivity();
             mSelectedAnsSeqs =  new ArrayList();
+            mModuleType = mModuleJson.getString("moduletype");
             if(mQuestionType.equals(SINGLE) || mQuestionType.equals(MULTI)){
                 addSingleMultiOptionsViews();
             }else if(mQuestionType.equals(LONG_QUESTION)){
                 addLongQuestionView();
             }else if(mQuestionType.equals(YES_NO)){
                 addYesNoViews();
-            }else if(mQuestionType.equals("sequencing")){
+            }else if(mQuestionType.equals(SEQUENCING)){
                 addSequencesViewFragment();
+            }else if(mQuestionType.equals(WEB_PAGE) ||
+                    mQuestionType.equals(DOC) ||
+                    mQuestionType.equals(MEDIA)){
+                    addWebView();
+            }else if(mQuestionType.equals(LIKAT_SCALE)){
+                addCustomSeekBar();
+            }else if(mQuestionType.equals(ESTIMATE_PERCENTAGE)){
+                addSeekBar();
             }
             textView_question.setText(wizard_page_position + 1 + ". " +currentQuestion.getString("title") + " ?");
             addButton();
@@ -179,20 +200,20 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             selectedAnsText = progress.getString("answerText");
             feedbacks_success_list.add(SUBMITTED_SUCCESSFULLY);
         }
-        textView_long_question = new EditText(mActivity);
-        textView_long_question.setSingleLine(false);
-        textView_long_question.setImeOptions(EditorInfo.IME_FLAG_NO_ENTER_ACTION);
-        textView_long_question.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        textView_long_question.setLines(10);
-        textView_long_question.setVerticalScrollBarEnabled(true);
-        textView_long_question.setMovementMethod(ScrollingMovementMethod.getInstance());
-        textView_long_question.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
-        textView_long_question.setText(selectedAnsText);
-        textView_long_question.setId(R.id.textView_long_question);
-        textView_long_question.setTextSize(14);
-        textView_long_question.setEnabled(!isQuizProgressExists);
-        textView_long_question.setGravity(Gravity.TOP);
-        mOptionsLayout.addView(textView_long_question);
+        mTextView_Long_question = new EditText(mActivity);
+        mTextView_Long_question.setSingleLine(false);
+        mTextView_Long_question.setImeOptions(EditorInfo.IME_FLAG_NO_ENTER_ACTION);
+        mTextView_Long_question.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        mTextView_Long_question.setLines(10);
+        mTextView_Long_question.setVerticalScrollBarEnabled(true);
+        mTextView_Long_question.setMovementMethod(ScrollingMovementMethod.getInstance());
+        mTextView_Long_question.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
+        mTextView_Long_question.setText(selectedAnsText);
+        mTextView_Long_question.setId(R.id.textView_long_question);
+        mTextView_Long_question.setTextSize(14);
+        mTextView_Long_question.setEnabled(!isQuizProgressExists);
+        mTextView_Long_question.setGravity(Gravity.TOP);
+        mOptionsLayout.addView(mTextView_Long_question);
     }
 
     private void addSingleMultiOptionsViews()throws Exception{
@@ -269,6 +290,104 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
         transaction.replace(R.id.optionsLayout, listFragment, "fragment").commit();
     }
 
+    private void addCustomSeekBar()throws Exception{
+        ArrayMap<Integer,String> itemsMap = new ArrayMap<>();
+        int selectedValue = 0;
+        if(isQuizProgressExists){
+            JSONObject progress = mQuizProgress.getJSONObject(0);
+            selectedValue = progress.getInt("answerSeq");
+            feedbacks_success_list.add("Submitted");
+        }else {
+            JSONObject defaultAns = mAnswers.getJSONObject(0);
+            selectedValue = defaultAns.getInt("seq");
+        }
+        mSelectedAnsSeqs.add(selectedValue);
+        for(int i =0;i<mAnswers.length();i++) {
+            JSONObject ans = mAnswers.getJSONObject(i);
+            itemsMap.put(ans.getInt("seq"), ans.getString("title"));
+        }
+        CustomSeekBar customSeekBar = new CustomSeekBar(getActivity().getApplicationContext(),itemsMap,Color.DKGRAY);
+        customSeekBar.addSeekBar(mOptionsLayout,selectedValue);
+        SeekBar seekBar = customSeekBar.getSeekBar();
+        final LinearLayout seekBarLayoutBar = customSeekBar.getSeekBarLayout();
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                TextView textView = (TextView)seekBarLayoutBar.getChildAt(i);
+                int selectedAnsSeq = textView.getId();
+                mSelectedAnsSeqs.clear();
+                mSelectedAnsSeqs.add(selectedAnsSeq);
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+        if(isQuizProgressExists){
+            seekBar.setOnTouchListener(new View.OnTouchListener(){
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
+        }
+    }
+
+    private void addWebView()throws Exception{
+        String detail = currentQuestion.getString("detail");
+        WebView webView = (WebView) mParentLayout.findViewById(R.id.webView);
+        webView.setVisibility(View.VISIBLE);
+        webView.getSettings().setJavaScriptEnabled(true);
+        if(mQuestionType.equals(DOC)){
+            String url = "http://docs.google.com/gview?url="+StringConstants.DOC_URL+detail+"&embedded=true";
+            webView.loadUrl(url);
+        }else{
+            webView.loadData(detail,"text/html; charset=utf-8", "utf-8");
+        }
+    }
+
+    private void addSeekBar()throws Exception {
+        SeekBar seekBar = new SeekBar(getActivity());
+        seekBar.setMax(100);
+        final TextView textView = new TextView(getActivity());
+        textView.setText("0");
+        ViewGroup.LayoutParams params = textView.getLayoutParams();
+        textView.setTextSize(15);
+        seekBar.setOnSeekBarChangeListener(
+                new SeekBar.OnSeekBarChangeListener() {
+                       @Override
+                       public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                           setSeekBarTextLocation(progress,seekBar,textView);
+                           //textView.setY(100); just added a value set this properly using screen with height aspect ratio , if you do not set it by default it will be there below seek bar
+                           mTextView_Long_question = textView;
+                       }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+                });
+        mOptionsLayout.addView(seekBar);
+        mOptionsLayout.addView(textView);
+        if(isQuizProgressExists){
+            JSONObject progress = mQuizProgress.getJSONObject(0);
+            int progressValue = progress.getInt("answerText");
+            seekBar.setProgress(progressValue);
+            setSeekBarTextLocation(progressValue,seekBar,textView);
+            enableDisableAllViews(false);
+        }
+    }
+    private void setSeekBarTextLocation(int progress,SeekBar seekBar,TextView textView){
+        int val = (progress * (seekBar.getWidth() - 4 * seekBar.getThumbOffset())) / seekBar.getMax();
+        textView.setText("" + progress);
+        textView.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
+    }
     private boolean addSortedItemSeq()throws Exception{
         ArrayList<Pair<Long,String>> itemList = listFragment.getSortedItemArray();
         int i = 0;
@@ -323,17 +442,18 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
 
     public void saveProgress(JSONObject currentQuestion,boolean isTimeUp){
         try {
-            String questionType = currentQuestion.getString("type");
             Integer score = 0;
             HashMap<Integer,Integer> scores = new HashMap<>();
-            if(!isTimeUp) {
-                if (questionType.equals("longQuestion")) {
-                    String ansText = textView_long_question.getText().toString();
+            if(isTimeUp || mQuestionType.equals(WEB_PAGE) || mQuestionType.equals(DOC) || mQuestionType.equals(MEDIA)) {
+                mQuesProgressMgr.saveQuestionProgress(currentQuestion, null, score, mParentActivity.mStartDate,isTimeUp);
+            }else{
+                if (mQuestionType.equals(LONG_QUESTION) || mQuestionType.equals(ESTIMATE_PERCENTAGE)) {
+                    String ansText = mTextView_Long_question.getText().toString();
                     score = currentQuestion.getInt("maxMarks");
                     mQuesProgressMgr.saveQuestionProgress(currentQuestion, ansText, score, mParentActivity.mStartDate,isTimeUp);
                     feedbacks_success_list.add(SUBMITTED_SUCCESSFULLY);
                 } else {
-                    if (questionType.equals("yesNo")) {
+                    if (mQuestionType.equals(YES_NO)) {
                         String ansTitle = "no";
                         if (switchYesNo.isChecked()) {
                             ansTitle = "yes";
@@ -342,7 +462,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
                         Object seq = ans.get("seq");
                         mSelectedAnsSeqs.add(0, seq);
                     }
-                    if (questionType.equals("sequencing")) {
+                    if (mQuestionType.equals(SEQUENCING)) {
                         boolean isInRightOrder = addSortedItemSeq();
                         if (isInRightOrder) {
                             score = currentQuestion.getInt("maxMarks");
@@ -353,10 +473,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
                         scores = getSelectedAnswersScore();
                     }
                     mQuesProgressMgr.saveQuestionProgress(currentQuestion, mSelectedAnsSeqs, scores, mParentActivity.mStartDate);
-
                 }
-            }else{
-                mQuesProgressMgr.saveQuestionProgress(currentQuestion, null, score, mParentActivity.mStartDate,isTimeUp);
             }
             handleSubmitButton(true);
             if((!isTimeUp && wizard_page_position == allQuestions.length()-1)
@@ -398,6 +515,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
                 Object[] args = {mUserSeq,mCompanySeq,jsonString};
                 String notificationUrl = MessageFormat.format(StringConstants.SAVE_ACTIVITY, args);
                 mAuthTask = new ServiceHandler(notificationUrl, this, SAVE_ACTIVITY, getActivity());
+                mAuthTask.setShowProgress(false);
                 mAuthTask.execute();
             } catch (Exception e) {
                 LayoutHelper.showToast(getActivity(), e.getMessage());
@@ -461,46 +579,55 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     private HashMap<Integer,Integer> getSelectedAnswersScore()throws Exception{
         HashMap<Integer,Integer> scores = new HashMap<Integer,Integer>() ;
         for(Object ansSeq : mSelectedAnsSeqs){
-            int seq = Integer.parseInt((String)ansSeq);
+            int seq = Integer.parseInt(ansSeq.toString());
             JSONObject ans = getAnswerBySeqFromArr(seq);
             int score = ans.getInt("marks");
             scores.put(seq,score);
             String feedback = ans.getString("feedback");
-            if(score > 0){
-                if(feedback == null || feedback == "null"){
-                    feedback = "Correct";
+            if(mModuleType.equals("quiz")) {
+                if (score > 0) {
+                    if (feedback == null || !feedback.equals("null")) {
+                        feedback = "Correct";
+                    }
+                    feedbacks_success_list.add(feedback);
+                } else {
+                    if (feedback == null || !feedback.equals("null")) {
+                        feedback = "Incorrect";
+                    }
+                    feedbacks_error_list.add(feedback);
                 }
-                feedbacks_success_list.add(feedback);
             }else{
-                if(feedback == null || feedback == "null"){
-                    feedback = "Incorrect";
-                }
-                feedbacks_error_list.add(feedback);
+                feedbacks_success_list.add("Submitted");
             }
         }
         return scores;
     }
-    private void showFeedback(){
-        String successText = "";
-        for(String feedback : feedbacks_success_list){
-             successText += feedback + System.lineSeparator();
-        }
 
-        String errorText = "";
-        for(String feedback : feedbacks_error_list){
-            errorText += feedback + System.lineSeparator();
-        }
-        if(successText != null && !successText.equals("")) {
-            successText = successText.substring(0,successText.length()-1);
-            textVew_feedback_success.setText(successText);
-            textVew_feedback_success.setVisibility(View.VISIBLE);
-        }
-        if(errorText != null && !errorText.equals("")) {
-            errorText = errorText.substring(0,errorText.length()-1);
-            textVew_feedback_error.setText(errorText);
-            textVew_feedback_error.setVisibility(View.VISIBLE);
+    private void showFeedback()throws Exception{
+        boolean isShowFeedback = mModuleJson.getInt("isshowfeedback") > 0;
+        if(isQuizProgressExists && isShowFeedback) {
+            String successText = "";
+            for (String feedback : feedbacks_success_list) {
+                successText += feedback + System.lineSeparator();
+            }
+
+            String errorText = "";
+            for (String feedback : feedbacks_error_list) {
+                errorText += feedback + System.lineSeparator();
+            }
+            if (successText != null && !successText.equals("")) {
+                successText = successText.substring(0, successText.length() - 1);
+                textVew_feedback_success.setText(successText);
+                textVew_feedback_success.setVisibility(View.VISIBLE);
+            }
+            if (errorText != null && !errorText.equals("")) {
+                errorText = errorText.substring(0, errorText.length() - 1);
+                textVew_feedback_error.setText(errorText);
+                textVew_feedback_error.setVisibility(View.VISIBLE);
+            }
         }
     }
+
     private boolean isAnswerExistsInProgressArr(int seq)throws Exception{
         boolean flag = false;
         for (int i=0; i < mQuizProgress.length(); i++) {
@@ -519,9 +646,11 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             View view = mOptionsLayout.getChildAt(i);
             view.setEnabled(isEnable); // Or whatever you want to do with the view.
         }
-        for ( int i = 0; i < radioGroup.getChildCount();  i++ ){
-            View view = radioGroup.getChildAt(i);
-            view.setEnabled(isEnable); // Or whatever you want to do with the view.
+        if(radioGroup != null) {
+            for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                View view = radioGroup.getChildAt(i);
+                view.setEnabled(isEnable); // Or whatever you want to do with the view.
+            }
         }
     }
 

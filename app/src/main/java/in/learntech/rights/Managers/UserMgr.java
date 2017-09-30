@@ -90,6 +90,10 @@ public class UserMgr {
         mPreferencesUtil.resetPreferences();
     }
 
+    public boolean isUserLoggedIn(){
+        return this.getLoggedInUserSeq() > 0;
+    }
+
 
 
 }
