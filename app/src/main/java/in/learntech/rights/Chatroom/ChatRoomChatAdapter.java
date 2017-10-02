@@ -1,4 +1,4 @@
-package in.learntech.rights.messages;
+package in.learntech.rights.Chatroom;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,20 +8,23 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import in.learntech.rights.R;
 import java.util.ArrayList;
+
+import in.learntech.rights.R;
+import in.learntech.rights.messages.MessageChatModel;
+import in.learntech.rights.messages.MessageClickListener;
 
 /**
  * Created by munishsethi on 19/09/17.
  */
 
-public class MessageChatAdapter extends RecyclerView.Adapter<MessageChatAdapter.ItemViewHolder> {
-    private static ArrayList<MessageChatModel> dataList;
+public class ChatRoomChatAdapter extends RecyclerView.Adapter<ChatRoomChatAdapter.ItemViewHolder> {
+    private static ArrayList<ChatRoomChatModel> dataList;
     private LayoutInflater mInflater;
     private Context context;
-    private MessageClickListener clicklistener = null;
+    private ChatRoomClickListener clicklistener = null;
 
-    public MessageChatAdapter(Context ctx, ArrayList<MessageChatModel> data) {
+    public ChatRoomChatAdapter(Context ctx, ArrayList<ChatRoomChatModel> data) {
         context = ctx;
         dataList = data;
         mInflater = LayoutInflater.from(context);
@@ -46,6 +49,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<MessageChatAdapter.
             holder.receiveLayout.setVisibility(View.VISIBLE);
             holder.receiveMessage.setText(dataList.get(position).getMessage());
             holder.receiveTime.setText(dataList.get(position).getTime());
+            holder.messageUser.setText(dataList.get(position).getUserName());
         }
     }
 
@@ -54,7 +58,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<MessageChatAdapter.
        return dataList.size();
     }
 
-    public void setClickListener(MessageClickListener listener) {
+    public void setClickListener(ChatRoomClickListener listener) {
         this.clicklistener = listener;
     }
 
@@ -66,6 +70,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<MessageChatAdapter.
         private TextView receiveTime;
         private TextView sendMessage;
         private TextView sendTime;
+        private TextView messageUser;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -79,6 +84,7 @@ public class MessageChatAdapter extends RecyclerView.Adapter<MessageChatAdapter.
             receiveTime = (TextView) itemView.findViewById(R.id.receiveTime);
             sendMessage = (TextView) itemView.findViewById(R.id.sendMessage);
             sendTime = (TextView) itemView.findViewById(R.id.sendTime);
+            messageUser = (TextView) itemView.findViewById(R.id.message_username);
         }
 
         @Override

@@ -1,23 +1,25 @@
-package in.learntech.rights.messages;
+package in.learntech.rights.Chatroom;
 
 /**
  * Created by munishsethi on 19/09/17.
  */
 
-public class MessageChatModel {
+public class ChatRoomChatModel {
 
     private int seq;
     private String message;
     private String time;
     private boolean isSend;
+    private String userName;
 
-    public MessageChatModel(){}
+    public ChatRoomChatModel(){}
 
-    public MessageChatModel(int _seq,String _message, String _time, boolean sent){
+    public ChatRoomChatModel(int _seq, String _message, String _time, String userName,boolean sent){
         seq = _seq;
         message = _message;
         time = _time;
         isSend = sent;
+        this.userName = userName;
     }
 
 
@@ -53,5 +55,11 @@ public class MessageChatModel {
         isSend = send;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
 }
