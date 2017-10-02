@@ -108,8 +108,10 @@ public class QuestionProgressMgr {
                 progressJson.put("answerText",questionProgress.getAnsText());
                 progressJson.put("questionSeq",questionProgress.getQuestionSeq());
                 progressJson.put("progress",100);
-                progressJson.put("dated",questionProgress.getEndDate());
-                progressJson.put("startDate",questionProgress.getStartDate());
+                String endDateStr = DateUtil.dateToString(questionProgress.getEndDate());
+                progressJson.put("dated",endDateStr);
+                String startDateStr = DateUtil.dateToString(questionProgress.getStartDate());
+                progressJson.put("startDate",startDateStr);
                 int timeUp = 0;
                 if(questionProgress.isTimeUp()){
                     timeUp = 1;

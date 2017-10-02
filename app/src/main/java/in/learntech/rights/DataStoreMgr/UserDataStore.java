@@ -38,8 +38,8 @@ public class UserDataStore{
             + COLUMN_USER_SEQ + " INTEGER, "
             + COLUMN_COMPANY_SEQ + " INTEGER, "
             + COLUMN_IS_MANAGER + " BOOLEAN, " + COLUMN_USER_IMAGE_URL + " TEXT )";
-    public static final String FIND_BY_SEQ = "Select * from users where " + COLUMN_SEQ + "={0}";
-    public static final String COUNT_USER_BY_SEQ = "Select * from users where " + COLUMN_USER_SEQ + "={0}";
+    public static final String FIND_USER_BY_SEQ = "Select * from users where " + COLUMN_USER_SEQ + "={0}";
+    public static final String COUNT_USER_BY_USER_NAME = "Select count(*) from users where " + COLUMN_NAME + "={0}";
 
     public UserDataStore(Context context){
         mContext = context;
@@ -62,13 +62,19 @@ public class UserDataStore{
 
     public User getUserByUserSeq(int userSeq){
         Object[] args  = {userSeq};
-        String query = MessageFormat.format(COUNT_USER_BY_SEQ,args);
+        String query = MessageFormat.format(FIND_USER_BY_SEQ,args);
         Cursor c = mDBUtil.executeQuery(query);
         if(c.moveToFirst()) {
             User user = populateObject(c);
             return user;
         }
         return  null;
+    }
+    public boolean isUserExistsWithUsername(String userName){
+        Object[] args  = {"'"+userName+"'"};
+        String query = MessageFormat.format(COUNT_USER_BY_USER_NAME,args);
+        int count = mDBUtil.getCount(query);
+        return  count > 0;
     }
 
     private User populateObject( Cursor c){

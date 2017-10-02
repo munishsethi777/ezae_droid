@@ -143,33 +143,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void loginWithGCMID() {
-        new AsyncTask<Void, Void, String>() {
-            GoogleCloudMessaging gcm;
-            String regid;
-            @Override
-            protected String doInBackground(Void... params) {
-                try {
-                    if (gcm == null) {
-                        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+       boolean isUserAlreadyExists = mUserMgr.isUserExistsWithUsername
+                (mUsernameView.getText().toString());
+        if(isUserAlreadyExists){
+           attemptLogin();
+        }else {
+            new AsyncTask<Void, Void, String>() {
+                GoogleCloudMessaging gcm;
+                String regid;
+
+                @Override
+                protected String doInBackground(Void... params) {
+                    try {
+                        if (gcm == null) {
+                            gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+                        }
+                        InstanceID instanceID = InstanceID.getInstance(getApplicationContext());
+                        regid = instanceID.getToken("219467382005",
+                                GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+                        // Persist the regID - no need to register again.
+                        //storeRegistrationId(getContext(), regid);
+                    } catch (IOException ex) {
+
+                        String message = ex.getMessage();
+
                     }
-                    InstanceID instanceID = InstanceID.getInstance(getApplicationContext());
-                    regid = instanceID.getToken("219467382005",
-                            GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-                    // Persist the regID - no need to register again.
-                    //storeRegistrationId(getContext(), regid);
-                } catch (IOException ex) {
-
-                    String message = ex.getMessage();
-
+                    return regid;
                 }
-                return regid;
-            }
-            @Override
-            protected void onPostExecute(String regId) {
-                mGcmid = regId;
-                attemptLogin();
-            }
-        }.execute(null, null, null);
+
+                @Override
+                protected void onPostExecute(String regId) {
+                    mGcmid = regId;
+                    attemptLogin();
+                }
+            }.execute(null, null, null);
+        }
     }
 
     private void attemptLogin() {
@@ -222,23 +230,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void goToDashboardActivity(){
         boolean isNotificationStateOn = mPreferencesUtil.isNotificationState();
+        Intent intent = new Intent(this,DashboardActivity.class);
         if(isNotificationStateOn){
             Object data[] = mPreferencesUtil.getNotificationData();
             String entityType = data[1].toString();
             Integer entitySeq = Integer.parseInt(data[0].toString());
             if(entityType.equals("module")) {
-                Intent newIntent = new Intent(this,UserTrainingActivity.class);
-                newIntent.putExtra(StringConstants.LP_SEQ,0);
-                newIntent.putExtra(StringConstants.MODULE_SEQ,entitySeq);
-                mPreferencesUtil.resetNotificationData();
-                startActivity(newIntent);
-                finish();
+                intent = new Intent(this,UserTrainingActivity.class);
+                intent.putExtra(StringConstants.LP_SEQ,0);
+                intent.putExtra(StringConstants.MODULE_SEQ,entitySeq);
+            }else if(entityType.equals("badge")){
+                intent = new Intent(this,MyAchievements.class);
             }
-        }else{
-            Intent intent = new Intent(this,DashboardActivity.class);
-            startActivity(intent);
-            finish();
+            mPreferencesUtil.resetNotificationData();
         }
+        startActivity(intent);
+        finish();
+
 
     }
 }
