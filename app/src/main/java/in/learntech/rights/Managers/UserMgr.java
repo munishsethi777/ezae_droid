@@ -66,6 +66,11 @@ public class UserMgr {
         return user;
     }
 
+    public String getLoggedInUserName(){
+        User user = this.getLoggedInUser();
+        return user.getUserName();
+    }
+
     public int getLoggedInUserSeq(){
         int userSeq  = mPreferencesUtil.getLoggedInUserSeq();
         return userSeq;
@@ -94,6 +99,9 @@ public class UserMgr {
         return this.getLoggedInUserSeq() > 0;
     }
 
+    public boolean isUserExistsWithUsername(String userName){
+        return userDataStore.isUserExistsWithUsername(userName);
+    }
 
 
 }
