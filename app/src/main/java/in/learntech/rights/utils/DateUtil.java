@@ -1,5 +1,6 @@
 package in.learntech.rights.utils;
 
+import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,7 +13,7 @@ public class DateUtil {
 
     public static Date stringToDate(String dateStr){
         SimpleDateFormat sdf =
-                new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date date = sdf.parse(dateStr);
             return date;
@@ -20,5 +21,11 @@ public class DateUtil {
             //// TODO: Log Exception
         }
         return null;
+    }
+
+    public static String dateToString(Date date){
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String s = formatter.format(date);
+        return s;
     }
 }

@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import java.text.MessageFormat;
 
 import in.learntech.rights.BusinessObjects.User;
+import in.learntech.rights.Chatroom.ChatRoomActivity;
 import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.messages.MessageActivity;
 import in.learntech.rights.services.Interface.IServiceHandler;
@@ -167,6 +168,9 @@ public class DashboardActivity extends AppCompatActivity
             logout();
         } else if(id == R.id.nav_change_password){
             Intent intent = new Intent(this,ChangePasswordActivity.class);
+            startActivity(intent);
+        }else if(id == R.id.nav_chatroom){
+            Intent intent = new Intent(this,ChatRoomActivity.class);
             startActivity(intent);
         }
 
