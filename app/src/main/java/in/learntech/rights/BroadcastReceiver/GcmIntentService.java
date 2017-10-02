@@ -10,14 +10,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 
 import org.json.JSONObject;
+
+import java.io.File;
+
 import in.learntech.rights.DashboardActivity;
 import in.learntech.rights.LoginActivity;
 import in.learntech.rights.Managers.UserMgr;
+import in.learntech.rights.MyAchievements;
 import in.learntech.rights.R;
 import in.learntech.rights.UserTrainingActivity;
 import in.learntech.rights.utils.PreferencesUtil;
@@ -57,6 +62,8 @@ public class GcmIntentService extends IntentService {
                     newIntent = new Intent(this,UserTrainingActivity.class);
                     newIntent.putExtra(StringConstants.LP_SEQ,0);
                     newIntent.putExtra(StringConstants.MODULE_SEQ,entitySeq);
+                }else{
+                    newIntent = new Intent(this,MyAchievements.class);
                 }
             }
         }catch (Exception e){
