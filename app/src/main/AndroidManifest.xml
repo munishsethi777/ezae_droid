@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -20,16 +20,21 @@
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="in.learntech.rights" />
             </intent-filter>
         </receiver>
+
         <service android:name=".BroadcastReceiver.GcmIntentService" />
-        <receiver android:name=".BroadcastReceiver.InstallReceiver"
+
+        <receiver
+            android:name=".BroadcastReceiver.InstallReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
+
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -84,7 +89,16 @@
             android:name=".UpdateProfileActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_update_profile" />
-        <activity android:name=".WebActivity"></activity>
+        <activity android:name=".WebActivity" />
+        <activity
+            android:name=".Chatroom.ChatRoomChatActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="Chat"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Chatroom.ChatRoomActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="Chat Rooms"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
