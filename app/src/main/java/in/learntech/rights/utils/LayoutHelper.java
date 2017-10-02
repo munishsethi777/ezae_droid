@@ -59,7 +59,22 @@ public class LayoutHelper {
             String isCompleted = jsonObject.getString("iscompleted");
             String moduleType = jsonObject.getString("moduletype");
             String moduleImage = jsonObject.getString("imagepath");
+            Integer timeAllowed = jsonObject.getInt("timeallowed");
+            Integer rank = jsonObject.getInt("leaderboard");
             String circleText = "Q";
+            if(moduleImage != null && moduleImage != "null" && !moduleImage.isEmpty()){
+            }else{
+                moduleImage = "dummy.jpg";
+            }
+            String imageUrl = StringConstants.IMAGE_URL + "modules/" + moduleImage;
+            LinearLayout moduleInternalLayout = (LinearLayout)
+                    mInflater.inflate(R.layout.my_training_module_fragment, mContainer, false);
+
+            ImageView imageView = (ImageView) moduleInternalLayout.findViewById(R.id.imageView_moduleImage);
+            loadImageRequest(imageView, imageUrl, true);
+            Button button_launch = (Button)moduleInternalLayout.findViewById(R.id.button_moduleLaunch);
+            button_launch.setTag(R.string.lp_seq,lpSeq);
+            button_launch.setTag(R.string.module_seq,moduleSeq);
             if (moduleType.equals("lesson")) {
                 circleText = "L";
             } else if (moduleType.equals("survey")) {
@@ -70,29 +85,40 @@ public class LayoutHelper {
             }
             int progressInt = Integer.parseInt(progress);
             int circleColorId = R.color.Red;
-            if (progressInt > 0) {
+            if (progressInt > 0 && progressInt < 100) {
                 circleColorId = R.color.Orange;
+                LinearLayout timeAllowedLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.inProgressLayout);
+                timeAllowedLayout.setVisibility(View.VISIBLE);
+                TextView textView_progress = (TextView) moduleInternalLayout.findViewById(R.id.textView_progress);
+                textView_progress.setText(progress + "%");
+                button_launch.setText("In Progress");
+            }else{
+                if(timeAllowed > 0) {
+                    LinearLayout inProgressLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.timeAllotedLayout);
+                    inProgressLayout.setVisibility(View.VISIBLE);
+                    TextView textView_timeAllowed = (TextView) moduleInternalLayout.findViewById(R.id.textView_moduleTime);
+                    textView_timeAllowed.setText(timeAllowed + " Mins");
+                }
             }
             if (progressInt == 100) {
                 circleColorId = R.color.Green;
+                LinearLayout completedLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.completedLayout);
+                completedLayout.setVisibility(View.VISIBLE);
+                TextView textView_rank = (TextView) moduleInternalLayout.findViewById(R.id.textView_rank);
+                textView_rank.setText(rank.toString());
+                button_launch.setText("Completed");
             }
             String score = jsonObject.getString("score");
             if (score.equals("null")) {
                 score = "0";
             }
-            if(moduleImage != null && moduleImage != "null" && !moduleImage.isEmpty()){
-            }else{
-                moduleImage = "dummy.jpg";
-            }
-            String imageUrl = StringConstants.IMAGE_URL + "modules/" + moduleImage;
-            LinearLayout moduleInternalLayout = (LinearLayout)
-                     mInflater.inflate(R.layout.my_training_module_fragment, mContainer, false);
 
-            ImageView imageView = (ImageView) moduleInternalLayout.findViewById(R.id.imageView_moduleImage);
-            loadImageRequest(imageView, imageUrl, true);
+
 
             TextView textView_moduleName = (TextView) moduleInternalLayout.findViewById(R.id.textView_moduleName);
             textView_moduleName.setText(moduleTitle);
+
+
 
             TextView textView_moduleProg = (TextView) moduleInternalLayout.findViewById(R.id.textView_moduleProgress);
             textView_moduleProg.setText(progress + "%");
@@ -106,9 +132,7 @@ public class LayoutHelper {
             TextView textView_circle = (TextView) moduleInternalLayout.findViewById(R.id.timeline_circleText);
             textView_circle.setText(circleText);
 
-            Button button_launch = (Button)moduleInternalLayout.findViewById(R.id.button_moduleLaunch);
-            button_launch.setTag(R.string.lp_seq,lpSeq);
-            button_launch.setTag(R.string.module_seq,moduleSeq);
+
 
             CardView moduleCardView = (CardView) moduleInternalLayout.findViewById(R.id.moduleCardView);
             ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams)moduleCardView.getLayoutParams();
