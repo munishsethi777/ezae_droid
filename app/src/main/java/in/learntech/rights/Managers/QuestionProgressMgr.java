@@ -1,6 +1,7 @@
 package in.learntech.rights.Managers;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -132,7 +133,7 @@ public class QuestionProgressMgr {
         return  dataStore.deleteByModule(userSeq,moduleSeq,learningPlanSeq);
     }
 
-    public JSONObject getActivityData(int moduleSeq,int learningPlanSeq){
+    public JSONObject getActivityData(int moduleSeq,int learningPlanSeq,List<String> randomQuestionKeys){
         int userSeq = mPreferencesUtil.getLoggedInUserSeq();
         JSONObject activityJson = new JSONObject();
         try {
@@ -141,6 +142,11 @@ public class QuestionProgressMgr {
             activityJson.put("learningPlanSeq",learningPlanSeq);
             activityJson.put("score",0);
             activityJson.put("progress",0);
+            String randomKeysStr = null;
+            if(randomQuestionKeys.size() > 0) {
+                randomKeysStr = TextUtils.join(",",randomQuestionKeys.toArray());
+            }
+            activityJson.put("randomQuestionKeys",randomKeysStr);
         }catch (Exception e){
             String message = e.getMessage();
         }

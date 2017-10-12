@@ -107,6 +107,7 @@ public class MyTrainings_LearningPlansFragment extends Fragment implements IServ
                     JSONObject lpJson = lpJsonArr.getJSONObject(i);
                     int progress = lpJson.getInt("percentCompleted");
                     String title = lpJson.getString("title");
+                    boolean isLockSequence = lpJson.getBoolean("lockSequence");
                     LinearLayout lpInternalLayout = (LinearLayout)
                             mInflater.inflate(R.layout.my_training_learningplan_header, mContainer, false);
                     ProgressWheel progressWheel = (ProgressWheel)lpInternalLayout.findViewById(R.id.progressBar_lp);
@@ -122,7 +123,7 @@ public class MyTrainings_LearningPlansFragment extends Fragment implements IServ
                     textView_totalModules.setText(String.valueOf(moduleCount) + " Modules");
 
                     mPrentLayout.addView(lpInternalLayout);
-                    mLayoutHelper.jsonToModuleLayout(modulesJsonArr,mPrentLayout);
+                    mLayoutHelper.jsonToModuleLayout(modulesJsonArr,isLockSequence,mPrentLayout);
                 }
             }
         }catch (Exception e){

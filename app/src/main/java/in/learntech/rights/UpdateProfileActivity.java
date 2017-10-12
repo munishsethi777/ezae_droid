@@ -47,7 +47,7 @@ public class UpdateProfileActivity extends AppCompatActivity implements IService
         LayoutInflater li = (LayoutInflater)getSystemService(getApplicationContext().LAYOUT_INFLATER_SERVICE);
         mLayoutHelper = new LayoutHelper(this,li,null);
         mEmailView = (EditText)findViewById(R.id.editText_email);
-        mProfileLayout = (LinearLayout)findViewById(R.id.layout_updateProfile) ;
+        mProfileLayout = (LinearLayout)findViewById(R.id.layout_updateProfile);
         executeGetProfileDetail();
     }
 

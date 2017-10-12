@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import in.learntech.rights.Controls.SwipeDirection;
 import in.learntech.rights.Managers.QuestionProgressMgr;
@@ -98,7 +99,6 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     List<String> feedbacks_success_list;
     List<String> feedbacks_error_list;
     private String mModuleType;
-    private String mAnswerText;
     private RadioGroup radioGroup;
     public  UserTrainingFragment(int position,JSONObject moduleJson) {
         this.wizard_page_position = position;
@@ -384,7 +384,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
         }
     }
     private void setSeekBarTextLocation(int progress,SeekBar seekBar,TextView textView){
-        int val = (progress * (seekBar.getWidth() - 4 * seekBar.getThumbOffset())) / seekBar.getMax();
+        int val = (progress * (seekBar.getWidth()-4 * seekBar.getThumbOffset())) / seekBar.getMax();
         textView.setText("" + progress);
         textView.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
     }
@@ -509,7 +509,8 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             try {
                 int moduleSeq = currentQuestion.getInt("moduleSeq");
                 int learningPlanSeq = currentQuestion.getInt("learningPlanSeq");
-                JSONObject activityJson = mQuesProgressMgr.getActivityData(moduleSeq, learningPlanSeq);
+                List<String> randomQuestionKeys = mParentActivity.randomQuestionKeys;
+                JSONObject activityJson = mQuesProgressMgr.getActivityData(moduleSeq, learningPlanSeq,randomQuestionKeys);
                 String jsonString = activityJson.toString();
                 jsonString = URLEncoder.encode(jsonString, "UTF-8");
                 Object[] args = {mUserSeq,mCompanySeq,jsonString};
@@ -644,14 +645,16 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     private void enableDisableAllViews(boolean isEnable){
         for ( int i = 0; i < mOptionsLayout.getChildCount();  i++ ){
             View view = mOptionsLayout.getChildAt(i);
-            view.setEnabled(isEnable); // Or whatever you want to do with the view.
+            view.setEnabled(isEnable);
         }
         if(radioGroup != null) {
             for (int i = 0; i < radioGroup.getChildCount(); i++) {
                 View view = radioGroup.getChildAt(i);
-                view.setEnabled(isEnable); // Or whatever you want to do with the view.
+               view.setEnabled(isEnable);
             }
         }
     }
+
+
 
 }

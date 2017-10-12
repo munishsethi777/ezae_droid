@@ -1,6 +1,7 @@
 package in.learntech.rights;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,8 @@ import org.json.JSONObject;
 
 import java.text.MessageFormat;
 
+import in.learntech.rights.Chatroom.ChatRoomChatActivity;
+import in.learntech.rights.Chatroom.ChatRoomModel;
 import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
 import in.learntech.rights.utils.StringConstants;
@@ -123,6 +126,7 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
                 JSONArray notificationJsonArr = response.getJSONArray("notifications");
                 for (int i=0; i < notificationJsonArr.length(); i++) {
                     JSONObject jsonObject = notificationJsonArr.getJSONObject(i);
+                    int seq = jsonObject.getInt("seq");
                     String notificationTitle = jsonObject.getString("title");
                     String type = jsonObject.getString("type");
                     String eventType = jsonObject.getString("eventtype");
@@ -139,12 +143,12 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
                     textView.setText(notificationTitle);
                     Button button = (Button) childLayout.getChildAt(1);
                     button.setText(buttonTitle);
+                    button.setOnClickListener(new startChat(seq,notificationTitle,null));
                     textView.setText(notificationTitle);
                     mFragmentLayout.addView(childLayout);
                 }
             }
         }catch (Exception e){
-
             message = "Error :- " + e.getMessage();
         }
         if(message != null && !message.equals("")){
@@ -155,6 +159,20 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
     @Override
     public void setCallName(String call) {
 
+    }
+
+    class startChat implements View.OnClickListener{
+        ChatRoomModel  model;
+        startChat(int seq,String title,String imageUrl){
+             model = new ChatRoomModel(seq,title,imageUrl);
+        }
+        @Override
+        public void onClick(View view) {
+            Intent messageChatActivity = new Intent(getActivity(),ChatRoomChatActivity.class);
+            messageChatActivity.putExtra("messageModel",model);
+            startActivity(messageChatActivity);
+            getActivity().overridePendingTransition(R.anim.firstactivity_enter, R.anim.firstactivity_exit);
+        }
     }
 
 

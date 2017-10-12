@@ -109,7 +109,7 @@ public class MyTrainings_MyModulesFragment extends Fragment implements IServiceH
                 }
                 TextView textView_moduleHeader = (TextView) mParentLayout.findViewById(R.id.moduleHeader);
                 textView_moduleHeader.setText(moduleTabHeader);
-                mLayoutHelper.jsonToModuleLayout(modulesJsonArr,mParentLayout);
+                mLayoutHelper.jsonToModuleLayout(modulesJsonArr,false,mParentLayout);
             }
         }catch (Exception e){
 

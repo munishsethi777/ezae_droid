@@ -40,186 +40,199 @@
             </android.support.v7.widget.CardView>
 
         </RelativeLayout>
-        <android.support.v7.widget.CardView
-            android:id="@+id/moduleCardView"
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/moduleCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_weight="1"
+        app:cardElevation="0.5dp">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_weight="1"
-            app:cardElevation="0.5dp">
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:paddingBottom="6dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="6dp"
+            android:paddingTop="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:orientation="vertical"
-                android:paddingTop="6dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="6dp"
-                android:paddingBottom="6dp">
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView_moduleImage"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="2dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/loginsignup6_bg" />
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:id="@+id/imageView_moduleImage"
-                        android:src="@mipmap/loginsignup6_bg"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginTop="2dp"
-                        android:scaleType="centerCrop"
-                        android:layout_marginRight="10dp"
-                        />
+                    <TextView
+                        android:id="@+id/textView_moduleName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:alpha="0.9"
+                        android:paddingTop="3dp"
+                        android:text="Module Title goes here. Module title goes here. Module title goes here"
+                        android:textColor="@color/DarkDarkgrey" />
+
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:id="@+id/timeAllotedLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
                         <TextView
-                            android:id="@+id/textView_moduleName"
-                            android:layout_width="0dp"
-                            android:layout_weight="4"
+                            android:id="@+id/textView_moduleTime"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Module Title goes here. Module title goes here. Module title goes here"
-                            android:textColor="@color/DarkDarkgrey"
-                            android:alpha="0.9"
-                            android:paddingTop="3dp"/>
-                        <LinearLayout
-                            android:id="@+id/timeAllotedLayout"
-                            android:layout_width="0dp"
+                            android:layout_gravity="center"
+                            android:drawablePadding="2dp"
+                            android:drawableStart="@mipmap/ic_clock_small"
+                            android:text="25 Mins" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:orientation="vertical"
-                            android:visibility="gone"
-                            android:gravity="center_vertical">
-                                <TextView
-                                    android:id="@+id/textView_moduleTime"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="25 Mins"
-                                    android:layout_gravity="center"
-                                    android:drawablePadding="2dp"
-                                    android:drawableStart="@mipmap/ic_clock_small" />
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Time Alloted"
-                                    android:textSize="10dp"
-                                    android:textAlignment="center"
-                                    android:layout_gravity="center"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/inProgressLayout"
-                            android:layout_width="0dp"
+                            android:layout_gravity="center"
+                            android:text="Time Alloted"
+                            android:textAlignment="center"
+                            android:textSize="10dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/inProgressLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/textView_progress"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical"
-                            android:visibility="gone">
-                            <TextView
-                                android:id="@+id/textView_progress"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="25 %"
-                                android:layout_gravity="center"
-                                android:drawablePadding="2dp"
-                                android:drawableStart="@mipmap/ic_bar_chart" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Completed"
-                                android:textSize="10dp"
-                                android:textAlignment="center"
-                                android:layout_gravity="center"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/completedLayout"
-                            android:layout_width="0dp"
+                            android:layout_gravity="center"
+                            android:drawablePadding="2dp"
+                            android:drawableStart="@mipmap/ic_bar_chart"
+                            android:text="25 %" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:orientation="vertical"
-                            android:gravity="center_vertical"
-                            android:visibility="gone">
-                            <TextView
-                                android:id="@+id/textView_rank"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="25"
-                                android:layout_gravity="center"
-                                android:drawablePadding="3dp"
-                                android:drawableStart="@mipmap/ic_gift" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Leaderboard"
-                                android:textSize="10dp"
-                                android:layout_gravity="center"/>
-                        </LinearLayout>
+                            android:layout_gravity="center"
+                            android:text="Completed"
+                            android:textAlignment="center"
+                            android:textSize="10dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/completedLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/textView_rank"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:drawablePadding="3dp"
+                            android:drawableStart="@mipmap/ic_gift"
+                            android:text="25" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Leaderboard"
+                            android:textSize="10dp" />
                     </LinearLayout>
                 </LinearLayout>
+            </LinearLayout>
 
 
-
-                <LinearLayout
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/textView_moduleScore"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_weight="4"
+                    android:drawableLeft="@mipmap/ic_gamepad"
+                    android:drawablePadding="3dp"
+                    android:text="456"
+                    android:textColor="@color/Darkgrey"
+                    android:textSize="14sp" />
 
+                <TextView
+                    android:id="@+id/textView_modulePoint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:drawableLeft="@mipmap/ic_bar_chart"
+                    android:drawablePadding="3dp"
+                    android:text="35%"
+                    android:textColor="@color/Darkgrey"
+                    android:textSize="14sp" />
+                <LinearLayout
+                    android:id="@+id/layout_badgeImages"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
                     <TextView
-                        android:id="@+id/textView_moduleProgress"
-                        android:layout_width="match_parent"
+                        android:id="@+id/textView_lbl_badges"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:drawableLeft="@mipmap/ic_bar_chart"
-                        android:drawablePadding="3dp"
-                        android:text="35%"
-                        android:textSize="14sp"
-                        android:textColor="@color/Darkgrey"/>
-
-                    <TextView
-                        android:id="@+id/textView_moduleScore"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:drawableLeft="@mipmap/ic_gamepad"
-                        android:drawablePadding="3dp"
-                        android:text="456"
-                        android:textSize="14sp"
-                        android:textColor="@color/Darkgrey" />
-
-                    <TextView
-                        android:id="@+id/rank"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:drawableLeft="@mipmap/ic_certificate"
-                        android:drawablePadding="3dp"
-                        android:text="20"
-                        android:textSize="14sp"
-                        android:textColor="@color/Darkgrey"/>
-                    <Button
-                        android:id="@+id/button_moduleLaunch"
-                        style="@style/ButtonGray"
-                        android:background="@android:color/transparent"
-                        android:drawableRight="@mipmap/ic_rocket"
-                        android:drawablePadding="5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="18dp"
-                        android:onClick="onClick"
-                        android:text="Launch"
-                        android:textAllCaps="false"
-                        android:textColor="@color/BlueMain"
-                        android:layout_weight="3"
-                        android:gravity="right|bottom"
-                        android:textSize="14sp"
-                        android:alpha="0.9"/>
-
-
+                        android:text="Badges:"
+                        android:visibility="gone"
+                        android:textColor="@color/Darkgrey"
+                        android:textSize="11sp" />
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/button_moduleLaunch"
+                    style="@style/ButtonGray"
+                    android:layout_width="match_parent"
+                    android:layout_height="18dp"
+                    android:layout_weight="3"
+                    android:alpha="0.9"
+                    android:background="@android:color/transparent"
+                    android:drawablePadding="5dp"
+                    android:drawableRight="@mipmap/ic_rocket"
+                    android:gravity="right|bottom"
+                    android:onClick="onClick"
+                    android:text="Launch"
+                    android:textAllCaps="false"
+                    android:textColor="@color/BlueMain"
+                    android:textSize="14sp" />
+
 
             </LinearLayout>
 
-        </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 </LinearLayout>

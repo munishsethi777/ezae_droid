@@ -20,7 +20,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import in.learntech.rights.Controls.CustomViewPager;
@@ -55,6 +58,8 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
     private Fragment mChildFragment;
     public Date mStartDate;
     private CountDownTimer countTimer;
+    private JSONObject activityData;
+    public List<String> randomQuestionKeys;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +77,8 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
         mQuesMgr = QuestionProgressMgr.getInstance(this);
         linearLayoutIndicator = (LinearLayout)findViewById(R.id.layout_indicator);
         textView_timer = (TextView)findViewById(R.id.textView_timer);
+        randomQuestionKeys = new ArrayList<>();
+
     }
 
     private void executeGetModuleDetailsCall(){
@@ -90,6 +97,15 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
             success = response.getInt(StringConstants.SUCCESS) == 1 ? true : false;
             message = response.getString(StringConstants.MESSAGE);
             mModuleJson = response.getJSONObject("module");
+            int progress = 0;
+            if(mModuleJson.has("activityData")) {
+                String activityDataStr = mModuleJson.getString("activityData");
+                if(!activityDataStr.equals("[]")) {
+                    activityData = mModuleJson.getJSONObject("activityData");
+                    progress = activityData.getInt("progress");
+                }
+            }
+            applyMaxQuestionCondition();
             if(success){
                 mSubmitQuestionCount = 0;
                 mModuleTitleTextview.setText(mModuleJson.getString("title"));
@@ -101,17 +117,9 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
                 addIndicators();
                 updateIndicators(0);
                 mStartDate = new Date();
-                int progress = 0;
                 long timeAllowed = mModuleJson.getLong("timeallowed");
                 if(timeAllowed > 0 ){
                     timeAllowed = TimeUnit.MINUTES.toMillis(timeAllowed);
-                }
-                if(mModuleJson.has("activityData")) {
-                    String activityData = mModuleJson.getString("activityData");
-                    if(!activityData.equals("[]")) {
-                        JSONObject activity = mModuleJson.getJSONObject("activityData");
-                        progress = activity.getInt("progress");
-                    }
                 }
                 if(timeAllowed > 0 && progress < 100){
                     long timeConsumed = mQuesMgr.getTimeConsumed(mModuleQuestionsJson);
@@ -253,10 +261,53 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
         }
     }
 
+    private void applyMaxQuestionCondition()throws Exception{
+        int maxQuestionCount = mModuleJson.getInt("maxquestions");
+        JSONArray allQuestions = mModuleJson.getJSONArray("questions");
+        if(maxQuestionCount > 0 && maxQuestionCount < allQuestions.length()) {
+            JSONArray randomQuestions = new JSONArray();
+            if (activityData != null) {
+                String existingRandomQues = activityData.getString("randomquestionkeys");
+                if (existingRandomQues != "null" && existingRandomQues != null && !existingRandomQues.equals("")) {
+                    String questionSeqArrStr[] = existingRandomQues.split(",");
+
+                        for (int i = 0; i < questionSeqArrStr.length; i++) {
+                            String questionSeqStr = questionSeqArrStr[i];
+                            for (int j = 0; j < allQuestions.length(); j++) {
+                                String seq = allQuestions.getJSONObject(j).getString("seq");
+                                if (questionSeqStr.equals(seq)) {
+                                    randomQuestionKeys.add(seq);
+                                    randomQuestions.put(allQuestions.getJSONObject(j));
+                                    break;
+                                }
+                            }
+                        }
+                    }else{
+                        randomQuestions = getRandomQuestions(maxQuestionCount, allQuestions);
+                    }
+            } else {
+                randomQuestions = getRandomQuestions(maxQuestionCount, allQuestions);
+            }
+            mModuleJson.put("questions",randomQuestions);
+        }
+    }
+
+    private JSONArray getRandomQuestions(int maxQuestionCount,JSONArray allQuestions)throws Exception{
+        Random r = new Random();
+        JSONArray randomQuestions = new JSONArray();
+        for (int i = 0; i < maxQuestionCount; i++) {
+            JSONObject question = allQuestions.getJSONObject(r.nextInt(allQuestions.length()));
+            randomQuestions.put(question);
+            randomQuestionKeys.add(question.getString("seq"));
+        }
+        return randomQuestions;
+    }
+
     @Override
     public void onStop() {
         super.onStop();
         if(countTimer != null)
             countTimer.cancel();
     }
+
 }
