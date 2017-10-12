@@ -305,6 +305,9 @@ public class DashboardActivity extends AppCompatActivity
         } else if (id == R.id.imageView_updateProfile) {
             Intent notesIntent = new Intent(this,UpdateProfileActivity.class);
             startActivity(notesIntent);
+        }else if (id == R.id.imageView_chat) {
+            Intent intent = new Intent(this,ChatRoomActivity.class);
+            startActivity(intent);
         }
     }
 }

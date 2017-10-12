@@ -3,6 +3,8 @@ package in.learntech.rights.utils;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.text.InputType;
@@ -44,9 +46,14 @@ public class LayoutHelper {
         mContainer = container;
 
     }
-    public void jsonToModuleLayout(JSONArray modulesJsonArr, LinearLayout mParentLayout) throws Exception {
+    public void jsonToModuleLayout(JSONArray modulesJsonArr, boolean isLockSequence,LinearLayout mParentLayout) throws Exception {
         int moduleCardMargins = 10;
         int count = modulesJsonArr.length();
+        String badgeImages[] = new String[3];
+        badgeImages[0] = "AdminImages/BadgeImages/Default/5.png";
+        badgeImages[1] = "AdminImages/BadgeImages/Default/4.png";
+        badgeImages[2] = "AdminImages/BadgeImages/Default/7.png";
+        int lasProgress = 0;
         for (int i = 0; i < count; i++) {
             JSONObject jsonObject = modulesJsonArr.getJSONObject(i);
             int lpSeq = 0;
@@ -61,6 +68,10 @@ public class LayoutHelper {
             String moduleImage = jsonObject.getString("imagepath");
             Integer timeAllowed = jsonObject.getInt("timeallowed");
             Integer rank = jsonObject.getInt("leaderboard");
+            String points = jsonObject.getString("points");
+            if (points.equals("null")){
+                points = "0";
+            }
             String circleText = "Q";
             if(moduleImage != null && moduleImage != "null" && !moduleImage.isEmpty()){
             }else{
@@ -73,6 +84,16 @@ public class LayoutHelper {
             ImageView imageView = (ImageView) moduleInternalLayout.findViewById(R.id.imageView_moduleImage);
             loadImageRequest(imageView, imageUrl, true);
             Button button_launch = (Button)moduleInternalLayout.findViewById(R.id.button_moduleLaunch);
+            if (progress.equals("null")) {
+                progress = "0";
+            }
+            int progressInt = Integer.parseInt(progress);
+            if(isLockSequence){
+                if(i > 0 && lasProgress < 100){
+                    button_launch.setEnabled(false);
+                    button_launch.setTextColor(Color.GRAY);
+                }
+            }
             button_launch.setTag(R.string.lp_seq,lpSeq);
             button_launch.setTag(R.string.module_seq,moduleSeq);
             if (moduleType.equals("lesson")) {
@@ -80,10 +101,8 @@ public class LayoutHelper {
             } else if (moduleType.equals("survey")) {
                 circleText = "S";
             }
-            if (progress.equals("null")) {
-                progress = "0";
-            }
-            int progressInt = Integer.parseInt(progress);
+
+
             int circleColorId = R.color.Red;
             if (progressInt > 0 && progressInt < 100) {
                 circleColorId = R.color.Orange;
@@ -93,7 +112,7 @@ public class LayoutHelper {
                 textView_progress.setText(progress + "%");
                 button_launch.setText("In Progress");
             }else{
-                if(timeAllowed > 0) {
+                if(timeAllowed > 0 && progressInt != 100) {
                     LinearLayout inProgressLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.timeAllotedLayout);
                     inProgressLayout.setVisibility(View.VISIBLE);
                     TextView textView_timeAllowed = (TextView) moduleInternalLayout.findViewById(R.id.textView_moduleTime);
@@ -107,6 +126,24 @@ public class LayoutHelper {
                 TextView textView_rank = (TextView) moduleInternalLayout.findViewById(R.id.textView_rank);
                 textView_rank.setText(rank.toString());
                 button_launch.setText("Completed");
+
+            }
+            //Allotted Badges
+            JSONArray earnedBadgesArr = jsonObject.getJSONArray("badges");
+            if(earnedBadgesArr.length() > 0) {
+                LinearLayout badgeImageLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.layout_badgeImages);
+                TextView textView_lbl_badgeImage = (TextView) moduleInternalLayout.findViewById(R.id.textView_lbl_badges);
+                textView_lbl_badgeImage.setVisibility(View.VISIBLE);
+                for (int j = 0; j < earnedBadgesArr.length(); j++) {
+                    JSONObject badgeJson = earnedBadgesArr.getJSONObject(j);
+                    String badgeImageUrl =  badgeJson.getString("imagepath");
+                    LinearLayout image_view_Layout = (LinearLayout)
+                            mInflater.inflate(R.layout.child_image_view, mContainer, false);
+                    String url = StringConstants.WEB_URL + badgeImageUrl;
+                    ImageView badgeImageView = (ImageView) image_view_Layout.getChildAt(0);
+                    loadImageRequest(badgeImageView, url, true);
+                    badgeImageLayout.addView(image_view_Layout);
+                }
             }
             String score = jsonObject.getString("score");
             if (score.equals("null")) {
@@ -114,17 +151,15 @@ public class LayoutHelper {
             }
 
 
-
             TextView textView_moduleName = (TextView) moduleInternalLayout.findViewById(R.id.textView_moduleName);
             textView_moduleName.setText(moduleTitle);
 
 
-
-            TextView textView_moduleProg = (TextView) moduleInternalLayout.findViewById(R.id.textView_moduleProgress);
-            textView_moduleProg.setText(progress + "%");
-
             TextView textView_score = (TextView) moduleInternalLayout.findViewById(R.id.textView_moduleScore);
             textView_score.setText(score);
+
+            TextView textView_point = (TextView) moduleInternalLayout.findViewById(R.id.textView_modulePoint);
+            textView_point.setText(points);
 
             CardView cardView_circle = (CardView) moduleInternalLayout.findViewById(R.id.timeline_circle);
             cardView_circle.setCardBackgroundColor(ContextCompat.getColor(mActivity, circleColorId));
@@ -159,7 +194,9 @@ public class LayoutHelper {
             Animation animation = AnimationUtils.loadAnimation(mActivity,R.anim.fade_in);
             moduleCardView.startAnimation(animation);
             mParentLayout.addView(moduleInternalLayout);
+            lasProgress = progressInt;
         }
+
     }
 
     public void loadImageRequest(ImageView bg, String url, boolean isCircle) {
