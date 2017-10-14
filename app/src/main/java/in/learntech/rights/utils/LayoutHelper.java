@@ -121,11 +121,13 @@ public class LayoutHelper {
             }
             if (progressInt == 100) {
                 circleColorId = R.color.Green;
-                LinearLayout completedLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.completedLayout);
-                completedLayout.setVisibility(View.VISIBLE);
-                TextView textView_rank = (TextView) moduleInternalLayout.findViewById(R.id.textView_rank);
-                textView_rank.setText(rank.toString());
-                button_launch.setText("Completed");
+                if(moduleType.equals("quiz")) {
+                    LinearLayout completedLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.completedLayout);
+                    completedLayout.setVisibility(View.VISIBLE);
+                    TextView textView_rank = (TextView) moduleInternalLayout.findViewById(R.id.textView_rank);
+                    textView_rank.setText(rank.toString());
+                    button_launch.setText("Completed");
+                }
 
             }
             //Allotted Badges
