@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -136,6 +137,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             mParentActivity = (UserTrainingActivity)getActivity();
             mSelectedAnsSeqs =  new ArrayList();
             mModuleType = mModuleJson.getString("moduletype");
+            submitButton = (Button)mParentLayout.findViewById(R.id.button_submit_progress);
             if(mQuestionType.equals(SINGLE) || mQuestionType.equals(MULTI)){
                 addSingleMultiOptionsViews();
             }else if(mQuestionType.equals(LONG_QUESTION)){
@@ -335,15 +337,26 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
 
     private void addWebView()throws Exception{
         String detail = currentQuestion.getString("detail");
-        WebView webView = (WebView) mParentLayout.findViewById(R.id.webView);
+        final WebView webView = (WebView) mParentLayout.findViewById(R.id.webView);
         webView.setVisibility(View.VISIBLE);
         webView.getSettings().setJavaScriptEnabled(true);
         if(mQuestionType.equals(DOC)){
+            webView.setWebViewClient(new WebViewClient() {
+                //once the page is loaded get the html element by class or id and through javascript hide it.
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    webView.loadUrl("javascript:(function() { " +
+                            "document.querySelector('[role=\"toolbar\"]').remove();})()");
+                }
+            });
             String url = "http://docs.google.com/gview?url="+StringConstants.DOC_URL+detail+"&embedded=true";
             webView.loadUrl(url);
+
         }else{
             webView.loadData(detail,"text/html; charset=utf-8", "utf-8");
         }
+        submitButton.setText("Mark as completed");
     }
 
     private void addSeekBar()throws Exception {
@@ -383,11 +396,13 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             enableDisableAllViews(false);
         }
     }
+
     private void setSeekBarTextLocation(int progress,SeekBar seekBar,TextView textView){
         int val = (progress * (seekBar.getWidth()-4 * seekBar.getThumbOffset())) / seekBar.getMax();
         textView.setText("" + progress);
         textView.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
     }
+
     private boolean addSortedItemSeq()throws Exception{
         ArrayList<Pair<Long,String>> itemList = listFragment.getSortedItemArray();
         int i = 0;
