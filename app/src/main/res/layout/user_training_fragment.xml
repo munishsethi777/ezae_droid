@@ -57,52 +57,59 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"/>
-                <WebView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/webView"
-                    android:visibility="gone">
-                <TextView
-                    android:id="@+id/textView_feedbackError"
+                    <WebView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/webView"
+                        android:visibility="gone"/>
+                    <TextView
+                        android:id="@+id/textView_feedbackError"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/FeedbackRed"
+                        android:text="Feedback text"
+                        android:visibility="gone"
+                        android:textAlignment="center"
+                        android:padding="4dp" />
+                    <TextView
+                        android:id="@+id/textView_feedbackSuccess"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/FeedbackGreen"
+                        android:text="Feedback text"
+                        android:visibility="gone"
+                        android:textAlignment="center"
+                        android:padding="4dp"/>
+                    <Button
+                        android:id="@+id/feedbackOkayButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Okay"
+                        android:visibility="gone"
+                        style="@style/LoginSignUp25Theme"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/submitButtonLayout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="end"
+                tools:layout_editor_absoluteY="0dp"
+                tools:layout_editor_absoluteX="8dp">
+                <Button
+                    android:id="@+id/button_submit_progress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/FeedbackRed"
-                    android:text="Feedback text"
-                    android:visibility="invisible"
-                    android:textAlignment="center"
-                    android:padding="4dp" />
-                <TextView
-                    android:id="@+id/textView_feedbackSuccess"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/FeedbackGreen"
-                    android:text="Feedback text"
-                    android:visibility="invisible"
-                    android:textAlignment="center"
-                    android:padding="4dp"/>
-
-
-                </WebView>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/submitButtonLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="end">
-            <Button
-                android:id="@+id/button_submit_progress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="SUBMIT"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                android:textColor="@color/White"
-                style="@style/ButtonYellow"
-                android:layout_margin="@dimen/activity_horizontal_margin"
-                 />
-        </LinearLayout>
+                    android:text="SUBMIT"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/White"
+                    style="@style/ButtonYellow"
+                    android:layout_margin="@dimen/activity_horizontal_margin"
+                     />
+            </LinearLayout>
         <!--<Button-->
             <!---->
             <!--android:layout_width="0dp"-->
