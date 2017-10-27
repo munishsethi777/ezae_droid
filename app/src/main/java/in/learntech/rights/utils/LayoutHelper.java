@@ -126,7 +126,7 @@ public class LayoutHelper {
                     completedLayout.setVisibility(View.VISIBLE);
                     TextView textView_rank = (TextView) moduleInternalLayout.findViewById(R.id.textView_rank);
                     textView_rank.setText(rank.toString());
-                    button_launch.setText("Completed");
+                    button_launch.setText("Review");
                 }
 
             }

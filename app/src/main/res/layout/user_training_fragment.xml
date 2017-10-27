@@ -81,7 +81,7 @@
                         android:textAlignment="center"
                         android:padding="4dp"/>
                     <Button
-                        android:id="@+id/feedbackOkayButton"
+                        android:id="@+id/button_feedbackOkay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -91,7 +91,7 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/submitButtonLayout"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="vertical"

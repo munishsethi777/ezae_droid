@@ -150,10 +150,14 @@ public class ChatRoomChatActivity extends AppCompatActivity implements View.OnCl
         EditText composeMessageText = (EditText)findViewById(R.id.messageText);
         String messageStr = URLEncoder.encode(String.valueOf(composeMessageText.getText()));
         if(messageStr != "" && messageStr != null) {
-            ChatRoomChatModel lastMCM = rowListItem.get(rowListItem.size() - 1);
+            int afterMessageSeq = 0;
+            if(rowListItem.size() > 0) {
+                ChatRoomChatModel chatRoomChatModel = rowListItem.get(rowListItem.size() - 1);
+                afterMessageSeq = chatRoomChatModel.getSeq();
+            }
             String userType = "user";
             Object[] args = {mUserMgr.getLoggedInUserSeq(), mUserMgr.getLoggedInUserCompanySeq(),
-                    mMessageModel.getSeq(), userType,"bal123", lastMCM.getSeq(),messageStr};
+                    mMessageModel.getSeq(), userType,mUserMgr.getLoggedInUserName(), afterMessageSeq,messageStr};
             String url = MessageFormat.format(StringConstants.SEND_CHAT_ROOM_CHAT, args);
             mAuthTask = new ServiceHandler(url, this, SEND_MESSAGE_CHAT, this);
             mAuthTask.setShowProgress(false);

@@ -84,6 +84,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     private ArrayList mSelectedAnsSeqs;
     private QuestionProgressMgr mQuesProgressMgr;
     private Button submitButton;
+    private Button okButton;
     private JSONObject mModuleJson;
     private UserTrainingActivity mParentActivity;
     private JSONArray allQuestions ;
@@ -138,6 +139,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             mSelectedAnsSeqs =  new ArrayList();
             mModuleType = mModuleJson.getString("moduletype");
             submitButton = (Button)mParentLayout.findViewById(R.id.button_submit_progress);
+            okButton = (Button)mParentLayout.findViewById(R.id.button_feedbackOkay);
             if(mQuestionType.equals(SINGLE) || mQuestionType.equals(MULTI)){
                 addSingleMultiOptionsViews();
             }else if(mQuestionType.equals(LONG_QUESTION)){
@@ -481,6 +483,9 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
                         boolean isInRightOrder = addSortedItemSeq();
                         if (isInRightOrder) {
                             score = currentQuestion.getInt("maxMarks");
+                            feedbacks_success_list.add(0,"Correct Sequence");
+                        }else{
+                            feedbacks_error_list.add("Incorrect Sequence");
                         }
                         Long ansSeq = (Long) mSelectedAnsSeqs.get(0);
                         scores.put(ansSeq.intValue(), score);
@@ -621,7 +626,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
 
     private void showFeedback()throws Exception{
         boolean isShowFeedback = mModuleJson.getInt("isshowfeedback") > 0;
-        if(isQuizProgressExists && isShowFeedback) {
+        if(isShowFeedback) {
             String successText = "";
             for (String feedback : feedbacks_success_list) {
                 successText += feedback + System.lineSeparator();
@@ -635,12 +640,17 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
                 successText = successText.substring(0, successText.length() - 1);
                 textVew_feedback_success.setText(successText);
                 textVew_feedback_success.setVisibility(View.VISIBLE);
+                okButton.setVisibility(View.VISIBLE);
+                okButton.setOnClickListener(new okClick());
             }
             if (errorText != null && !errorText.equals("")) {
                 errorText = errorText.substring(0, errorText.length() - 1);
                 textVew_feedback_error.setText(errorText);
                 textVew_feedback_error.setVisibility(View.VISIBLE);
+                okButton.setVisibility(View.VISIBLE);
+                okButton.setOnClickListener(new okClick());
             }
+
         }
     }
 
@@ -666,6 +676,18 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             for (int i = 0; i < radioGroup.getChildCount(); i++) {
                 View view = radioGroup.getChildAt(i);
                view.setEnabled(isEnable);
+            }
+        }
+    }
+
+    private class okClick implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            if(wizard_page_position == allQuestions.length()-1) {
+                mParentActivity.goToTrainingActivity();
+            }else{
+                wizard_page_position++;
+                mParentActivity.viewPager.setCurrentItem(wizard_page_position);
             }
         }
     }
