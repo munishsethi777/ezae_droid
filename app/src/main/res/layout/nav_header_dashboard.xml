@@ -15,11 +15,11 @@
     <ImageView
         android:id="@+id/imageView_user"
         android:src="@mipmap/loginsignup6_bg"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="center"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:layout_marginTop="5dp"/>
+       />
     <TextView
         android:id="@+id/textView_userName"
         android:layout_width="wrap_content"
@@ -29,12 +29,21 @@
         android:text="Android Studio"
         android:textSize="18dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
+    <TextView
+        android:id="@+id/textView_profiles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="12dp"
+        android:text="" />
     <TextView
         android:id="@+id/textView_userEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textSize="12dp"
         android:text="android.studio@android.com" />
+
+
 
 </LinearLayout>

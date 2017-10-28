@@ -28,6 +28,8 @@ public class UserDataStore{
     public static final String COLUMN_COMPANY_SEQ = "companyseq";
     public static final String COLUMN_IS_MANAGER = "ismanager";
     public static final String COLUMN_USER_IMAGE_URL = "userimageurl";
+    public static final String COLUMN_PROFILES = "profiles";
+
     public static final String TABLE_NAME = "users";
 
     public static final String CREATE_TABLE = "create table " + TABLE_NAME
@@ -37,7 +39,8 @@ public class UserDataStore{
             + COLUMN_FULL_NAME + " TEXT, "
             + COLUMN_USER_SEQ + " INTEGER, "
             + COLUMN_COMPANY_SEQ + " INTEGER, "
-            + COLUMN_IS_MANAGER + " BOOLEAN, " + COLUMN_USER_IMAGE_URL + " TEXT )";
+            + COLUMN_IS_MANAGER + " BOOLEAN, " + COLUMN_USER_IMAGE_URL + " TEXT ,"
+            + COLUMN_PROFILES + " TEXT )";
     public static final String FIND_USER_BY_SEQ = "Select * from users where " + COLUMN_USER_SEQ + "={0}";
     public static final String COUNT_USER_BY_USER_NAME = "Select count(*) from users where " + COLUMN_NAME + "={0}";
 
@@ -54,6 +57,7 @@ public class UserDataStore{
         values.put(COLUMN_COMPANY_SEQ,user.getCompanySeq());
         values.put(COLUMN_IS_MANAGER,user.isManager());
         values.put(COLUMN_USER_IMAGE_URL,user.getUserImageUrl());
+        values.put(COLUMN_PROFILES,user.getProfiles());
         int seq = user.getId();
         return mDBUtil.addOrUpdateUser(this.TABLE_NAME,values,String.valueOf(seq));
     }
@@ -86,6 +90,7 @@ public class UserDataStore{
         int companySeq = c.getInt(5);
         String isManager = c.getString(6);
         String imageUrl = c.getString(7);
+        String userProfiles = c.getString(8);
 
         User user = new User();
         user.setId(id);
@@ -96,6 +101,7 @@ public class UserDataStore{
         user.setCompanySeq(companySeq);
         user.setManager(isManager == "1");
         user.setUserImageUrl(imageUrl);
+        user.setProfiles(userProfiles);
         return user;
     }
 

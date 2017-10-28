@@ -54,6 +54,7 @@ public class DashboardActivity extends AppCompatActivity
     private ImageView mUserImageView;
     private TextView mUserNameView;
     private TextView mUserEmailView;
+    private TextView mUserProfilesView;
     private LinearLayout mMenuHeaderLayout;
     private LayoutHelper mLayoutHelper;
     @Override
@@ -93,11 +94,15 @@ public class DashboardActivity extends AppCompatActivity
         mUserImageView = (ImageView)hView.findViewById(R.id.imageView_user);
         mUserNameView = (TextView)hView.findViewById(R.id.textView_userName);
         mUserEmailView = (TextView)hView.findViewById(R.id.textView_userEmail);
+        mUserProfilesView = (TextView)hView.findViewById(R.id.textView_profiles);
         String userImageUrl = mUserMgr.getLoggedInUserImageUrl();
         mLayoutHelper.loadImageRequest(mUserImageView,userImageUrl,true);
         User user = mUserMgr.getLoggedInUser();
         mUserNameView.setText(user.getUserName());
         mUserEmailView.setText(user.getEmail());
+        if(user.getProfiles() != null && user.getProfiles() != "") {
+            mUserProfilesView.setText("Profiles : " + user.getProfiles());
+        }
     }
 
     private void populateDashboardCounts(){
