@@ -95,10 +95,16 @@
             android:configChanges="orientation|screenSize"
             android:label="Chat"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Chatroom.ChatRoomActivity"
+        <activity
+            android:name=".Chatroom.ChatRoomActivity"
             android:configChanges="orientation|screenSize"
             android:label="Chat Rooms"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".SendMessage"
+            android:label="@string/title_activity_send_message"
+            android:theme="@style/AppTheme">
+        </activity>
     </application>
 
 </manifest>
