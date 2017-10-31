@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -83,6 +84,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     private ArrayList mSelectedAnsSeqs;
     private QuestionProgressMgr mQuesProgressMgr;
     private Button submitButton;
+    private Button okButton;
     private JSONObject mModuleJson;
     private UserTrainingActivity mParentActivity;
     private JSONArray allQuestions ;
@@ -136,6 +138,8 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             mParentActivity = (UserTrainingActivity)getActivity();
             mSelectedAnsSeqs =  new ArrayList();
             mModuleType = mModuleJson.getString("moduletype");
+            submitButton = (Button)mParentLayout.findViewById(R.id.button_submit_progress);
+            okButton = (Button)mParentLayout.findViewById(R.id.button_feedbackOkay);
             if(mQuestionType.equals(SINGLE) || mQuestionType.equals(MULTI)){
                 addSingleMultiOptionsViews();
             }else if(mQuestionType.equals(LONG_QUESTION)){
@@ -335,15 +339,26 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
 
     private void addWebView()throws Exception{
         String detail = currentQuestion.getString("detail");
-        WebView webView = (WebView) mParentLayout.findViewById(R.id.webView);
+        final WebView webView = (WebView) mParentLayout.findViewById(R.id.webView);
         webView.setVisibility(View.VISIBLE);
         webView.getSettings().setJavaScriptEnabled(true);
         if(mQuestionType.equals(DOC)){
+            webView.setWebViewClient(new WebViewClient() {
+                //once the page is loaded get the html element by class or id and through javascript hide it.
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    webView.loadUrl("javascript:(function() { " +
+                            "document.querySelector('[role=\"toolbar\"]').remove();})()");
+                }
+            });
             String url = "http://docs.google.com/gview?url="+StringConstants.DOC_URL+detail+"&embedded=true";
             webView.loadUrl(url);
+
         }else{
             webView.loadData(detail,"text/html; charset=utf-8", "utf-8");
         }
+        submitButton.setText("Mark as completed");
     }
 
     private void addSeekBar()throws Exception {
@@ -383,11 +398,13 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             enableDisableAllViews(false);
         }
     }
+
     private void setSeekBarTextLocation(int progress,SeekBar seekBar,TextView textView){
         int val = (progress * (seekBar.getWidth()-4 * seekBar.getThumbOffset())) / seekBar.getMax();
         textView.setText("" + progress);
         textView.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
     }
+
     private boolean addSortedItemSeq()throws Exception{
         ArrayList<Pair<Long,String>> itemList = listFragment.getSortedItemArray();
         int i = 0;
@@ -466,6 +483,9 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
                         boolean isInRightOrder = addSortedItemSeq();
                         if (isInRightOrder) {
                             score = currentQuestion.getInt("maxMarks");
+                            feedbacks_success_list.add(0,"Correct Sequence");
+                        }else{
+                            feedbacks_error_list.add("Incorrect Sequence");
                         }
                         Long ansSeq = (Long) mSelectedAnsSeqs.get(0);
                         scores.put(ansSeq.intValue(), score);
@@ -606,7 +626,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
 
     private void showFeedback()throws Exception{
         boolean isShowFeedback = mModuleJson.getInt("isshowfeedback") > 0;
-        if(isQuizProgressExists && isShowFeedback) {
+        if(isShowFeedback) {
             String successText = "";
             for (String feedback : feedbacks_success_list) {
                 successText += feedback + System.lineSeparator();
@@ -620,12 +640,17 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
                 successText = successText.substring(0, successText.length() - 1);
                 textVew_feedback_success.setText(successText);
                 textVew_feedback_success.setVisibility(View.VISIBLE);
+                okButton.setVisibility(View.VISIBLE);
+                okButton.setOnClickListener(new okClick());
             }
             if (errorText != null && !errorText.equals("")) {
                 errorText = errorText.substring(0, errorText.length() - 1);
                 textVew_feedback_error.setText(errorText);
                 textVew_feedback_error.setVisibility(View.VISIBLE);
+                okButton.setVisibility(View.VISIBLE);
+                okButton.setOnClickListener(new okClick());
             }
+
         }
     }
 
@@ -651,6 +676,18 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             for (int i = 0; i < radioGroup.getChildCount(); i++) {
                 View view = radioGroup.getChildAt(i);
                view.setEnabled(isEnable);
+            }
+        }
+    }
+
+    private class okClick implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            if(wizard_page_position == allQuestions.length()-1) {
+                mParentActivity.goToTrainingActivity();
+            }else{
+                wizard_page_position++;
+                mParentActivity.viewPager.setCurrentItem(wizard_page_position);
             }
         }
     }

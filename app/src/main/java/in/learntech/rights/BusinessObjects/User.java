@@ -9,6 +9,16 @@ public class User {
     private String fullName;
     private String userImageUrl;
     private boolean isManager;
+    private String profiles;
+
+    public String getProfiles() {
+        return profiles;
+    }
+
+    public void setProfiles(String profiles) {
+        this.profiles = profiles;
+    }
+
     public static final String TABLE_NAME = "users";
 
     public int getId() {
