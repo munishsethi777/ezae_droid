@@ -67,7 +67,12 @@ public class LayoutHelper {
             String moduleType = jsonObject.getString("moduletype");
             String moduleImage = jsonObject.getString("imagepath");
             Integer timeAllowed = jsonObject.getInt("timeallowed");
-            Integer rank = jsonObject.getInt("leaderboard");
+            Integer rank = 0;
+            String rankStr = jsonObject.getString("leaderboard");
+            if(rankStr != null && !rankStr.equals("null") && !rankStr.equals("")){
+                rank = jsonObject.getInt("leaderboard");
+            }
+
             String points = jsonObject.getString("points");
             if (points.equals("null")){
                 points = "0";
