@@ -1,6 +1,8 @@
 package in.learntech.rights.messages;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -76,11 +78,17 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
         toolBarUserName.setText(mMessageModel.getChattingUser());
 
         ImageView toolBarUserImage = (ImageView)toolbar.findViewById(R.id.userImage);
-        Glide.with(getApplicationContext())
-                .load(mMessageModel.getImageURL())
-                .transform(new ImageViewCircleTransform(getApplicationContext()))
-                .into(toolBarUserImage);
-
+        if(mMessageModel.getImageURL() != null && !mMessageModel.getImageURL().equals("null") && !mMessageModel.getImageURL().equals("")) {
+            Glide.with(getApplicationContext())
+                    .load(mMessageModel.getImageURL())
+                    .transform(new ImageViewCircleTransform(getApplicationContext()))
+                    .into(toolBarUserImage);
+        }else{
+            Glide.with(getApplicationContext())
+                    .load(R.drawable.dummy)
+                    .transform(new ImageViewCircleTransform(getApplicationContext()))
+                    .into(toolBarUserImage);
+        }
         mUserMgr = UserMgr.getInstance(this);
         rowListItem = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -136,7 +144,6 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
             MessageChatModel lastMCM = rowListItem.get(rowListItem.size()-1);
             afterMessageSeq = lastMCM.getSeq();
         }
-
         Object[] args = {mUserMgr.getLoggedInUserSeq(),mUserMgr.getLoggedInUserCompanySeq(),
                 mMessageModel.getChattingUserSeq(),mMessageModel.getChattingUserType(),afterMessageSeq};
         String url = MessageFormat.format(StringConstants.GET_MESSAGE_DETAILS,args);
@@ -149,9 +156,13 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
         EditText composeMessageText = (EditText)findViewById(R.id.messageText);
         String messageStr = URLEncoder.encode(String.valueOf(composeMessageText.getText()));
         if(messageStr != "" && messageStr != null) {
-            MessageChatModel lastMCM = rowListItem.get(rowListItem.size() - 1);
+            int lastSeq = 0;
+            if(rowListItem.size() > 0) {
+                MessageChatModel lastMCM = rowListItem.get(rowListItem.size() - 1);
+                lastSeq = lastMCM.getSeq();
+            }
             Object[] args = {mUserMgr.getLoggedInUserSeq(), mUserMgr.getLoggedInUserCompanySeq(),
-                    mMessageModel.getChattingUserSeq(), mMessageModel.getChattingUserType(), messageStr, lastMCM.getSeq()};
+                    mMessageModel.getChattingUserSeq(), mMessageModel.getChattingUserType(), messageStr, lastSeq};
             String url = MessageFormat.format(StringConstants.SEND_MESSAGE_CHAT, args);
             mAuthTask = new ServiceHandler(url, this, SEND_MESSAGE_CHAT, this);
             mAuthTask.setShowProgress(false);
@@ -204,15 +215,17 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
                 rowListItem.add(mcm);
 
             }
-            MessageChatModel lastMCM = rowListItem.get(rowListItem.size()-1);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            TextView toolBarLastTime = (TextView)toolbar.findViewById(R.id.timeLastViews);
-            toolBarLastTime.setText(lastMCM.getTime());
-
-            rView.getRecycledViewPool().clear();
-            rcAdapter.notifyDataSetChanged();
-            rcAdapter.notifyItemInserted(rowListItem.size()-1);
-            rView.smoothScrollToPosition(rowListItem.size()-1);
+            TextView toolBarLastTime = (TextView) toolbar.findViewById(R.id.timeLastViews);
+            toolBarLastTime.setText("");
+            if(rowListItem.size() > 0) {
+                MessageChatModel lastMCM = rowListItem.get(rowListItem.size() - 1);
+                toolBarLastTime.setText(lastMCM.getTime());
+                rView.getRecycledViewPool().clear();
+                rcAdapter.notifyDataSetChanged();
+                rcAdapter.notifyItemInserted(rowListItem.size() - 1);
+                rView.smoothScrollToPosition(rowListItem.size() - 1);
+            }
         }catch(Exception e) {
 
         }
@@ -236,6 +249,10 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
         //Toast.makeText(this, "Position " + pos + " clicked!", Toast.LENGTH_SHORT).show();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        NavUtils.navigateUpFromSameTask(this);
+        super.onBackPressed();
+    }
 }
 
