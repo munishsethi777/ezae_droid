@@ -4,12 +4,13 @@ package in.learntech.rights.BusinessObjects;
  * Created by baljeetgaheer on 31/10/17.
  */
 
-public class CompanyUsers {
+public class CompanyUser {
     private int id;
     private int seq;
     private String type;
     private String userName;
     private String imageName;
+    private int companySeq;
 
     public int getId() {
         return id;
@@ -50,4 +51,12 @@ public class CompanyUsers {
     public void setImageName(String imageName) {
         this.imageName = imageName;
     }
+
+    public void setCompanySeq(int companySeq){
+        this.companySeq = companySeq;
+    }
+    public int getCompanySeq(){
+        return this.companySeq;
+    }
+
 }
