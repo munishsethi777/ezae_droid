@@ -84,7 +84,11 @@
             android:name=".messages.MessageChatActivity"
             android:configChanges="orientation|screenSize"
             android:label="MessageChatActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".messages.MessageActivity" />
+        </activity>
         <activity
             android:name=".UpdateProfileActivity"
             android:configChanges="orientation|screenSize"
@@ -101,7 +105,7 @@
             android:label="Chat Rooms"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".SendMessage"
+            android:name=".SendMessageActivity"
             android:label="@string/title_activity_send_message"
             android:theme="@style/AppTheme">
         </activity>

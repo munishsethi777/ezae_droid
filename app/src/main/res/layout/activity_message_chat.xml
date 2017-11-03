@@ -37,7 +37,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_below="@+id/name"
-                    android:text="2 hours ago"
                     android:textSize="12sp" />
 
                 <ImageView
