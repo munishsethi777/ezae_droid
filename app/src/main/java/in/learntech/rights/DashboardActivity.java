@@ -27,6 +27,7 @@ import java.text.MessageFormat;
 
 import in.learntech.rights.BusinessObjects.User;
 import in.learntech.rights.Chatroom.ChatRoomActivity;
+import in.learntech.rights.Managers.CompanyUserManager;
 import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.messages.MessageActivity;
 import in.learntech.rights.services.Interface.IServiceHandler;
@@ -41,6 +42,7 @@ public class DashboardActivity extends AppCompatActivity
     private static final String MESSAGE = "message";
     public static final String GET_DASHBOARD_COUNT = "getDashboardCount";
     public static final String GET_LEARNING_PLANS = "getLearningPlans";
+    public static final String SYNC_USERS = "syncUsers";
     private ServiceHandler mAuthTask = null;
     private UserMgr mUserMgr ;
     private TextView mScores;
@@ -57,6 +59,7 @@ public class DashboardActivity extends AppCompatActivity
     private TextView mUserProfilesView;
     private LinearLayout mMenuHeaderLayout;
     private LayoutHelper mLayoutHelper;
+    private CompanyUserManager mCompanyUserMgr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +74,7 @@ public class DashboardActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         mUserMgr = UserMgr.getInstance(this);
+        mCompanyUserMgr = CompanyUserManager.getInstance(this);
         mLoggedInUserSeq = mUserMgr.getLoggedInUserSeq();
         mLoggedInCompanySeq = mUserMgr.getLoggedInUserCompanySeq();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -110,12 +114,18 @@ public class DashboardActivity extends AppCompatActivity
         int loggedInUserCompanySeq = mUserMgr.getLoggedInUserCompanySeq();
         Object[] args = {loggedInUserSeq,loggedInUserCompanySeq};
         String dashboardCountUrl = MessageFormat.format(StringConstants.GET_DASHBOARD_COUNTS,args);
+        String syncUsers = MessageFormat.format(StringConstants.SYNCH_USERS,args);
         String learningPlanUrl = MessageFormat.format(StringConstants.GET_LEARNING_PLANS,args);
         mAuthTask = new ServiceHandler(dashboardCountUrl,this, GET_DASHBOARD_COUNT,this);
         mAuthTask.execute();
         mAuthTask = new ServiceHandler(learningPlanUrl,this, GET_LEARNING_PLANS,this);
         mAuthTask.execute();
+        //SYNC USERS
+        mAuthTask = new ServiceHandler(syncUsers,this, SYNC_USERS,this);
+        mAuthTask.execute();
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -206,6 +216,8 @@ public class DashboardActivity extends AppCompatActivity
                     populateDashboardCounts(response);
                 }else if(mCallName.equals(GET_LEARNING_PLANS)){
                     populateLearningPlans(response);
+                }else if(mCallName.equals(SYNC_USERS)){
+                    mCompanyUserMgr.saveUsersFromResponse(response);
                 }
             }
         }catch (Exception e){
