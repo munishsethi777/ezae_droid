@@ -21,7 +21,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import in.learntech.rights.Managers.UserMgr;
+import in.learntech.rights.MyTrainings;
 import in.learntech.rights.R;
+import in.learntech.rights.SendMessageActivity;
 import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
 import in.learntech.rights.utils.LayoutHelper;
@@ -76,6 +78,10 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.fab_sendMessage:
+                Intent intent = new Intent(this,SendMessageActivity.class);
+                startActivity(intent);
+                break;  //optional
             default:
                 break;
         }
@@ -85,7 +91,6 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     public void itemClicked(View view, int position) {
         int pos = position + 1;
         //Toast.makeText(this, "Position " + pos + " clicked!", Toast.LENGTH_SHORT).show();
-
         MessageModel mm = rowListItem.get(position);
         Intent messageChatActivity = new Intent(this,MessageChatActivity.class);
         messageChatActivity.putExtra("messageModel",mm);
