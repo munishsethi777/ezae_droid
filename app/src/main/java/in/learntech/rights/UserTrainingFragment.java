@@ -358,7 +358,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
         }else{
             webView.loadData(detail,"text/html; charset=utf-8", "utf-8");
         }
-        submitButton.setText("Mark as completed");
+        submitButton.setText("Mark as read");
     }
 
     private void addSeekBar()throws Exception {
