@@ -49,6 +49,9 @@ public class DBUtil extends SQLiteOpenHelper {
 
         String CREATE_QUESTION_PROGRESS = QuestionProgressDataStore.CREATE_TABLE;
         db.execSQL(CREATE_QUESTION_PROGRESS);
+
+        String CREATE_COMPANY_USERS = CompanyUserDataStore.CREATE_TABLE;
+        db.execSQL(CREATE_COMPANY_USERS);
     }
 
     // Called when the database needs to be upgraded.
