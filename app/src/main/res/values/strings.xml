@@ -20,5 +20,5 @@
     <string name="title_activity_notes">Notes</string>
     <string name="title_activity_notes_editor">Notes Editor</string>
     <string name="title_activity_update_profile">Update Profile</string>
-    <string name="title_activity_send_message">SendMessage</string>
+    <string name="title_activity_send_message">New Message</string>
 </resources>
