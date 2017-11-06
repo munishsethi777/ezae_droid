@@ -157,7 +157,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             }else if(mQuestionType.equals(ESTIMATE_PERCENTAGE)){
                 addSeekBar();
             }
-            textView_question.setText(wizard_page_position + 1 + ". " +currentQuestion.getString("title") + " ?");
+            textView_question.setText(wizard_page_position + 1 + ". " +currentQuestion.getString("title"));
             addButton();
             submitButton = (Button)mParentLayout.findViewById(R.id.button_submit_progress);
             textVew_feedback_success = (TextView)mParentLayout.findViewById(R.id.textView_feedbackSuccess);
