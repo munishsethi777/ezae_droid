@@ -22,12 +22,12 @@ import java.util.List;
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
+public class LeaderboardRecyclerViewAdapter extends RecyclerView.Adapter<LeaderboardRecyclerViewAdapter.ViewHolder> {
 
     private final List<LeaderboardModel> mValues;
     private Context mContext;
 
-    public MyItemRecyclerViewAdapter(Context context, List<LeaderboardModel> items) {
+    public LeaderboardRecyclerViewAdapter(Context context, List<LeaderboardModel> items) {
         mValues = items;
         mContext = context;
     }

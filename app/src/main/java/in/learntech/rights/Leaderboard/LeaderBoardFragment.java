@@ -29,7 +29,7 @@ import in.learntech.rights.utils.StringConstants;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ItemFragment extends Fragment implements IServiceHandler {
+public class LeaderBoardFragment extends Fragment implements IServiceHandler {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -46,14 +46,14 @@ public class ItemFragment extends Fragment implements IServiceHandler {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ItemFragment() {
+    public LeaderBoardFragment() {
 
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static ItemFragment newInstance(String selectedItemId) {
-        ItemFragment fragment = new ItemFragment();
+    public static LeaderBoardFragment newInstance(String selectedItemId) {
+        LeaderBoardFragment fragment = new LeaderBoardFragment();
         Bundle args = new Bundle();
         args.putString(SELECTED_ITEM_ID, selectedItemId);
         fragment.setArguments(args);
@@ -81,6 +81,7 @@ public class ItemFragment extends Fragment implements IServiceHandler {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             mRecyclerView = (RecyclerView) view;
+            executeLeaderboardDataCall();
         }
         return view;
     }
@@ -130,16 +131,17 @@ public class ItemFragment extends Fragment implements IServiceHandler {
             if (success) {
                 JSONArray leaderBoardDataArr = response.getJSONArray("leaderboarddata");
                 List<LeaderboardModel> models = new ArrayList<>();
-                for (int i=0;i>leaderBoardDataArr.length();i++){
+                for (int i=0;i<leaderBoardDataArr.length();i++){
                     JSONObject leaderboardData = leaderBoardDataArr.getJSONObject(i);
                     LeaderboardModel model= new LeaderboardModel();
                     model.setUserName(leaderboardData.getString("username"));
                     model.setDateDiff(leaderboardData.getString("dateofplaytilldiff"));
                     model.setScore(leaderboardData.getString("score"));
-                    model.setUserImage(leaderboardData.getString("imagepath"));
+                    String imagePath = StringConstants.WEB_URL + leaderboardData.getString("imagepath");
+                    model.setUserImage(imagePath);
                     models.add(model);
                 }
-                mRecyclerView.setAdapter(new MyItemRecyclerViewAdapter(models, mListener));
+                mRecyclerView.setAdapter(new LeaderboardRecyclerViewAdapter(getActivity().getApplicationContext(),models));
             }
         }catch (Exception e){
             message = "Error :- " + e.getMessage();
