@@ -1,9 +1,13 @@
 package in.learntech.rights;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,20 +17,22 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.app.progresviews.ProgressWheel;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.text.MessageFormat;
-
+import java.util.HashMap;
 import in.learntech.rights.BusinessObjects.User;
 import in.learntech.rights.Chatroom.ChatRoomActivity;
+import in.learntech.rights.Leaderboard.LeaderBoardFragment;
+import in.learntech.rights.Leaderboard.LeaderboardModel;
 import in.learntech.rights.Managers.CompanyUserManager;
 import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.messages.MessageActivity;
@@ -36,13 +42,14 @@ import in.learntech.rights.utils.LayoutHelper;
 import in.learntech.rights.utils.StringConstants;
 
 public class DashboardActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,IServiceHandler,View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener,IServiceHandler,View.OnClickListener , LeaderBoardFragment.OnListFragmentInteractionListener {
     private static final String SUCCESS = "success";
     private static final String DASHBOARD_DATA = "dashboardData";
     private static final String MESSAGE = "message";
     public static final String GET_DASHBOARD_COUNT = "getDashboardCount";
     public static final String GET_LEARNING_PLANS = "getLearningPlans";
     public static final String SYNC_USERS = "syncUsers";
+    public static final String GET_PROFILES_AND_MODULES = "getProfilesAndModules";
     private ServiceHandler mAuthTask = null;
     private UserMgr mUserMgr ;
     private TextView mScores;
@@ -60,6 +67,8 @@ public class DashboardActivity extends AppCompatActivity
     private LinearLayout mMenuHeaderLayout;
     private LayoutHelper mLayoutHelper;
     private CompanyUserManager mCompanyUserMgr;
+    private Spinner mSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,14 +86,22 @@ public class DashboardActivity extends AppCompatActivity
         mCompanyUserMgr = CompanyUserManager.getInstance(this);
         mLoggedInUserSeq = mUserMgr.getLoggedInUserSeq();
         mLoggedInCompanySeq = mUserMgr.getLoggedInUserCompanySeq();
+        mSpinner = (Spinner)findViewById(R.id.spinner_profilesAndModules);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         mLayoutHelper = new LayoutHelper(this,null,null);
         initViews();
-        populateDashboardCounts();
+        executeCalls();
         android.app.Fragment fragment = NotificationsFragment.newInstance(mLoggedInUserSeq,mLoggedInCompanySeq);
         getFragmentManager().beginTransaction().replace(R.id.layout_notifications,fragment).commit();
+    }
 
+    protected void setFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction =
+                fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.linearLayout_leaderboarddata, fragment);
+        fragmentTransaction.commit();
     }
 
     private void initViews(){
@@ -109,23 +126,53 @@ public class DashboardActivity extends AppCompatActivity
         }
     }
 
-    private void populateDashboardCounts(){
+    private void executeCalls(){
         int loggedInUserSeq = mUserMgr.getLoggedInUserSeq();
         int loggedInUserCompanySeq = mUserMgr.getLoggedInUserCompanySeq();
         Object[] args = {loggedInUserSeq,loggedInUserCompanySeq};
         String dashboardCountUrl = MessageFormat.format(StringConstants.GET_DASHBOARD_COUNTS,args);
-        String syncUsers = MessageFormat.format(StringConstants.SYNCH_USERS,args);
+        String syncUsersUrl = MessageFormat.format(StringConstants.SYNCH_USERS,args);
         String learningPlanUrl = MessageFormat.format(StringConstants.GET_LEARNING_PLANS,args);
+        String getProfilesAndModulesUrl = MessageFormat.format(StringConstants.GET_PROFILE_AND_MODULES,args);
         mAuthTask = new ServiceHandler(dashboardCountUrl,this, GET_DASHBOARD_COUNT,this);
         mAuthTask.execute();
         mAuthTask = new ServiceHandler(learningPlanUrl,this, GET_LEARNING_PLANS,this);
         mAuthTask.execute();
         //SYNC USERS
-        mAuthTask = new ServiceHandler(syncUsers,this, SYNC_USERS,this);
+        mAuthTask = new ServiceHandler(syncUsersUrl,this, SYNC_USERS,this);
+        mAuthTask.setShowProgress(false);
+        mAuthTask.execute();
+        //Get Profiles and Modules for leaderboard
+        mAuthTask = new ServiceHandler(getProfilesAndModulesUrl,this, GET_PROFILES_AND_MODULES,this);
         mAuthTask.execute();
     }
 
+    private void populateProfileAndModules(JSONObject response)throws Exception{
+        JSONArray profileAndModuleArr = response.getJSONArray("profilesAndModules");
+        String[] spinnerArray = new String[profileAndModuleArr.length()];
+        final HashMap<Integer,String> spinnerMap = new HashMap<Integer, String>();
+        for (int i = 0; i < profileAndModuleArr.length(); i++)
+        {
+            JSONObject json = profileAndModuleArr.getJSONObject(i);
+            spinnerMap.put(i,json.getString("id"));
+            spinnerArray[i] = json.getString("name");
+        }
+        ArrayAdapter<String> adapter =new ArrayAdapter<String>(getApplicationContext(),R.layout.spinner_item, spinnerArray);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+        mSpinner.setAdapter(adapter);
+        mSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+            public void onItemSelected(AdapterView<?> parent, View view, int pos,
+                                       long id) {
+                ((TextView) view).setTextColor(Color.BLACK);
+                String selectedId = spinnerMap.get(pos);
+                LeaderBoardFragment itemFragment = LeaderBoardFragment.newInstance(selectedId);
+                setFragment(itemFragment);
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
 
+        });
+    }
 
     @Override
     public void onBackPressed() {
@@ -218,10 +265,13 @@ public class DashboardActivity extends AppCompatActivity
                     populateLearningPlans(response);
                 }else if(mCallName.equals(SYNC_USERS)){
                     mCompanyUserMgr.saveUsersFromResponse(response);
+                    message = null;
+                }else if(mCallName.equals(GET_PROFILES_AND_MODULES)){
+                    populateProfileAndModules(response);
+                    message = null;
                 }
             }
         }catch (Exception e){
-
             message = "Error :- " + e.getMessage();
         }
         if(message != null && !message.equals("")){
@@ -327,4 +377,13 @@ public class DashboardActivity extends AppCompatActivity
             startActivity(intent);
         }
     }
+
+    //Leader board container
+    @Override
+    public void onListFragmentInteraction(LeaderboardModel item) {
+
+    }
+
+
+
 }
