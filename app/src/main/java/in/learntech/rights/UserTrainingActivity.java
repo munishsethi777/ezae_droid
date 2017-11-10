@@ -189,16 +189,20 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
                     view.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_dot_grey));
                 }
         }
-        String questionNoStr = position + 1 + " of " + mModuleQuestionsJson.length() + " Questions";
-        mQuestionNoTextView.setText(questionNoStr);
+
         try{
             JSONObject ques = mModuleQuestionsJson.getJSONObject(position);
+            String questionNoStr = position + 1 + " of " + mModuleQuestionsJson.length();
+            if(mModuleJson.getString("moduletype").equals("quiz")){
+                questionNoStr += " Questions";
+            }else{
+                questionNoStr += " Pages";
+            }
+            mQuestionNoTextView.setText(questionNoStr);
             JSONArray progressArray = ques.getJSONArray("progress");
             JSONArray localProgress = mQuesMgr.getProgressJsonArr(ques.getInt("seq"),mModuleSeq,mLpSeq);
             progressArray = LayoutHelper.mergeTwoJsonArray(progressArray,localProgress);
             mQuestionMarksTextView.setText("Marks: " + ques.getInt("maxMarks"));
-
-
             if(progressArray.length() > 0){
                 viewPager.setAllowedSwipeDirection(SwipeDirection.all);
             }else{

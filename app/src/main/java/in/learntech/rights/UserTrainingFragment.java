@@ -2,6 +2,8 @@ package in.learntech.rights;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,11 +20,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -102,6 +106,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
     List<String> feedbacks_error_list;
     private String mModuleType;
     private RadioGroup radioGroup;
+    private WebView webView;
     public  UserTrainingFragment(int position,JSONObject moduleJson) {
         this.wizard_page_position = position;
         mModuleJson = moduleJson;
@@ -339,7 +344,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
 
     private void addWebView()throws Exception{
         String detail = currentQuestion.getString("detail");
-        final WebView webView = (WebView) mParentLayout.findViewById(R.id.webView);
+        webView = (WebView) mParentLayout.findViewById(R.id.webView);
         webView.setVisibility(View.VISIBLE);
         webView.getSettings().setJavaScriptEnabled(true);
         if(mQuestionType.equals(DOC)){
@@ -356,7 +361,20 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             webView.loadUrl(url);
 
         }else{
+            if(mQuestionType.equals(MEDIA)){
+                if(detail.contains("<iframe")){
+                    String frameStr = "<iframe";
+                    String str = detail.substring(0,frameStr.length());
+                    String str1 = detail.substring(frameStr.length()+1);
+                    str += " style=\"width:100%;\" ";
+                    str += " " +str1;
+                    detail = str;
+                }
+            }
+            webView.setWebViewClient(new Browser());
+            webView.setWebChromeClient(new MyWebClient());
             webView.loadData(detail,"text/html; charset=utf-8", "utf-8");
+
         }
         submitButton.setText("Mark as read");
     }
@@ -692,6 +710,81 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
         }
     }
 
+
+    class Browser
+            extends WebViewClient
+    {
+        Browser() {}
+
+        public boolean shouldOverrideUrlLoading(WebView paramWebView, String paramString)
+        {
+            paramWebView.loadUrl(paramString);
+            return true;
+        }
+    }
+
+    public class MyWebClient
+            extends WebChromeClient
+    {
+        private View mCustomView;
+        private WebChromeClient.CustomViewCallback mCustomViewCallback;
+        protected FrameLayout mFullscreenContainer;
+        private int mOriginalOrientation;
+        private int mOriginalSystemUiVisibility;
+
+        public MyWebClient() {}
+
+        public Bitmap getDefaultVideoPoster()
+        {
+            if (getActivity() == null) {
+                return null;
+            }
+            return BitmapFactory.decodeResource(getActivity().getApplicationContext().getResources(), 2130837573);
+        }
+
+        public void onHideCustomView()
+        {
+            ((FrameLayout)getActivity().getWindow().getDecorView()).removeView(this.mCustomView);
+            this.mCustomView = null;
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(this.mOriginalSystemUiVisibility);
+            getActivity().setRequestedOrientation(this.mOriginalOrientation);
+            this.mCustomViewCallback.onCustomViewHidden();
+            this.mCustomViewCallback = null;
+        }
+
+        public void onShowCustomView(View paramView, WebChromeClient.CustomViewCallback paramCustomViewCallback)
+        {
+            if (this.mCustomView != null)
+            {
+                onHideCustomView();
+                return;
+            }
+            this.mCustomView = paramView;
+            this.mOriginalSystemUiVisibility = getActivity().getWindow().getDecorView().getSystemUiVisibility();
+            this.mOriginalOrientation = getActivity().getRequestedOrientation();
+            this.mCustomViewCallback = paramCustomViewCallback;
+            ((FrameLayout)getActivity().getWindow().getDecorView()).addView(this.mCustomView, new FrameLayout.LayoutParams(-1, -1));
+            getActivity().getWindow().getDecorView().setSystemUiVisibility(3846);
+        }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if(webView != null) {
+            webView.onResume();
+        }
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        if(webView != null) {
+            webView.onPause();
+        }
+    }
 
 
 }
