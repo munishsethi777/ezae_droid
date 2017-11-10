@@ -270,23 +270,74 @@
                     <!--<include layout="@layout/dashboard_notification_fragment"/>-->
                 </LinearLayout>
 
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout_leaderboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintRight_creator="1">
+
                 <TextView
-                    android:id="@+id/textViewActiveLearningPlans"
+                    android:id="@+id/textView_leaderboard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:background="@color/BlueMain"
                     android:padding="8dp"
-                    android:text="ACTIVE LEARNING PLANS"
+                    android:text="LEADERBOARD"
                     android:textAlignment="center"
                     android:textColor="@android:color/background_light"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewNotifications" />
-            </LinearLayout>
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <LinearLayout
+                    android:id="@+id/linearLayout_profileAndModules"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/activeLearningPlansContainer">
+                    <Spinner
+                        android:id="@+id/spinner_profilesAndModules"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown"
+                        android:dropDownVerticalOffset="-15dp"
+                        android:padding="10dp"
+                         />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/linearLayout_leaderboarddata"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/activeLearningPlansContainer">
+                </LinearLayout>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/textViewActiveLearningPlans"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:background="@color/BlueMain"
+                android:padding="8dp"
+                android:text="ACTIVE LEARNING PLANS"
+                android:textAlignment="center"
+                android:textColor="@android:color/background_light"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewNotifications" />
             <LinearLayout
                 android:id="@+id/activeLearningPlansContainer"
                 android:layout_width="match_parent"
