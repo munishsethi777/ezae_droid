@@ -41,7 +41,10 @@ public class StringConstants {
     public static final String GET_USER_DETAIL = ACTION_API_URL + "UserAction.php?call=getUserDetail&userSeq={0}&companySeq={1}";
     public static final String UPDATE_USER_PROFILE = ACTION_API_URL + "UserAction.php?call=updateUserProfile&userSeq={0}&companySeq={1}&userProfileDetail={2}";
     public static final String SYNCH_USERS = ACTION_API_URL + "UserAction.php?call=synchUsersAndAdmins&userSeq={0}&companySeq={1}";
-
+    public static final String GET_PROFILE_AND_MODULES = ACTION_API_URL + "UserAction.php?call=getProfilesAndModules&userSeq={0}&companySeq={1}";
+    public static final String GET_LEADERBOARD_BY_MODULE = ACTION_API_URL + "UserAction.php?call=getLeaderBoardDataByModule&userSeq={0}&companySeq={1}&moduleSeq={2}";
+    public static final String GET_LEADERBOARD_BY_PROFILE = ACTION_API_URL + "UserAction.php?call=getLeaderBoardDataByProfile&userSeq={0}&companySeq={1}&profileSeq={2}";
+    public static final String GET_LEADERBOARD_BY_LEARNINGPLAN = ACTION_API_URL + "UserAction.php?call=getLeaderBoardDataByLearningPlan&userSeq={0}&companySeq={1}&lpSeq={2}";
     //LearningPlan Actions
     public static final String GET_LEARNING_PLANS = ACTION_API_URL + "LearningPlanAction.php?call=getLearningPlans&userSeq={0}&companySeq={1}";
 
