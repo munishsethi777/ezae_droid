@@ -102,7 +102,7 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
             imageUrl = StringConstants.IMAGE_URL + imageDirName + imageName;
         }
         MessageModel mm = new MessageModel(null,dated,
-                type + ": " + companyUser.getUserName(),
+                type + ": " + companyUser.getFullName(),
                 imageUrl,
                 companyUser.getType(),
                 companyUser.getSeq());
