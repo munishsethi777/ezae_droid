@@ -131,16 +131,28 @@ public class LeaderBoardFragment extends Fragment implements IServiceHandler {
             if (success) {
                 JSONArray leaderBoardDataArr = response.getJSONArray("leaderboarddata");
                 List<LeaderboardModel> models = new ArrayList<>();
-                for (int i=0;i<leaderBoardDataArr.length();i++){
-                    JSONObject leaderboardData = leaderBoardDataArr.getJSONObject(i);
-                    LeaderboardModel model= new LeaderboardModel();
-                    model.setUserName(leaderboardData.getString("username"));
-                    model.setDateDiff(leaderboardData.getString("dateofplaytilldiff"));
-                    model.setScore(leaderboardData.getString("score"));
-                    String imagePath = StringConstants.WEB_URL + leaderboardData.getString("imagepath");
-                    model.setUserImage(imagePath);
-                    models.add(model);
-                }
+                 if(leaderBoardDataArr.length() > 0) {
+                     for (int i = 0; i < leaderBoardDataArr.length(); i++) {
+                         JSONObject leaderboardData = leaderBoardDataArr.getJSONObject(i);
+                         LeaderboardModel model = new LeaderboardModel();
+                         String userName = leaderboardData.getString("uname");
+                         if (userName != null && !userName.equals("") && !userName.equals("null")) {
+                         } else {
+                             userName = leaderboardData.getString("username");
+                         }
+                         model.setUserName(userName);
+                         model.setDateDiff(leaderboardData.getString("dateofplaytilldiff"));
+                         model.setScore(leaderboardData.getString("totalscore"));
+                         String imagePath = StringConstants.WEB_URL + leaderboardData.getString("imagepath");
+                         model.setUserImage(imagePath);
+                         models.add(model);
+                     }
+                 }else{
+                     LeaderboardModel model = new LeaderboardModel();
+                     model.setUserName("      No data found for selected option");
+                     models.add(model);
+
+                 }
                 mRecyclerView.setAdapter(new LeaderboardRecyclerViewAdapter(getActivity().getApplicationContext(),models));
             }
         }catch (Exception e){

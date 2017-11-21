@@ -48,7 +48,7 @@ public class LeaderboardRecyclerViewAdapter extends RecyclerView.Adapter<Leaderb
         holder.mItem = mValues.get(position);
         holder.mUserName.setText(mValues.get(position).getUserName());
         holder.mScore.setText(mValues.get(position).getScore());
-        holder.mDated.setText(mValues.get(position).getDateDiff());
+        //holder.mDated.setText(mValues.get(position).getDateDiff());
     }
 
     @Override
@@ -60,7 +60,7 @@ public class LeaderboardRecyclerViewAdapter extends RecyclerView.Adapter<Leaderb
         public final ImageView mImageView;
         public final TextView mUserName;
         public final TextView mScore;
-        public final TextView mDated;
+        // public final TextView mDated;
         public LeaderboardModel mItem;
 
         public ViewHolder(View view) {
@@ -68,7 +68,7 @@ public class LeaderboardRecyclerViewAdapter extends RecyclerView.Adapter<Leaderb
             mImageView = (ImageView) view.findViewById(R.id.imageView_leaderboard);
             mUserName = (TextView)view.findViewById(R.id.textview_username);
             mScore = (TextView)view.findViewById(R.id.textview_score);
-            mDated = (TextView)view.findViewById(R.id.textview_date);
+            //mDated = (TextView)view.findViewById(R.id.textview_date);
         }
     }
 }
