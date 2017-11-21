@@ -1484,5 +1484,6 @@
     <color name="BlueMain">#2892e2</color>
     <color name="OrangeMain">#ff9100</color>
 
+    <color name="bg_relative">#E6FFFFFF</color>
 
 </resources>

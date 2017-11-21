@@ -201,12 +201,21 @@ public class ChatRoomChatActivity extends AppCompatActivity implements View.OnCl
                 int chatSeq = jsonObject.getInt("post_id");
                 String dated = jsonObject.getString("post_time");
                 String fromUser = jsonObject.getString("post_user");
+                String name = jsonObject.getString("uname");
+                String type = jsonObject.getString("user_type");
+                if(type.equals("admin")){
+                    name = jsonObject.getString("aname");
+                }else {
+                    if(name == null || name.equals("") || name.equals("null")){
+                        name =   fromUser;
+                    }
+                }
                 String messagetext = jsonObject.getString("post_message");
                 boolean isSent = false;
                 if (mUserMgr.getLoggedInUserName().equals(fromUser)) {
                    isSent = true;
                 }
-                ChatRoomChatModel mcm = new ChatRoomChatModel(chatSeq, messagetext, dated, fromUser,isSent);
+                ChatRoomChatModel mcm = new ChatRoomChatModel(chatSeq, messagetext, dated, name,isSent);
                 rowListItem.add(mcm);
             }
             ChatRoomChatModel lastMCM = rowListItem.get(rowListItem.size()-1);
