@@ -536,6 +536,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             Object[] args = {mUserSeq,mCompanySeq,jsonArrString};
             String notificationUrl = MessageFormat.format(StringConstants.SUBMIT_QUIZ_PROGRESS,args);
             mAuthTask = new ServiceHandler(notificationUrl, this, SAVE_QUIZ_PROGRESS, getActivity());
+            mAuthTask.setShowProgress(false);
             mAuthTask.execute();
         }catch (Exception e){
             LayoutHelper.showToast(getActivity(),e.getMessage());
@@ -575,7 +576,7 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
                     int moduleSeq = currentQuestion.getInt("moduleSeq");
                     int learningPlanSeq = currentQuestion.getInt("learningPlanSeq");
                     mQuesProgressMgr.deleteByModule(moduleSeq, learningPlanSeq);
-                    LayoutHelper.showToast(getActivity(),message);
+                    //LayoutHelper.showToast(getActivity(),message);
                     mParentActivity.goToTrainingActivity();
                 }else{
                     isSavedActivityData = true;
