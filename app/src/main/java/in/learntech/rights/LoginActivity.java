@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String url = BuildConfig.IMAGE_URL + "login-signup/style-12/Login-Register-12-960.jpg";
 
         Glide.with(this)
-                .load(url)
+                .load(R.drawable.background2)
                 .thumbnail(0.01f)
                 .centerCrop()
                 .into(new SimpleTarget<GlideDrawable>() {

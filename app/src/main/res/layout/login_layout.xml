@@ -6,36 +6,39 @@
     android:layout_height="match_parent"
     android:background="@android:color/darker_gray"
     android:paddingBottom="@dimen/activity_vertical_margin">
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="46dp">
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:layout_gravity="center"
+            android:background="@color/bg_relative"
             android:orientation="vertical">
 
             <LinearLayout
+                android:padding="10dp"
                 android:id="@+id/inputCont"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Welcome to Right Management Coaching Center Application"
-                    android:textSize="22dp"
-                    android:textAlignment="center"
-                    android:textColor="@color/Orange"
-                    android:padding="10dp"
-                    android:layout_marginTop="20dp"/>
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Welcome to Right Management Coaching Center Application"-->
+                    <!--android:textSize="22dp"-->
+                    <!--android:textAlignment="center"-->
+                    <!--android:textColor="@color/Orange"-->
+                    <!--android:padding="10dp"-->
+                    <!--android:layout_marginTop="20dp"/>-->
 
                 <ImageView
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -55,7 +58,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_marginTop="20dp">
+                        android:layout_marginTop="10dp">
 
                         <EditText
                             android:id="@+id/username_view"
@@ -76,15 +79,15 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/activity_horizontal_margin">
 
-                            <TextView
-                                android:id="@+id/txtForgotPassword"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:onClick="onClick"
-                                android:text="Forgot Password"
-                                android:textColor="@color/LightGrey" />
+                            <!--<TextView-->
+                                <!--android:id="@+id/txtForgotPassword"-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:layout_alignParentRight="true"-->
+                                <!--android:layout_centerVertical="true"-->
+                                <!--android:onClick="onClick"-->
+                                <!--android:text="Forgot Password"-->
+                                <!--android:textColor="@color/LightGrey" />-->
 
                         </RelativeLayout>
 
@@ -100,15 +103,16 @@
                 style="@style/ButtonOrange"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
-                android:layout_below="@+id/inputCont"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="20dp"
                 android:onClick="onClick"
                 android:text="Login"
                 android:textAllCaps="false"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:layout_below="@+id/inputCont"
+                android:layout_centerHorizontal="true" />
 
         </RelativeLayout>
 

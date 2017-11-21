@@ -120,7 +120,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                         JSONObject jsonObject = notesJsonArr.getJSONObject(i);
                         String messageText = jsonObject.getString("messageText");
                         String dated = jsonObject.getString("dated");
-                        String chattingUser = jsonObject.getString("userName");
+                        String chattingUser = jsonObject.getString("name");
                         String imageUrl = StringConstants.WEB_URL + jsonObject.getString("userImage");
                         String chattingWithUserType = jsonObject.getString("userType");
                         int chattingWithUserSeq = jsonObject.getInt("userSeq");
