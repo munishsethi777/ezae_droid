@@ -72,7 +72,7 @@ public class CompanyUserAdapter extends RecyclerView.Adapter<CompanyUserAdapter.
 
         boolean swipeEnable = true;
         holder.sml.setSwipeEnable(swipeEnable);
-        holder.textName.setText(type +": "+dataList.get(position).getUserName());
+        holder.textName.setText(type +": "+dataList.get(position).getFullName());
     }
 
     @Override

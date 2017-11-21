@@ -26,6 +26,7 @@ public class CompanyUserDataStore {
     public static final String COLUMN_NAME = "username";
     public static final String COLUMN_IMAGE_NAME = "imagename";
     public static final String COLUMN_COMPANY_SEQ = "companyseq";
+    public static final String COLUMN_FULLNAME = "fullname";
 
     public static final String TABLE_NAME = "companyusers";
 
@@ -35,7 +36,8 @@ public class CompanyUserDataStore {
             + COLUMN_USER_TYPE + " TEXT, "
             + COLUMN_NAME + " TEXT, "
             + COLUMN_IMAGE_NAME + " TEXT, "
-            + COLUMN_COMPANY_SEQ + " TEXT )";
+            + COLUMN_COMPANY_SEQ + " TEXT ,"
+            + COLUMN_FULLNAME + " TEXT )";
     public static final String FIND_BY_COMPANY_SEQ = "Select * from companyusers where "
             + COLUMN_COMPANY_SEQ + "= {0} ";
 
@@ -44,13 +46,14 @@ public class CompanyUserDataStore {
         mDBUtil = DBUtil.getInstance(mContext);
     }
 
-    public long save(CompanyUser companyUser) {
+    public long save(CompanyUser companyUser){
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_SEQ, companyUser.getSeq());
         values.put(COLUMN_USER_TYPE, companyUser.getType());
         values.put(COLUMN_NAME, companyUser.getUserName());
         values.put(COLUMN_IMAGE_NAME, companyUser.getImageName());
         values.put(COLUMN_COMPANY_SEQ, companyUser.getCompanySeq());
+        values.put(COLUMN_FULLNAME,companyUser.getFullName());
         int seq = companyUser.getId();
         return mDBUtil.addOrUpdateUser(this.TABLE_NAME, values, String.valueOf(seq));
     }
@@ -89,6 +92,7 @@ public class CompanyUserDataStore {
         String userName = c.getString(3);
         String imageName = c.getString(4);
         int companySeq = c.getInt(5);
+        String fullName = c.getString(6);
 
         CompanyUser companyUser = new CompanyUser();
         companyUser.setId(id);
@@ -97,6 +101,7 @@ public class CompanyUserDataStore {
         companyUser.setUserName(userName);
         companyUser.setImageName(imageName);
         companyUser.setCompanySeq(companySeq);
+        companyUser.setFullName(fullName);
         return companyUser;
     }
 }

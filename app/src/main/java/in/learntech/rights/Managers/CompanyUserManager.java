@@ -40,12 +40,14 @@ public class CompanyUserManager {
             String type = userJson.getString("type");
             String userName = userJson.getString("username");
             String image = userJson.getString("image");
+            String fullName = userJson.getString("name");
             CompanyUser companyUser = new CompanyUser();
             companyUser.setSeq(seq);
             companyUser.setUserName(userName);
             companyUser.setType(type);
             companyUser.setImageName(image);
             companyUser.setCompanySeq(companySeq);
+            companyUser.setFullName(fullName);
             companyUsersDataStore.save(companyUser);
         }
     }

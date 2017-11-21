@@ -11,6 +11,7 @@ public class CompanyUser {
     private String userName;
     private String imageName;
     private int companySeq;
+    private String fullName;
 
     public int getId() {
         return id;
@@ -57,6 +58,13 @@ public class CompanyUser {
     }
     public int getCompanySeq(){
         return this.companySeq;
+    }
+
+    public void setFullName(String fullName){
+        this.fullName = fullName;
+    }
+    public String getFullName(){
+        return this.fullName;
     }
 
 }
