@@ -1,4 +1,4 @@
-package sundeepk.github.com.sample;
+package in.learntech.rights.Events;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

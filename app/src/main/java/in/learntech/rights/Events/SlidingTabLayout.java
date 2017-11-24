@@ -1,4 +1,4 @@
-package sundeepk.github.com.sample;
+package in.learntech.rights.Events;
 /*
  * Copyright 2014 Google Inc. All rights reserved.
  *

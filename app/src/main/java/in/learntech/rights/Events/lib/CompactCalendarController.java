@@ -1,4 +1,4 @@
-package com.github.sundeepk.compactcalendarview;
+package in.learntech.rights.Events.lib;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -15,18 +15,22 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
 import android.widget.OverScroller;
-import com.github.sundeepk.compactcalendarview.domain.Event;
+
+
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static com.github.sundeepk.compactcalendarview.CompactCalendarView.CompactCalendarViewListener;
-import static com.github.sundeepk.compactcalendarview.CompactCalendarView.FILL_LARGE_INDICATOR;
-import static com.github.sundeepk.compactcalendarview.CompactCalendarView.NO_FILL_LARGE_INDICATOR;
-import static com.github.sundeepk.compactcalendarview.CompactCalendarView.SMALL_INDICATOR;
+import in.learntech.rights.Events.domain.Event;
 
+import static in.learntech.rights.Events.lib.CompactCalendarView.CompactCalendarViewListener;
+import static in.learntech.rights.Events.lib.CompactCalendarView.FILL_LARGE_INDICATOR;
+import static in.learntech.rights.Events.lib.CompactCalendarView.NO_FILL_LARGE_INDICATOR;
+import static in.learntech.rights.Events.lib.CompactCalendarView.SMALL_INDICATOR;
+import in.learntech.rights.R;
 
 class CompactCalendarController {
 

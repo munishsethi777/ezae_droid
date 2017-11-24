@@ -1,4 +1,4 @@
-package com.github.sundeepk.compactcalendarview;
+package in.learntech.rights.Events.lib;
 
 
 import android.animation.Animator;

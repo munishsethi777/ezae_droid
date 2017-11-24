@@ -1,7 +1,7 @@
-package com.github.sundeepk.compactcalendarview;
+package in.learntech.rights.Events.lib;
 
-import com.github.sundeepk.compactcalendarview.comparators.EventComparator;
-import com.github.sundeepk.compactcalendarview.domain.Event;
+import in.learntech.rights.Events.comparators.EventComparator;
+import in.learntech.rights.Events.domain.Event;
 
 import java.util.ArrayList;
 import java.util.Calendar;

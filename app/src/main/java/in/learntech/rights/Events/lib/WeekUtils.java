@@ -1,4 +1,4 @@
-package com.github.sundeepk.compactcalendarview;
+package in.learntech.rights.Events.lib;
 
 import java.text.DateFormatSymbols;
 import java.util.Arrays;

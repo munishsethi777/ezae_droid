@@ -1,8 +1,10 @@
-package com.github.sundeepk.compactcalendarview.comparators;
+package in.learntech.rights.Events.comparators;
 
-import com.github.sundeepk.compactcalendarview.domain.Event;
+
 
 import java.util.Comparator;
+
+import in.learntech.rights.Events.domain.Event;
 
 public class EventComparator implements Comparator<Event> {
 

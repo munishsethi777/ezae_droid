@@ -1,89 +1,80 @@
-package sundeepk.github.com.sample;
+package in.learntech.rights.Events;
 
-;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.Toast;
 
-import com.github.sundeepk.compactcalendarview.CompactCalendarView;
-import com.github.sundeepk.compactcalendarview.domain.Event;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
-public class CompactCalendarTab extends Fragment {
+import in.learntech.rights.Chatroom.ChatRoomModel;
+import in.learntech.rights.Events.domain.Event;
+import in.learntech.rights.Events.lib.CompactCalendarView;
+import in.learntech.rights.Managers.UserMgr;
+import in.learntech.rights.R;
+import in.learntech.rights.services.Interface.IServiceHandler;
+import in.learntech.rights.services.ServiceHandler;
+import in.learntech.rights.utils.DateUtil;
+import in.learntech.rights.utils.StringConstants;
 
-    private static final String TAG = "MainActivity";
+public class CompactCalendarTab extends Fragment implements IServiceHandler {
+
+    private static final String TAG = "EventActivity";
     private Calendar currentCalender = Calendar.getInstance(Locale.getDefault());
     private SimpleDateFormat dateFormatForDisplaying = new SimpleDateFormat("dd-M-yyyy hh:mm:ss a", Locale.getDefault());
     private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMM - yyyy", Locale.getDefault());
-    private boolean shouldShow = false;
     private CompactCalendarView compactCalendarView;
     private ActionBar toolbar;
-
+    private UserMgr mUserMgr;
+    private ServiceHandler mAuthTask;
+    private List<Event>rowListItem;
+    private List<Event> mutableBookings;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.main_tab,container,false);
 
-        final List<String> mutableBookings = new ArrayList<>();
-
+        mutableBookings = new ArrayList<>();
         final ListView bookingsListView = (ListView) v.findViewById(R.id.bookings_listview);
         final Button showPreviousMonthBut = (Button) v.findViewById(R.id.prev_button);
         final Button showNextMonthBut = (Button) v.findViewById(R.id.next_button);
-        final Button slideCalendarBut = (Button) v.findViewById(R.id.slide_calendar);
-        final Button showCalendarWithAnimationBut = (Button) v.findViewById(R.id.show_with_animation_calendar);
-        final Button setLocaleBut = (Button) v.findViewById(R.id.set_locale);
-        final Button removeAllEventsBut = (Button) v.findViewById(R.id.remove_all_events);
 
-        final ArrayAdapter adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, mutableBookings);
+//        final ArrayAdapter adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, mutableBookings);
+//        bookingsListView.setAdapter(adapter);
+        final EventAdapter adapter = new EventAdapter(mutableBookings, getContext());
         bookingsListView.setAdapter(adapter);
         compactCalendarView = (CompactCalendarView) v.findViewById(R.id.compactcalendar_view);
 
-        // below allows you to configure color for the current day in the month
-        // compactCalendarView.setCurrentDayBackgroundColor(getResources().getColor(R.color.black));
-        // below allows you to configure colors for the current day the user has selected
-        // compactCalendarView.setCurrentSelectedDayBackgroundColor(getResources().getColor(R.color.dark_red));
         compactCalendarView.setUseThreeLetterAbbreviation(false);
         compactCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
-
+        mUserMgr = UserMgr.getInstance(getContext());
+        rowListItem = new  ArrayList<>();
         loadEvents();
         loadEventsForYear(2017);
         compactCalendarView.invalidate();
-
         logEventsByMonth(compactCalendarView);
-
-        // below line will display Sunday as the first day of the week
-        // compactCalendarView.setShouldShowMondayAsFirstDay(false);
-
-        // disable scrolling calendar
-        // compactCalendarView.shouldScrollMonth(false);
-
-        // show days from other months as greyed out days
-        // compactCalendarView.displayOtherMonthDays(true);
-
-        // show Sunday as first day of month
-        // compactCalendarView.setShouldShowMondayAsFirstDay(false);
 
         //set initial title
         toolbar = ((ActionBarActivity) getActivity()).getSupportActionBar();
@@ -99,12 +90,9 @@ public class CompactCalendarTab extends Fragment {
                 if (bookingsFromMap != null) {
                     Log.d(TAG, bookingsFromMap.toString());
                     mutableBookings.clear();
-                    for (Event booking : bookingsFromMap) {
-                        mutableBookings.add((String) booking.getData());
-                    }
+                    mutableBookings.addAll(bookingsFromMap);
                     adapter.notifyDataSetChanged();
                 }
-
             }
 
             @Override
@@ -127,12 +115,6 @@ public class CompactCalendarTab extends Fragment {
             }
         });
 
-        final View.OnClickListener showCalendarOnClickLis = getCalendarShowLis();
-        slideCalendarBut.setOnClickListener(showCalendarOnClickLis);
-
-        final View.OnClickListener exposeCalendarListener = getCalendarExposeLis();
-        showCalendarWithAnimationBut.setOnClickListener(exposeCalendarListener);
-
         compactCalendarView.setAnimationListener(new CompactCalendarView.CompactCalendarAnimationListener() {
             @Override
             public void onOpened() {
@@ -142,108 +124,34 @@ public class CompactCalendarTab extends Fragment {
             public void onClosed() {
             }
         });
-
-        setLocaleBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Locale locale = Locale.FRANCE;
-                dateFormatForDisplaying = new SimpleDateFormat("dd-M-yyyy hh:mm:ss a", locale);
-                TimeZone timeZone = TimeZone.getTimeZone("Europe/Paris");
-                dateFormatForDisplaying.setTimeZone(timeZone);
-                dateFormatForMonth.setTimeZone(timeZone);
-                compactCalendarView.setLocale(timeZone, locale);
-                compactCalendarView.setUseThreeLetterAbbreviation(false);
-                loadEvents();
-                loadEventsForYear(2017);
-                logEventsByMonth(compactCalendarView);
-
-            }
-        });
-
-        removeAllEventsBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                compactCalendarView.removeAllEvents();
-            }
-        });
-
-
-        // uncomment below to show indicators above small indicator events
-        // compactCalendarView.shouldDrawIndicatorsBelowSelectedDays(true);
-
-        // uncomment below to open onCreate
-        //openCalendarOnCreate(v);
-
         return v;
     }
 
-    @NonNull
-    private View.OnClickListener getCalendarShowLis() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!compactCalendarView.isAnimating()) {
-                    if (shouldShow) {
-                        compactCalendarView.showCalendar();
-                    } else {
-                        compactCalendarView.hideCalendar();
-                    }
-                    shouldShow = !shouldShow;
-                }
-            }
-        };
-    }
 
-    @NonNull
-    private View.OnClickListener getCalendarExposeLis() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!compactCalendarView.isAnimating()) {
-                    if (shouldShow) {
-                        compactCalendarView.showCalendarWithAnimation();
-                    } else {
-                        compactCalendarView.hideCalendarWithAnimation();
-                    }
-                    shouldShow = !shouldShow;
-                }
-            }
-        };
-    }
-
-    private void openCalendarOnCreate(View v) {
-        final RelativeLayout layout = (RelativeLayout)v.findViewById(R.id.main_content);
-        ViewTreeObserver vto = layout.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (Build.VERSION.SDK_INT < 16) {
-                    layout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                } else {
-                    layout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-                compactCalendarView.showCalendarWithAnimation();
-            }
-        });
-    }
 
     @Override
     public void onResume() {
         super.onResume();
         toolbar.setTitle(dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth()));
-        // Set to current day on resume to set calendar to latest day
-        // toolbar.setTitle(dateFormatForMonth.format(new Date()));
+    }
+
+    public void executeGetChatRoomsCall(){
+        Object[] args = {mUserMgr.getLoggedInUserSeq(),mUserMgr.getLoggedInUserCompanySeq()};
+        String getChatRoomUrl = MessageFormat.format(StringConstants.GET_ALL_EVENTS,args);
+        mAuthTask = new ServiceHandler(getChatRoomUrl,this,getActivity());
+        mAuthTask.execute();
     }
 
     private void loadEvents() {
-        addEvents(-1, -1);
-        addEvents(Calendar.DECEMBER, -1);
-        addEvents(Calendar.AUGUST, -1);
+       // addEvents(-1, -1);
+        //addEvents(Calendar.DECEMBER, -1);
+       // addEvents(Calendar.AUGUST, -1);
+        executeGetChatRoomsCall();
     }
 
     private void loadEventsForYear(int year) {
-        addEvents(Calendar.DECEMBER, year);
-        addEvents(Calendar.AUGUST, year);
+        //addEvents(Calendar.DECEMBER, year);
+        //addEvents(Calendar.AUGUST, year);
     }
 
     private void logEventsByMonth(CompactCalendarView compactCalendarView) {
@@ -274,9 +182,7 @@ public class CompactCalendarTab extends Fragment {
             currentCalender.add(Calendar.DATE, i);
             setToMidnight(currentCalender);
             long timeInMillis = currentCalender.getTimeInMillis();
-
             List<Event> events = getEvents(timeInMillis, i);
-
             compactCalendarView.addEvents(events);
         }
     }
@@ -301,5 +207,50 @@ public class CompactCalendarTab extends Fragment {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
+    }
+
+    @Override
+    public void processServiceResponse(JSONObject response) {
+        mAuthTask = null;
+        String message = null;
+        try{
+            boolean success = response.getInt(StringConstants.SUCCESS) == 1 ? true : false;
+            message = response.getString(StringConstants.MESSAGE);
+            if(success){
+                JSONArray notesJsonArr = response.getJSONArray("chatrooms");
+                for (int i=0; i < notesJsonArr.length(); i++) {
+                    JSONObject jsonObject = notesJsonArr.getJSONObject(i);
+                    int seq = jsonObject.getInt("seq");
+                    String title = jsonObject.getString("title");
+                    String detail = jsonObject.getString("detail");
+                    String imageUrl = StringConstants.WEB_URL + jsonObject.getString("imagepath");
+                    String from = jsonObject.getString("from");
+                    String to = jsonObject.getString("to");
+                    String eventType = jsonObject.getString("eventtype");
+                    Date fromDate = DateUtil.stringToDate(from);
+                    Date toDate = DateUtil.stringToDate(to);
+                    List<Date> difDays = DateUtil.getDaysBetweenDates(fromDate,toDate);
+                    String des =  title + "\n From - " + DateUtil.dateToFromat(fromDate) + "\n To - " + DateUtil.dateToFromat(toDate) ;
+                    if(difDays.size() > 1) {
+                        for (Date d : difDays) {
+                            Event mm = new Event(seq,Color.argb(255, 169, 68, 65), d.getTime(), des,eventType,title,imageUrl,detail);
+                            rowListItem.add(mm);
+                        }
+                    }else{
+                        Event mm = new Event(seq,Color.argb(255, 169, 68, 65), fromDate.getTime(), des,eventType,title,imageUrl,detail);
+                        rowListItem.add(mm);
+                    }
+
+                }
+                compactCalendarView.addEvents(rowListItem);
+            }
+        }catch (Exception e){
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void setCallName(String call) {
+
     }
 }

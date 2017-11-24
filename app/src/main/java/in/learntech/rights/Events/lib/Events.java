@@ -1,6 +1,6 @@
-package com.github.sundeepk.compactcalendarview;
+package in.learntech.rights.Events.lib;
 
-import com.github.sundeepk.compactcalendarview.domain.Event;
+import in.learntech.rights.Events.domain.Event;
 
 import java.util.List;
 
