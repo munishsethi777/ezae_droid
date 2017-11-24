@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:id="@android:id/text1"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textAppearance="?android:attr/textAppearanceListItemSmall"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:paddingStart="?android:attr/listPreferredItemPaddingStart"-->
+    <!--android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"-->
+    <!--android:minHeight="?android:attr/listPreferredItemHeightSmall" />-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="12dp"
+        android:text="Email"
+        android:textColor="@color/loginSignup11text" />
 
+    <Button
+        android:id="@+id/delete_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:text="Show Detail" />
 </LinearLayout>

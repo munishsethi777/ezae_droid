@@ -22,6 +22,10 @@
             android:id="@+id/nav_chatroom"
             android:icon="@drawable/ic_menu_send"
             android:title="Chatrooms" />
+        <item
+            android:id="@+id/nav_Events"
+            android:icon="@drawable/ic_video_black"
+            android:title="Events" />
     </group>
 
     <item android:title="Profile">

@@ -1485,5 +1485,6 @@
     <color name="OrangeMain">#ff9100</color>
 
     <color name="bg_relative">#E6FFFFFF</color>
-
+    <color name="black">#000</color>
+    <color name="dark_red">#B71C1C</color>
 </resources>

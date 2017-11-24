@@ -21,4 +21,11 @@
     <string name="title_activity_notes_editor">Notes Editor</string>
     <string name="title_activity_update_profile">Update Profile</string>
     <string name="title_activity_send_message">New Message</string>
+    <string name="monday">MON</string>
+    <string name="tuesday">TUE</string>
+    <string name="wednesday">WED</string>
+    <string name="thursday">THU</string>
+    <string name="friday">FRI</string>
+    <string name="saturday">SAT</string>
+    <string name="sunday">SUN</string>
 </resources>
