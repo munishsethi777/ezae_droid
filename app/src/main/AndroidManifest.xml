@@ -109,6 +109,8 @@
             android:label="@string/title_activity_send_message"
             android:theme="@style/AppTheme" />
         <activity android:name=".Leaderboard.LeaderboardActivity" />
+        <activity android:name=".Events.MainActivity" />
+        <activity android:name=".Events.ClassroomActivity"></activity>
     </application>
 
 </manifest>
