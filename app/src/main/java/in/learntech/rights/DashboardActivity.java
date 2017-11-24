@@ -31,6 +31,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import in.learntech.rights.BusinessObjects.User;
 import in.learntech.rights.Chatroom.ChatRoomActivity;
+import in.learntech.rights.Events.*;
 import in.learntech.rights.Leaderboard.LeaderBoardFragment;
 import in.learntech.rights.Leaderboard.LeaderboardModel;
 import in.learntech.rights.Managers.CompanyUserManager;
@@ -170,7 +171,6 @@ public class DashboardActivity extends AppCompatActivity
             }
             public void onNothingSelected(AdapterView<?> parent) {
             }
-
         });
     }
 
@@ -234,6 +234,10 @@ public class DashboardActivity extends AppCompatActivity
             startActivity(intent);
         }else if(id == R.id.nav_chatroom){
             Intent intent = new Intent(this,ChatRoomActivity.class);
+            startActivity(intent);
+        }
+        else if(id == R.id.nav_Events){
+            Intent intent = new Intent(this, in.learntech.rights.Events.MainActivity.class);
             startActivity(intent);
         }
 
@@ -344,9 +348,7 @@ public class DashboardActivity extends AppCompatActivity
                 linerLayout.addView(fragmentLayout);
                 count = 0;
             }
-
         }
-
     }
 
     @Override
