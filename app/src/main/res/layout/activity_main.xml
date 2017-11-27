@@ -18,37 +18,27 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
-
-    <!--<include-->
-        <!--android:id="@+id/tool_bar"-->
-        <!--layout="@layout/tool_bar"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="match_parent"-->
-        <!--/>-->
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".messages.MessageActivity"
-        tools:showIn="@layout/activity_message">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:id="@+id/parent"
+        tools:context=".MainActivity">
         <in.learntech.rights.Events.SlidingTabLayout
             android:id="@+id/tabs"
-            android:layout_width="344dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="2dp"
-            android:background="#ffe95451"
-            tools:layout_editor_absoluteY="25dp"
-            tools:layout_editor_absoluteX="8dp" />
+            android:background="#ffe95451"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
-            android:layout_height="495dp"
-            android:layout_width="344dp"
-            android:layout_weight="1"
-            tools:layout_editor_absoluteY="8dp"
-            tools:layout_editor_absoluteX="8dp">
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_weight="1">
         </android.support.v4.view.ViewPager>
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>
