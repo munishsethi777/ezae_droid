@@ -46,4 +46,10 @@ public class ClassroomActivity extends AppCompatActivity {
 
         mUserMgr = UserMgr.getInstance(this);
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }
