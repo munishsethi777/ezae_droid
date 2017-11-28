@@ -65,13 +65,18 @@ public class EventAdapter  extends BaseAdapter implements ListAdapter {
 
             //Handle TextView and display string from your list
             TextView listItemText = (TextView)view.findViewById(R.id.text1);
-            final Event event = list.get(0);
+            final Event event = list.get(position);
             listItemText.setText(event.getData().toString());
-
+            Button startChat = (Button)view.findViewById(R.id.button_startChat);
+            if(event.getEventType().equals("chatroom")){
+                startChat.setVisibility(View.VISIBLE);
+            }else{
+                startChat.setVisibility(View.INVISIBLE);
+            }
             //Handle buttons and add onClickListeners
-            Button deleteBtn = (Button)view.findViewById(R.id.delete_btn);
 
-            deleteBtn.setOnClickListener(new View.OnClickListener(){
+
+            startChat.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                    viewEvent(event);
