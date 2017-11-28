@@ -17,10 +17,6 @@ import java.util.ArrayList;
 
 import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.R;
-import in.learntech.rights.messages.MessageAdapter;
-import in.learntech.rights.messages.MessageChatActivity;
-import in.learntech.rights.messages.MessageClickListener;
-import in.learntech.rights.messages.MessageModel;
 import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
 import in.learntech.rights.utils.StringConstants;

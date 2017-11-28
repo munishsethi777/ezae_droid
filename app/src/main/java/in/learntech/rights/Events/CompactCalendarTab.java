@@ -52,6 +52,7 @@ public class CompactCalendarTab extends Fragment implements IServiceHandler {
     private ServiceHandler mAuthTask;
     private List<Event>rowListItem;
     private List<Event> mutableBookings;
+    private EventAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.main_tab,container,false);
@@ -63,7 +64,7 @@ public class CompactCalendarTab extends Fragment implements IServiceHandler {
 
 //        final ArrayAdapter adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, mutableBookings);
 //        bookingsListView.setAdapter(adapter);
-        final EventAdapter adapter = new EventAdapter(mutableBookings, getContext());
+        adapter = new EventAdapter(mutableBookings, getContext());
         bookingsListView.setAdapter(adapter);
         compactCalendarView = (CompactCalendarView) v.findViewById(R.id.compactcalendar_view);
 
@@ -84,15 +85,7 @@ public class CompactCalendarTab extends Fragment implements IServiceHandler {
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
-                toolbar.setTitle(dateFormatForMonth.format(dateClicked));
-                List<Event> bookingsFromMap = compactCalendarView.getEvents(dateClicked);
-                Log.d(TAG, "inside onclick " + dateFormatForDisplaying.format(dateClicked));
-                if (bookingsFromMap != null) {
-                    Log.d(TAG, bookingsFromMap.toString());
-                    mutableBookings.clear();
-                    mutableBookings.addAll(bookingsFromMap);
-                    adapter.notifyDataSetChanged();
-                }
+                addAllEventsByDate(dateClicked);
             }
 
             @Override
@@ -105,13 +98,19 @@ public class CompactCalendarTab extends Fragment implements IServiceHandler {
             @Override
             public void onClick(View v) {
                 compactCalendarView.showPreviousMonth();
+                Date date = compactCalendarView.getFirstDayOfCurrentMonth();
+                addAllEventsByDate(date);
             }
         });
+
+
 
         showNextMonthBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 compactCalendarView.showNextMonth();
+                Date date = compactCalendarView.getFirstDayOfCurrentMonth();
+                addAllEventsByDate(date);
             }
         });
 
@@ -128,6 +127,17 @@ public class CompactCalendarTab extends Fragment implements IServiceHandler {
     }
 
 
+    private void addAllEventsByDate(Date date){
+        toolbar.setTitle(dateFormatForMonth.format(date));
+        List<Event> bookingsFromMap = compactCalendarView.getEvents(date);
+        Log.d(TAG, "inside onclick " + dateFormatForDisplaying.format(date));
+        if (bookingsFromMap != null) {
+            Log.d(TAG, bookingsFromMap.toString());
+            mutableBookings.clear();
+            mutableBookings.addAll(bookingsFromMap);
+            adapter.notifyDataSetChanged();
+        }
+    }
 
     @Override
     public void onResume() {
@@ -166,48 +176,9 @@ public class CompactCalendarTab extends Fragment implements IServiceHandler {
         Log.d(TAG, "Events for Aug month using default local and timezone: " + compactCalendarView.getEventsForMonth(currentCalender.getTime()));
     }
 
-    private void addEvents(int month, int year) {
-        currentCalender.setTime(new Date());
-        currentCalender.set(Calendar.DAY_OF_MONTH, 1);
-        Date firstDayOfMonth = currentCalender.getTime();
-        for (int i = 0; i < 6; i++) {
-            currentCalender.setTime(firstDayOfMonth);
-            if (month > -1) {
-                currentCalender.set(Calendar.MONTH, month);
-            }
-            if (year > -1) {
-                currentCalender.set(Calendar.ERA, GregorianCalendar.AD);
-                currentCalender.set(Calendar.YEAR, year);
-            }
-            currentCalender.add(Calendar.DATE, i);
-            setToMidnight(currentCalender);
-            long timeInMillis = currentCalender.getTimeInMillis();
-            List<Event> events = getEvents(timeInMillis, i);
-            compactCalendarView.addEvents(events);
-        }
-    }
 
-    private List<Event> getEvents(long timeInMillis, int day) {
-        if (day < 2) {
-            return Arrays.asList(new Event(Color.argb(255, 169, 68, 65), timeInMillis, "Event at " + new Date(timeInMillis)));
-        } else if ( day > 2 && day <= 4) {
-            return Arrays.asList(
-                    new Event(Color.argb(255, 169, 68, 65), timeInMillis, "Event at " + new Date(timeInMillis)),
-                    new Event(Color.argb(255, 100, 68, 65), timeInMillis, "Event 2 at " + new Date(timeInMillis)));
-        } else {
-            return Arrays.asList(
-                    new Event(Color.argb(255, 169, 68, 65), timeInMillis, "Event at " + new Date(timeInMillis) ),
-                    new Event(Color.argb(255, 100, 68, 65), timeInMillis, "Event 2 at " + new Date(timeInMillis)),
-                    new Event(Color.argb(255, 70, 68, 65), timeInMillis, "Event 3 at " + new Date(timeInMillis)));
-        }
-    }
 
-    private void setToMidnight(Calendar calendar) {
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-    }
+
 
     @Override
     public void processServiceResponse(JSONObject response) {
@@ -230,7 +201,7 @@ public class CompactCalendarTab extends Fragment implements IServiceHandler {
                     Date fromDate = DateUtil.stringToDate(from);
                     Date toDate = DateUtil.stringToDate(to);
                     List<Date> difDays = DateUtil.getDaysBetweenDates(fromDate,toDate);
-                    String des =  title + "\n From - " + DateUtil.dateToFromat(fromDate) + "\n To - " + DateUtil.dateToFromat(toDate) ;
+                    String des =  title + "\nFrom - " + DateUtil.dateToFromat(fromDate) + "\nTo - " + DateUtil.dateToFromat(toDate) ;
                     if(difDays.size() > 1) {
                         for (Date d : difDays) {
                             Event mm = new Event(seq,Color.argb(255, 169, 68, 65), d.getTime(), des,eventType,title,imageUrl,detail);
