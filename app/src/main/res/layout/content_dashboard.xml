@@ -27,60 +27,138 @@
                 android:background="@color/White"
                 android:orientation="horizontal"
                 android:padding="2dp">
-
-                <ImageButton
-                    android:id="@+id/imageView_trainings"
-                    android:onClick="onClick"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:src="@mipmap/ic_training_blue" />
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+                    <ImageButton
+                        android:id="@+id/imageView_trainings"
+                        android:onClick="onClick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:src="@mipmap/ic_training_blue"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trainings"
+                        android:textSize="10dp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/imageView_achievements"
-                    android:onClick="onClick"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:src="@mipmap/ic_achievement" />
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+                    <ImageButton
+                        android:id="@+id/imageView_achievements"
+                        android:onClick="onClick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:src="@mipmap/ic_achievement"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Achievements"
+                        android:textSize="10dp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/imageView_messages"
-                    android:onClick="onClick"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:src="@mipmap/ic_messages_blue" />
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+                    <ImageButton
+                        android:id="@+id/imageView_messages"
+                        android:onClick="onClick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:src="@mipmap/ic_messages_blue"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Messages"
+                        android:textSize="10dp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/imageView_chat"
-                    android:onClick="onClick"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:src="@mipmap/ic_chatroom_blue" />
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+                    <ImageButton
+                        android:id="@+id/imageView_chat"
+                        android:onClick="onClick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:src="@mipmap/ic_chatroom_blue"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chatroom"
+                        android:textSize="10dp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/imageView_notes"
-                    android:onClick="onClick"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:src="@mipmap/ic_notes_blue" />
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+                    <ImageButton
+                        android:id="@+id/imageView_notes"
+                        android:onClick="onClick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:src="@mipmap/ic_notes_blue"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Notes"
+                        android:textSize="10dp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/imageView_updateProfile"
-                    android:onClick="onClick"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:src="@mipmap/ic_tools_blue" />
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+                    <ImageButton
+                        android:id="@+id/imageView_updateProfile"
+                        android:onClick="onClick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:src="@mipmap/ic_tools_blue"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Profile"
+                        android:textSize="10dp"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -96,14 +174,16 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_margin="3dp"
+                    android:layout_margin="0dp"
                     android:layout_weight="1">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/drawer_gradient"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingBottom="6dp"
+                        >
 
                         <TextView
                             android:id="@+id/textView_score"
@@ -131,14 +211,15 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_margin="3dp"
+                    android:layout_margin="0dp"
                     android:layout_weight="1">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/drawer_gradient"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingBottom="6dp">
 
                         <TextView
                             android:id="@+id/textView_profile_rank"
@@ -166,14 +247,15 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_margin="3dp"
+                    android:layout_margin="0dp"
                     android:layout_weight="1">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/drawer_gradient"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingBottom="6dp">
 
                         <TextView
                             android:id="@+id/textView_pending_trainings"
@@ -201,14 +283,15 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_margin="3dp"
+                    android:layout_margin="0dp"
                     android:layout_weight="1">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/drawer_gradient"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingBottom="6dp">
 
                         <TextView
                             android:id="@+id/textView_completed_trainings"
@@ -248,9 +331,9 @@
                 <TextView
                     android:id="@+id/textViewNotifications"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:background="@color/BlueMain"
+                    android:layout_height="40dp"
+                    android:background="@drawable/blue_headers_background"
                     android:padding="8dp"
                     android:text="NOTIFICATIONS"
                     android:textAlignment="center"
@@ -287,9 +370,9 @@
                 <TextView
                     android:id="@+id/textView_leaderboard"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@drawable/blue_headers_background"
                     android:layout_weight="0"
-                    android:background="@color/BlueMain"
                     android:padding="8dp"
                     android:text="LEADERBOARD"
                     android:textAlignment="center"
@@ -326,9 +409,9 @@
             <TextView
                 android:id="@+id/textViewActiveLearningPlans"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:background="@color/BlueMain"
+                android:layout_height="40dp"
+                android:background="@drawable/blue_headers_background"
                 android:padding="8dp"
                 android:text="ACTIVE LEARNING PLANS"
                 android:textAlignment="center"

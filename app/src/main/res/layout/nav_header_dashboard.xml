@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="@drawable/drawer_gradient"
+    android:background="@drawable/news5_header_bg"
     android:gravity="bottom"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -12,14 +12,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:id="@+id/imageView_user"
-        android:src="@mipmap/loginsignup6_bg"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-       />
+
     <TextView
         android:id="@+id/textView_userName"
         android:layout_width="wrap_content"
@@ -27,8 +20,15 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:layout_gravity="center"
         android:text="Android Studio"
-        android:textSize="18dp"
+        android:textSize="20dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+    <ImageView
+        android:id="@+id/imageView_user"
+        android:src="@mipmap/loginsignup6_bg"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:paddingTop="5dp" />
     <TextView
         android:id="@+id/textView_profiles"
         android:layout_width="wrap_content"

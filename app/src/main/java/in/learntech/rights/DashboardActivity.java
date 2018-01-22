@@ -120,7 +120,7 @@ public class DashboardActivity extends AppCompatActivity
         String userImageUrl = mUserMgr.getLoggedInUserImageUrl();
         mLayoutHelper.loadImageRequest(mUserImageView,userImageUrl,true);
         User user = mUserMgr.getLoggedInUser();
-        mUserNameView.setText(user.getUserName());
+        mUserNameView.setText(user.getFullName());
         mUserEmailView.setText(user.getEmail());
         if(user.getProfiles() != null && user.getProfiles() != "") {
             mUserProfilesView.setText("Profiles : " + user.getProfiles());

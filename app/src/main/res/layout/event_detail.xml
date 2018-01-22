@@ -8,23 +8,26 @@
     <!--android:paddingStart="?android:attr/listPreferredItemPaddingStart"-->
     <!--android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"-->
     <!--android:minHeight="?android:attr/listPreferredItemHeightSmall" />-->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
         android:id="@+id/text1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
         android:paddingLeft="14dp"
-        android:text="Email"/>
-
+        android:text="info"/>
     <Button
         android:id="@+id/button_startChat"
-        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="12dp"
-        android:text="Go To Chatroom"
-        android:visibility="invisible"/>
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:text="Chatroom"
+        android:visibility="invisible"
+        android:textAllCaps="false"/>
 </LinearLayout>
