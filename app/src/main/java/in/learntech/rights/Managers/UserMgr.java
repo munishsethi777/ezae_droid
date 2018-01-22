@@ -36,6 +36,7 @@ public class UserMgr {
         int companySeq = userJson.getInt("companyseq");
         String userImage = userJson.getString("userImage");
         String profiles = userJson.getString("profiles");
+        String fullName = userJson.getString("fullName");
         boolean isManager = false;
         User existingUser = getUserByUserSeq(userSeq);
         User user = null;
@@ -46,7 +47,7 @@ public class UserMgr {
         }
         user.setUserSeq(userSeq);
         user.setUserName(userName);
-        user.setFullName(null);
+        user.setFullName(fullName);
         user.setEmail(email);
         user.setCompanySeq(companySeq);
         user.setManager(isManager);

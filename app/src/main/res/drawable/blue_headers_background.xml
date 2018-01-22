@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/extra_dialog1_bg"
+    android:gravity="top"
+    android:alpha="10"
+    android:tintMode="multiply"
+    android:tint="@color/Blue"
+    android:tileMode="disabled"/>
