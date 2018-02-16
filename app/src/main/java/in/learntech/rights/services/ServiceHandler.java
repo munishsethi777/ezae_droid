@@ -2,6 +2,7 @@ package in.learntech.rights.services;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.ViewGroup;
 
@@ -9,6 +10,8 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -27,6 +30,8 @@ public class ServiceHandler extends AsyncTask<Void, Void, JSONObject>{
     private final Activity mActivity;
     private  ProgressDialog mProgressDialog;
     private boolean isShowProgress;
+    private boolean isFileUploadRequest;
+    private Bitmap bitmap;
 
     public void setShowProgress(boolean isShowProgress){
         this.isShowProgress = isShowProgress;
@@ -50,6 +55,12 @@ public class ServiceHandler extends AsyncTask<Void, Void, JSONObject>{
         isShowProgress = true;
         initProgressDialog();
     }
+    public void setFileUploadRequest(Boolean isFileUploadRequest){
+        this.isFileUploadRequest = isFileUploadRequest;
+    }
+    public void setBitmap(Bitmap bitmap){
+        this.bitmap = bitmap;
+    }
 
     @Override
     protected JSONObject doInBackground(Void... params){
@@ -61,9 +72,35 @@ public class ServiceHandler extends AsyncTask<Void, Void, JSONObject>{
         try {
             url = new URL(mApiUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
+            if(isFileUploadRequest){
+                String attachmentName = "imagefile";
+                String attachmentFileName = "image.png";
+                String crlf = "\r\n";
+                String twoHyphens = "--";
+                String boundary =  "*****";
+                urlConnection.setRequestProperty(
+                        "Content-Type", "multipart/form-data;boundary=" + boundary);
+                DataOutputStream request = new DataOutputStream(
+                        urlConnection.getOutputStream());
+
+                request.writeBytes(twoHyphens + boundary + crlf);
+                request.writeBytes("Content-Disposition: form-data; name=\"" +
+                        attachmentName + "\";filename=\"" +
+                        attachmentFileName + "\"" + crlf);
+                request.writeBytes(crlf);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                request.write(byteArray);
+                request.writeBytes(crlf);
+                request.writeBytes(twoHyphens + boundary +
+                        twoHyphens + crlf);
+                request.flush();
+                request.close();
+            }
             int responseCode = urlConnection.getResponseCode(); //can call this instead of con.connect()
             if (responseCode >= 400 && responseCode <= 499) {
                 inStream = urlConnection.getErrorStream();

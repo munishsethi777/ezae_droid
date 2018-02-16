@@ -9,119 +9,129 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="in.learntech.rights.UserTrainingActivity"
     android:background="@color/profile16background">
+
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_height="0dp"
         android:layout_width="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
 
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:layout_constraintBottom_creator="1"
-        tools:layout_constraintLeft_creator="1">
-        <LinearLayout
-            android:id="@+id/questionLayout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/answersLayout">
-            <TextView
-                android:id="@+id/textView_question"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/button_blue"
-                android:padding="10dp"
-                android:text="Question title"
-                android:textStyle="bold"
-                android:textSize="18dp"/>
-        </LinearLayout>
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1">
+
+        <!--<LinearLayout-->
+        <!--android:id="@+id/questionLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"-->
+            <!--android:background="@color/colorPrimary"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/answersLayout"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent">-->
+
+            <!---->
+        <!--</LinearLayout>-->
+
         <LinearLayout
             android:id="@+id/answersLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="9"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/questionLayout"
+            android:layout_weight="1"
+            android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/submitButtonLayout"
-            android:orientation="vertical">
-                <LinearLayout
-                    android:id="@+id/optionsLayout"
-                    android:padding="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"/>
-                    <WebView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/webView"
-                        android:visibility="gone"/>
-                    <TextView
-                        android:id="@+id/textView_feedbackError"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/FeedbackRed"
-                        android:text="Feedback text"
-                        android:visibility="gone"
-                        android:textAlignment="center"
-                        android:padding="4dp" />
-                    <TextView
-                        android:id="@+id/textView_feedbackSuccess"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/FeedbackGreen"
-                        android:text="Feedback text"
-                        android:visibility="gone"
-                        android:textAlignment="center"
-                        android:padding="4dp"/>
-                    <Button
-                        android:id="@+id/button_feedbackOkay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Okay"
-                        android:visibility="gone"
-                        style="@style/LoginSignUp25Theme"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/submitButtonLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/questionLayout">
+            <TextView
+                android:id="@+id/textView_question"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Question title"
+                android:textColor="@color/button_blue"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:id="@+id/optionsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:gravity="end"
-                tools:layout_editor_absoluteY="0dp"
-                tools:layout_editor_absoluteX="8dp">
-                <Button
-                    android:id="@+id/button_submit_progress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="SUBMIT"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/White"
-                    style="@style/ButtonYellow"
-                    android:layout_margin="@dimen/activity_horizontal_margin"
-                     />
-            </LinearLayout>
+                android:padding="8dp" />
+
+            <WebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textView_feedbackError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/FeedbackRed"
+                android:padding="4dp"
+                android:text="Feedback text"
+                android:textAlignment="center"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textView_feedbackSuccess"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/FeedbackGreen"
+                android:padding="4dp"
+                android:text="Feedback text"
+                android:textAlignment="center"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/button_feedbackOkay"
+                style="@style/LoginSignUp25Theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Okay"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/submitButtonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/button_submit_progress"
+                style="@style/ButtonYellow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:text="SUBMIT"
+                android:textColor="@color/White"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+        </LinearLayout>
         <!--<Button-->
-            <!---->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="SUBMIT"-->
-            <!--android:textSize="16dp"-->
-            <!--android:textStyle="bold"-->
-            <!--android:textColor="@color/White"-->
-            <!--style="@style/ButtonYellow"-->
-            <!--android:layout_margin="@dimen/activity_horizontal_margin"-->
-            <!--app:layout_constraintRight_toRightOf="parent"-->
-            <!--app:layout_constraintLeft_toLeftOf="parent"-->
-            <!--tools:layout_editor_absoluteY="0dp" />-->
+        <!---->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="SUBMIT"-->
+        <!--android:textSize="16dp"-->
+        <!--android:textStyle="bold"-->
+        <!--android:textColor="@color/White"-->
+        <!--style="@style/ButtonYellow"-->
+        <!--android:layout_margin="@dimen/activity_horizontal_margin"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--tools:layout_editor_absoluteY="0dp" />-->
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
