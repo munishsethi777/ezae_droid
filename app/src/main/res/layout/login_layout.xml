@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/inputCont"
                     android:layout_gravity="center"
-                    app:srcCompat="@mipmap/login_logo" />
+                    app:srcCompat="@mipmap/login_logo_lg" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
