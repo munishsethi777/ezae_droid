@@ -1,17 +1,34 @@
 package in.learntech.rights;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
 import in.learntech.rights.Managers.UserMgr;
@@ -28,11 +45,14 @@ public class UpdateProfileActivity extends AppCompatActivity implements IService
     private ServiceHandler mAuthTask;
     private LayoutHelper mLayoutHelper;
     private EditText mEmailView;
+    private ImageView mUserImageView;
     private LinearLayout mProfileLayout;
     private EditText mView;
     private int mUserSeq;
     private int mCompanySeq;
     private String mCallName;
+    public static final int GET_FROM_GALLERY = 3;
+    private Bitmap userImageBitMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +68,9 @@ public class UpdateProfileActivity extends AppCompatActivity implements IService
         mLayoutHelper = new LayoutHelper(this,li,null);
         mEmailView = (EditText)findViewById(R.id.editText_email);
         mProfileLayout = (LinearLayout)findViewById(R.id.layout_updateProfile);
+        mUserImageView = (ImageView)findViewById(R.id.imageView_user);
+
+
         executeGetProfileDetail();
     }
 
@@ -94,6 +117,9 @@ public class UpdateProfileActivity extends AppCompatActivity implements IService
                 Object[] args = {mUserSeq, mCompanySeq, jsonString};
                 String notificationUrl = MessageFormat.format(StringConstants.UPDATE_USER_PROFILE, args);
                 mAuthTask = new ServiceHandler(notificationUrl, this, UPDATE_USER_PROFILE, this);
+                mAuthTask.setFileUploadRequest(true);
+                Bitmap bitmap = ((BitmapDrawable)mUserImageView.getDrawable()).getBitmap();
+                mAuthTask.setBitmap(bitmap);
                 mAuthTask.execute();
             }
         }catch (Exception e){
@@ -129,6 +155,8 @@ public class UpdateProfileActivity extends AppCompatActivity implements IService
     private void createCustomFieldViews(JSONObject userDetail)throws Exception{
         String email = userDetail.getString("emailid");
         mEmailView.setText(email);
+        String userImageUrl = mUserMgr.getLoggedInUserImageUrl();
+        mLayoutHelper.loadImageRequest(mUserImageView,userImageUrl,false);
         JSONArray customFieldArr = userDetail.getJSONArray("customFields");
         for(int i=0;i<customFieldArr.length();i++){
             JSONObject customField = customFieldArr.getJSONObject(i);
@@ -158,6 +186,8 @@ public class UpdateProfileActivity extends AppCompatActivity implements IService
         int id = view.getId();
         if(id == R.id.button_updateProfile){
             updateProfile();
+        }else if(id == R.id.upload_imageButton){
+            clickpic();
         }
     }
 
@@ -166,4 +196,29 @@ public class UpdateProfileActivity extends AppCompatActivity implements IService
         onBackPressed();
         return true;
     }
+
+    int column_index;
+    String imagePath;
+
+    private void clickpic() {
+        // Check Camera
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"),GET_FROM_GALLERY);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == GET_FROM_GALLERY && resultCode == RESULT_OK) {
+            Uri imageUri = data.getData();
+            try {
+                userImageBitMap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                mUserImageView.setImageBitmap(userImageBitMap);
+            }catch (IOException e){
+                String message = e.getMessage();
+                Toast.makeText(this,message,Toast.LENGTH_LONG);
+            }
+        }
+    }
+
 }
