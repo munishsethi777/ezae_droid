@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.StringSignature;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -222,6 +223,7 @@ public class LayoutHelper {
                     .load(url)
                     .thumbnail(0.01f)
                     .crossFade()
+                    .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
                     .into(bg);
         }
     }
@@ -254,9 +256,11 @@ public class LayoutHelper {
                     value= value.substring(0, spacePos);
                 }
                 String[] date = value.split("/");
-                myCalendar.set(Calendar.YEAR, Integer.valueOf(date[2]));
-                myCalendar.set(Calendar.MONTH, Integer.valueOf(date[0])-1);
-                myCalendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(date[1]));
+                if(value != "null") {
+                    myCalendar.set(Calendar.YEAR, Integer.valueOf(date[2]));
+                    myCalendar.set(Calendar.MONTH, Integer.valueOf(date[0]) - 1);
+                    myCalendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(date[1]));
+                }
             }
             final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
