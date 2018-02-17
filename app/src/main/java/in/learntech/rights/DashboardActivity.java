@@ -2,6 +2,7 @@ package in.learntech.rights;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
@@ -87,22 +88,23 @@ public class DashboardActivity extends AppCompatActivity
         mCompanyUserMgr = CompanyUserManager.getInstance(this);
         mLoggedInUserSeq = mUserMgr.getLoggedInUserSeq();
         mLoggedInCompanySeq = mUserMgr.getLoggedInUserCompanySeq();
-        mSpinner = (Spinner)findViewById(R.id.spinner_profilesAndModules);
+        //mSpinner = (Spinner)findViewById(R.id.spinner_profilesAndModules);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         mLayoutHelper = new LayoutHelper(this,null,null);
         initViews();
         executeCalls();
         android.app.Fragment fragment = NotificationsFragment.newInstance(mLoggedInUserSeq,mLoggedInCompanySeq);
-        getFragmentManager().beginTransaction().replace(R.id.layout_notifications,fragment).commit();
+        //getFragmentManager().beginTransaction().replace(R.id.layout_notifications,fragment).commit();
+
     }
 
     protected void setFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction =
                 fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.linearLayout_leaderboarddata, fragment);
-        fragmentTransaction.commit();
+        //fragmentTransaction.replace(R.id.linearLayout_leaderboarddata, fragment);
+        //fragmentTransaction.commit();
     }
 
     private void initViews(){
@@ -110,7 +112,7 @@ public class DashboardActivity extends AppCompatActivity
         mScores = (TextView) findViewById(R.id.textView_score);
         mProfileRank = (TextView) findViewById(R.id.textView_profile_rank);
         mPendingTrainings = (TextView) findViewById(R.id.textView_pending_trainings);
-        mCompletedTrainings = (TextView) findViewById(R.id.textView_completed_trainings);
+        //mCompletedTrainings = (TextView) findViewById(R.id.textView_completed_trainings);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
         mUserImageView = (ImageView)hView.findViewById(R.id.imageView_user);
@@ -148,31 +150,31 @@ public class DashboardActivity extends AppCompatActivity
         mAuthTask.execute();
     }
 
-    private void populateProfileAndModules(JSONObject response)throws Exception{
-        JSONArray profileAndModuleArr = response.getJSONArray("profilesAndModules");
-        String[] spinnerArray = new String[profileAndModuleArr.length()];
-        final HashMap<Integer,String> spinnerMap = new HashMap<Integer, String>();
-        for (int i = 0; i < profileAndModuleArr.length(); i++)
-        {
-            JSONObject json = profileAndModuleArr.getJSONObject(i);
-            spinnerMap.put(i,json.getString("id"));
-            spinnerArray[i] = json.getString("name");
-        }
-        ArrayAdapter<String> adapter =new ArrayAdapter<String>(getApplicationContext(),R.layout.spinner_item, spinnerArray);
-        adapter.setDropDownViewResource(R.layout.spinner_item);
-        mSpinner.setAdapter(adapter);
-        mSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
-            public void onItemSelected(AdapterView<?> parent, View view, int pos,
-                                       long id) {
-                ((TextView) view).setTextColor(Color.BLACK);
-                String selectedId = spinnerMap.get(pos);
-                LeaderBoardFragment itemFragment = LeaderBoardFragment.newInstance(selectedId);
-                setFragment(itemFragment);
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
+//    private void populateProfileAndModules(JSONObject response)throws Exception{
+//        JSONArray profileAndModuleArr = response.getJSONArray("profilesAndModules");
+//        String[] spinnerArray = new String[profileAndModuleArr.length()];
+//        final HashMap<Integer,String> spinnerMap = new HashMap<Integer, String>();
+//        for (int i = 0; i < profileAndModuleArr.length(); i++)
+//        {
+//            JSONObject json = profileAndModuleArr.getJSONObject(i);
+//            spinnerMap.put(i,json.getString("id"));
+//            spinnerArray[i] = json.getString("name");
+//        }
+//        ArrayAdapter<String> adapter =new ArrayAdapter<String>(getApplicationContext(),R.layout.spinner_item, spinnerArray);
+//        adapter.setDropDownViewResource(R.layout.spinner_item);
+//        mSpinner.setAdapter(adapter);
+//        mSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+//            public void onItemSelected(AdapterView<?> parent, View view, int pos,
+//                                       long id) {
+//                ((TextView) view).setTextColor(Color.BLACK);
+//                String selectedId = spinnerMap.get(pos);
+//                LeaderBoardFragment itemFragment = LeaderBoardFragment.newInstance(selectedId);
+//                setFragment(itemFragment);
+//            }
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
+//    }
 
     @Override
     public void onBackPressed() {
@@ -266,12 +268,12 @@ public class DashboardActivity extends AppCompatActivity
                 if(mCallName.equals(GET_DASHBOARD_COUNT)){
                     populateDashboardCounts(response);
                 }else if(mCallName.equals(GET_LEARNING_PLANS)){
-                    populateLearningPlans(response);
+                    //populateLearningPlans(response);
                 }else if(mCallName.equals(SYNC_USERS)){
                     mCompanyUserMgr.saveUsersFromResponse(response);
                     message = null;
                 }else if(mCallName.equals(GET_PROFILES_AND_MODULES)){
-                    populateProfileAndModules(response);
+                    //populateProfileAndModules(response);
                     message = null;
                 }
             }
@@ -308,48 +310,48 @@ public class DashboardActivity extends AppCompatActivity
         mCompletedTrainings.setText(completedTrainingsStr);
     }
 
-    private void populateLearningPlans(JSONObject response)throws Exception{
-        JSONArray learningPlansData = response.getJSONArray("learningPlans");
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(this.LAYOUT_INFLATER_SERVICE);
-        ConstraintLayout mainLayout = (ConstraintLayout) this.findViewById(R.id.dashboard_layout);
-        LinearLayout linerLayout = (LinearLayout) mainLayout.findViewById(R.id.activeLearningPlansContainer);
-        LinearLayout fragmentLayout = null;
-        int count = 0;
-        for (int i=0; i < learningPlansData.length(); i++) {
-            JSONObject jsonObject = learningPlansData.getJSONObject(i);
-            String learningPlanName = jsonObject.getString("learningPlanName");
-            int progress = jsonObject.getInt("percentCompleted");
-            int view_progress_id = R.id.progressBarALP_1_2;
-            int text_view_id = R.id.textViewALP_1_2;
-            //int percent_view_id = R.id.textView_percent2;
-            if(count == 0){
-                fragmentLayout = (LinearLayout)inflater.inflate(R.layout.dashboard_activeplan_fragment, null);
-                view_progress_id = R.id.progressBarALP_1_1;
-                text_view_id = R.id.textViewALP_1_1;
-                //percent_view_id = R.id.textView_percent1;
-            }
-            ProgressWheel progressWheel = (ProgressWheel)fragmentLayout.findViewById(view_progress_id);
-            //ProgressBar view_progress = (ProgressBar) fragmentLayout.findViewById(view_progress_id);
-            //view_progress.setProgress(progress);
-            progressWheel.setPercentage(progress*4);
-            progressWheel.setStepCountText(progress + "%");
-
-            TextView lpName = (TextView) fragmentLayout.findViewById(text_view_id);
-            lpName.setText(learningPlanName);
-            //TextView percent_text = (TextView) fragmentLayout.findViewById(percent_view_id);
-            //percent_text.setText(progress + "%");
-            count++;
-            boolean isLast = i == learningPlansData.length()-1;
-            if(count == 2 || isLast) {
-                if(count != 2 && isLast){
-                    View layout = fragmentLayout.findViewById(R.id.activePlansLayoutGroup2);
-                    layout.setVisibility(View.GONE);
-                }
-                linerLayout.addView(fragmentLayout);
-                count = 0;
-            }
-        }
-    }
+//    private void populateLearningPlans(JSONObject response)throws Exception{
+//        JSONArray learningPlansData = response.getJSONArray("learningPlans");
+//        LayoutInflater inflater = (LayoutInflater) this.getSystemService(this.LAYOUT_INFLATER_SERVICE);
+//        ConstraintLayout mainLayout = (ConstraintLayout) this.findViewById(R.id.dashboard_layout);
+//        //LinearLayout linerLayout = (LinearLayout) mainLayout.findViewById(R.id.activeLearningPlansContainer);
+//        LinearLayout fragmentLayout = null;
+//        int count = 0;
+//        for (int i=0; i < learningPlansData.length(); i++) {
+//            JSONObject jsonObject = learningPlansData.getJSONObject(i);
+//            String learningPlanName = jsonObject.getString("learningPlanName");
+//            int progress = jsonObject.getInt("percentCompleted");
+//            int view_progress_id = R.id.progressBarALP_1_2;
+//            int text_view_id = R.id.textViewALP_1_2;
+//            //int percent_view_id = R.id.textView_percent2;
+//            if(count == 0){
+//                fragmentLayout = (LinearLayout)inflater.inflate(R.layout.dashboard_activeplan_fragment, null);
+//                view_progress_id = R.id.progressBarALP_1_1;
+//                text_view_id = R.id.textViewALP_1_1;
+//                //percent_view_id = R.id.textView_percent1;
+//            }
+//            ProgressWheel progressWheel = (ProgressWheel)fragmentLayout.findViewById(view_progress_id);
+//            //ProgressBar view_progress = (ProgressBar) fragmentLayout.findViewById(view_progress_id);
+//            //view_progress.setProgress(progress);
+//            progressWheel.setPercentage(progress*4);
+//            progressWheel.setStepCountText(progress + "%");
+//
+//            TextView lpName = (TextView) fragmentLayout.findViewById(text_view_id);
+//            lpName.setText(learningPlanName);
+//            //TextView percent_text = (TextView) fragmentLayout.findViewById(percent_view_id);
+//            //percent_text.setText(progress + "%");
+//            count++;
+//            boolean isLast = i == learningPlansData.length()-1;
+//            if(count == 2 || isLast) {
+//                if(count != 2 && isLast){
+//                    View layout = fragmentLayout.findViewById(R.id.activePlansLayoutGroup2);
+//                    layout.setVisibility(View.GONE);
+//                }
+//                //linerLayout.addView(fragmentLayout);
+//                count = 0;
+//            }
+//        }
+//    }
 
     @Override
     public void setCallName(String call) {
