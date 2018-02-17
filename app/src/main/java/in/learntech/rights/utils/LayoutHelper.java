@@ -169,40 +169,49 @@ public class LayoutHelper {
             TextView textView_point = (TextView) moduleInternalLayout.findViewById(R.id.textView_modulePoint);
             textView_point.setText(points);
 
-            CardView cardView_circle = (CardView) moduleInternalLayout.findViewById(R.id.timeline_circle);
-            cardView_circle.setCardBackgroundColor(ContextCompat.getColor(mActivity, circleColorId));
+//            CardView cardView_circle = (CardView) moduleInternalLayout.findViewById(R.id.timeline_circle);
+//            cardView_circle.setCardBackgroundColor(ContextCompat.getColor(mActivity, circleColorId));
 
-            TextView textView_circle = (TextView) moduleInternalLayout.findViewById(R.id.timeline_circleText);
-            textView_circle.setText(circleText);
-
-
-
-            CardView moduleCardView = (CardView) moduleInternalLayout.findViewById(R.id.moduleCardView);
-            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams)moduleCardView.getLayoutParams();
-            marginLayoutParams.setMargins(moduleCardMargins,moduleCardMargins,moduleCardMargins,moduleCardMargins);
-
-            CardView moduleStatusView = (CardView) moduleInternalLayout.findViewById(R.id.timeline_circle);
-            ViewGroup.MarginLayoutParams moduleStatusViewParams = (ViewGroup.MarginLayoutParams)moduleStatusView.getLayoutParams();
-            moduleStatusViewParams.setMargins(moduleCardMargins,moduleCardMargins,moduleCardMargins,moduleCardMargins);
+//            TextView textView_circle = (TextView) moduleInternalLayout.findViewById(R.id.timeline_circleText);
+//            textView_circle.setText(circleText);
 
 
-            if(count == 1){
-                marginLayoutParams.setMargins(moduleCardMargins,moduleCardMargins*2,moduleCardMargins,moduleCardMargins*2);
-                moduleStatusViewParams.setMargins(moduleCardMargins,moduleCardMargins*2,moduleCardMargins,moduleCardMargins);
-            }else{
-                if(i==0){
-                    marginLayoutParams.setMargins(moduleCardMargins,moduleCardMargins*2,moduleCardMargins,moduleCardMargins);
-                    moduleStatusViewParams.setMargins(moduleCardMargins,moduleCardMargins*2,moduleCardMargins,moduleCardMargins);
-                }
-                if(i==count-1) {//last one
-                    marginLayoutParams.setMargins(moduleCardMargins, moduleCardMargins, moduleCardMargins, moduleCardMargins * 2);
-                }
-            }
-            moduleCardView.requestLayout();
+
+//            CardView moduleCardView = (CardView) moduleInternalLayout.findViewById(R.id.moduleCardView);
+//            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams)moduleCardView.getLayoutParams();
+//            marginLayoutParams.setMargins(moduleCardMargins,moduleCardMargins,moduleCardMargins,moduleCardMargins);
+
+            //CardView moduleStatusView = (CardView) moduleInternalLayout.findViewById(R.id.timeline_circle);
+           // ViewGroup.MarginLayoutParams moduleStatusViewParams = (ViewGroup.MarginLayoutParams)moduleStatusView.getLayoutParams();
+           // moduleStatusViewParams.setMargins(moduleCardMargins,moduleCardMargins,moduleCardMargins,moduleCardMargins);
+
+
+//            if(count == 1){
+//                marginLayoutParams.setMargins(moduleCardMargins,moduleCardMargins*2,moduleCardMargins,moduleCardMargins*2);
+//                moduleStatusViewParams.setMargins(moduleCardMargins,moduleCardMargins*2,moduleCardMargins,moduleCardMargins);
+//            }else{
+//                if(i==0){
+//                    marginLayoutParams.setMargins(moduleCardMargins,moduleCardMargins*2,moduleCardMargins,moduleCardMargins);
+//                    moduleStatusViewParams.setMargins(moduleCardMargins,moduleCardMargins*2,moduleCardMargins,moduleCardMargins);
+//                }
+//                if(i==count-1) {//last one
+//                    marginLayoutParams.setMargins(moduleCardMargins, moduleCardMargins, moduleCardMargins, moduleCardMargins * 2);
+//                }
+//            }
+           // moduleCardView.requestLayout();
             Animation animation = AnimationUtils.loadAnimation(mActivity,R.anim.fade_in);
-            moduleCardView.startAnimation(animation);
+           // moduleCardView.startAnimation(animation);
             mParentLayout.addView(moduleInternalLayout);
             lasProgress = progressInt;
+        }
+
+    }
+
+    public void jsonToLpLayout(JSONArray lpJsonArr,LinearLayout mParentLayout) throws Exception {
+        int moduleCardMargins = 10;
+        int count = lpJsonArr.length();
+        for (int i = 0; i < count; i++) {
+
         }
 
     }
