@@ -1481,10 +1481,13 @@
     <color name="FeedbackGreen">#f3ffe7</color>
     <color name="FeedbackRed">#fadede</color>
 
-    <color name="BlueMain">#2892e2</color>
+    <color name="BlueMain">#CC2892e2</color>
     <color name="OrangeMain">#ff9100</color>
-
+    <color name="white_transparent">#CCffffff</color>
     <color name="bg_relative">#E6FFFFFF</color>
     <color name="black">#000</color>
     <color name="dark_red">#B71C1C</color>
+    <color name="lp_color">#6E8F82</color>
+    <color name="lp_block_backround">#CCeaeaea</color>
+    <color name="right_orange">#CCe77c22</color>
 </resources>

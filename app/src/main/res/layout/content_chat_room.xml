@@ -9,9 +9,8 @@
     tools:showIn="@layout/activity_chat_room">
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scroll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/profile16background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"

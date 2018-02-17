@@ -11,7 +11,7 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/profile16background"
+        android:background="@drawable/login_back_bw_lighter"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.tubb.smrv.SwipeMenuRecyclerView
