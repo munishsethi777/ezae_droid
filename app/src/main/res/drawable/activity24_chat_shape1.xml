@@ -5,7 +5,7 @@
         android:top="5dp"
         android:bottom="15dp">
         <shape>
-            <solid android:color="@android:color/white" />
+            <solid android:color="@color/white_transparent" />
             <corners
                 android:bottomLeftRadius="2dp"
                 android:bottomRightRadius="2dp"
