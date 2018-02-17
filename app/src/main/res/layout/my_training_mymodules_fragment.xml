@@ -6,17 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="0dp"
+    android:background="@drawable/login_back_bw_lighter"
     tools:openDrawer="start">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/profile16background"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
