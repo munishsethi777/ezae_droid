@@ -29,7 +29,7 @@
                     android:id="@+id/moduleHeader"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:background="@color/BlueMain"
+                    android:background="@color/right_learnings"
                     android:padding="5dp"
                     android:textSize="15sp"
                     android:text="My Modules \n 12 Modules"

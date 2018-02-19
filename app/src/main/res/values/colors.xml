@@ -1488,6 +1488,10 @@
     <color name="black">#000</color>
     <color name="dark_red">#B71C1C</color>
     <color name="lp_color">#6E8F82</color>
-    <color name="lp_block_backround">#CCeaeaea</color>
+    <color name="lp_block_backround">#aaffffff</color>
     <color name="right_orange">#CCe77c22</color>
+
+    <color name="right_learnings">#e16E8F82</color>
+    <color name="right_achievement">#e1466ea5</color>
+    <color name="right_notes">#e16390C6</color>
 </resources>
