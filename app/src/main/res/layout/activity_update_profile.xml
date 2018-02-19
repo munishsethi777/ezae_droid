@@ -8,13 +8,14 @@
 	<android.support.design.widget.AppBarLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:theme="@style/AppTheme.AppBarOverlay">
+		android:theme="@style/AppTheme.AppBarOverlay"
+		android:background="@color/White">
 
 		<android.support.v7.widget.Toolbar
 			android:id="@+id/toolbar"
 			android:layout_width="match_parent"
 			android:layout_height="?attr/actionBarSize"
-			android:background="?attr/colorPrimary"
+			android:background="@color/right_profile"
 			app:popupTheme="@style/AppTheme.PopupOverlay" />
 
 	</android.support.design.widget.AppBarLayout>
@@ -50,13 +51,12 @@
 
 					<ImageView
 						android:id="@+id/imageView_user"
-						android:src="@mipmap/loginsignup6_bg"
-						android:layout_width="150dp"
-						android:layout_height="150dp"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
 						android:layout_gravity="center"
 						android:layout_marginTop="10dp"
 						android:clickable="true"
-						/>
+						android:src="@mipmap/loginsignup6_bg" />
 
 					<ImageButton
 						android:id="@+id/upload_imageButton"
@@ -64,8 +64,9 @@
 						android:layout_height="wrap_content"
 						android:clickable="true"
 						android:onClick="onClick"
-						app:srcCompat="@drawable/ic_edit_gray" />
-
+						app:srcCompat="@drawable/ic_edit"
+						android:background="@color/right_orange"
+						android:layout_gravity="center"/>
 
 
 						<LinearLayout

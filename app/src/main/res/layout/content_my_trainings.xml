@@ -13,13 +13,14 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:background="@color/White">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/right_learnings"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         <android.support.design.widget.TabLayout
@@ -27,7 +28,8 @@
             style="@style/LoginSignUp4TabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabMode="fixed" />
+            app:tabMode="fixed"
+            android:background="@color/right_learnings"/>
 
     </android.support.design.widget.AppBarLayout>
 
