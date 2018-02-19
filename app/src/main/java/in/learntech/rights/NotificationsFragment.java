@@ -156,7 +156,9 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
                         textView.setText(notificationTitle);
                         Button button = (Button) childLayout.findViewById(R.id.notification_button);
                         button.setText(buttonTitle);
-                        button.setOnClickListener(new startChat(seq, notificationTitle, null, buttonTitle));
+                        if(!buttonTitle.equals("Nominated")){
+                            button.setOnClickListener(new startChat(seq, notificationTitle, null, buttonTitle));
+                        }
                         textView.setText(notificationTitle);
                         mNotesLayout.addView(childLayout);
                     }
