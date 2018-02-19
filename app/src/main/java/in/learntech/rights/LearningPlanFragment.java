@@ -1,52 +1,49 @@
 package in.learntech.rights;
 
-import android.content.Context;
-import android.net.Uri;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.app.progresviews.ProgressWheel;
+import com.bumptech.glide.Glide;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.MessageFormat;
+
+import in.learntech.rights.services.Interface.IServiceHandler;
+import in.learntech.rights.services.ServiceHandler;
+import in.learntech.rights.utils.ImageViewCircleTransform;
+import in.learntech.rights.utils.LayoutHelper;
+import in.learntech.rights.utils.StringConstants;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LearningPlanFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LearningPlanFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Created by munishsethi on 04/09/17.
  */
-public class LearningPlanFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
-    public LearningPlanFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LearningPlanFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static LearningPlanFragment newInstance(String param1, String param2) {
+@SuppressLint("ValidFragment")
+public class LearningPlanFragment extends Fragment implements IServiceHandler{
+    private static final String ARG_USER_SEQ = "userSeq";
+    private static final String ARG_COMPANY_SEQ = "companySeq";
+    private ServiceHandler mAuthTask = null;
+    private int mUserSeq;
+    private int mCompanySeq;
+    private LayoutInflater mInflater;
+    private ViewGroup mContainer;
+    private LinearLayout mPrentLayout;
+    private LayoutHelper mLayoutHelper;
+    public static LearningPlanFragment newInstance(int userSeq, int companySeq) {
         LearningPlanFragment fragment = new LearningPlanFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_USER_SEQ, userSeq);
+        args.putInt(ARG_COMPANY_SEQ, companySeq);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,54 +52,104 @@ public class LearningPlanFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mUserSeq = getArguments().getInt(ARG_USER_SEQ);
+            mCompanySeq = getArguments().getInt(ARG_COMPANY_SEQ);
+        }
+    }
+
+    private void executeGetLPDetail(){
+        Object[] args = {mUserSeq,mCompanySeq};
+        String getLPDetailUrl = MessageFormat.format(StringConstants.GET_LEARNING_PLAN_DETAIL,args);
+        mAuthTask = new ServiceHandler(getLPDetailUrl,this,getActivity());
+        mAuthTask.execute();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View drawerLayout = inflater.inflate(R.layout.my_training_learningplans_fragment, container, false);
+        mPrentLayout = (LinearLayout) drawerLayout.findViewById(R.id.layout_lp);
+        mContainer = container;
+        mInflater = inflater;
+        mLayoutHelper = new LayoutHelper(getActivity(),mInflater,mContainer);
+        executeGetLPDetail();
+        return drawerLayout;
+    }
+
+    private void loadImageCircleRequest(ImageView img, String url){
+        Glide.with(this)
+                .load(url)
+                .transform(new ImageViewCircleTransform(getActivity()))
+                .into(img);
+    }
+
+    private void loadImageRequest(ImageView bg, String url) {
+        Glide.with(this)
+                .load(url)
+                .thumbnail(0.01f)
+                .centerCrop()
+                .crossFade()
+                .into(bg);
+    }
+
+    @Override
+    public void processServiceResponse(JSONObject response) {
+        mAuthTask = null;
+        //showProgress(false);
+        boolean success = false;
+        String message = null;
+        try{
+            success = response.getInt(StringConstants.SUCCESS) == 1 ? true : false;
+            message = response.getString(StringConstants.MESSAGE);
+            if(success){
+                JSONArray lpJsonArr = response.getJSONArray("learningPlanDetails");
+                int count = lpJsonArr.length();
+                for (int i=0; i < count; i++) {
+                    JSONObject lpJson = lpJsonArr.getJSONObject(i);
+                    int progress = lpJson.getInt("percentCompleted");
+                    String description = lpJson.getString("description");
+                    JSONArray jsonArray = lpJson.getJSONArray("modules");
+                    JSONObject moduleJson = jsonArray.getJSONObject(0);
+                    String imageName = moduleJson.getString("imagepath");
+                    Integer points = moduleJson.getInt("points");
+                    Integer score = moduleJson.getInt("score");
+                    if(imageName != null && !imageName.equals("null") && !imageName.equals("")){
+                    }else{
+                        imageName = "dummy.jpg";
+                    }
+                    String imageUrl = StringConstants.IMAGE_URL +"modules/"+imageName;
+                    String title = lpJson.getString("title");
+                    LinearLayout lpFragment = (LinearLayout)
+                            mInflater.inflate(R.layout.learning_plan_list_fragment, mContainer, false);
+                    ImageView lpImage = (ImageView)lpFragment.findViewById(R.id.imageView_lpImage);
+                    loadImageCircleRequest(lpImage,imageUrl);
+
+                    TextView textView_title = (TextView) lpFragment.findViewById(R.id.textview_lpTitle);
+                    textView_title.setText(title);
+
+                    TextView textView_description = (TextView) lpFragment.findViewById(R.id.textView_lpDescription);
+                    textView_description.setText(description);
+
+                    TextView textView_score = (TextView) lpFragment.findViewById(R.id.textView_score);
+                    textView_score.setText(score.toString());
+
+                    TextView textView_points = (TextView) lpFragment.findViewById(R.id.textView_points);
+                    textView_points.setText(points.toString());
+
+
+                    mPrentLayout.addView(lpFragment);
+                }
+            }
+        }catch (Exception e){
+
+            message = "Error :- " + e.getMessage();
+        }
+        if(message != null && !message.equals("")){
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_learning_plan, container, false);
-    }
+    public void setCallName(String call) {
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }
