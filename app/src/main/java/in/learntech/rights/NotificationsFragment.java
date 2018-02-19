@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,17 +40,18 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
     private static final String ARG_COMPANY_SEQ = "companySeq";
     public static final String UN_NOMINATED_EVENT = "unNominatedEvent";
     public static final String CURRENTLY_ACTIVE_EVENT = "currentlyActiveEvent";
+    private static final String NOMINATE_TRAINING = "nominateTraining";
     private ServiceHandler mAuthTask = null;
     private static final String SUCCESS = "success";
     private static final String MESSAGE = "message";
     private int mUserSeq;
     private int mCompanySeq;
     private LinearLayout mChildItemsLayout;
-    private LinearLayout mFragmentLayout;
+    private LinearLayout mNotesLayout;
     private LayoutInflater mInflater;
     private ViewGroup mContainer;
     private OnFragmentInteractionListener mListener;
-
+    private String mCallName;
     public NotificationsFragment() {
         // Required empty public constructor
     }
@@ -88,7 +90,9 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
         // Inflate the layout for this fragment
         mInflater = inflater;
         mContainer = container;
-        mFragmentLayout =  (LinearLayout) inflater.inflate(R.layout.dashboard_notification_fragment, container, false);
+        //mFragmentLayout =  (LinearLayout) inflater.inflate(R.layout.dashboard_notification_fragment, container, false);
+        ConstraintLayout mFragmentLayout =  (ConstraintLayout) inflater.inflate(R.layout.content_notes, container, false);
+        mNotesLayout = (LinearLayout) mFragmentLayout.findViewById(R.id.notesLayout);
         executeGetNotificationCall();
         return mFragmentLayout;
     }
@@ -123,29 +127,35 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
             success = response.getInt(SUCCESS) == 1 ? true : false;
             message = response.getString(MESSAGE);
             if(success){
-                JSONArray notificationJsonArr = response.getJSONArray("notifications");
-                for (int i=0; i < notificationJsonArr.length(); i++) {
-                    JSONObject jsonObject = notificationJsonArr.getJSONObject(i);
-                    int seq = jsonObject.getInt("seq");
-                    String notificationTitle = jsonObject.getString("title");
-                    String type = jsonObject.getString("type");
-                    String eventType = jsonObject.getString("eventtype");
-                    String buttonTitle = "Nominate";
-                    if(type.equals(CURRENTLY_ACTIVE_EVENT)){
-                        if(eventType.equals("chatroom")) {
-                            buttonTitle = "Chatroom";
-                        }else if(eventType.equals("classroom")){
-                            buttonTitle = "Classroom";
+                if (mCallName != null && mCallName.equals(NOMINATE_TRAINING)) {
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    executeGetNotificationCall();
+                }else {
+                    JSONArray notificationJsonArr = response.getJSONArray("notifications");
+                    for (int i = 0; i < notificationJsonArr.length(); i++) {
+                        JSONObject jsonObject = notificationJsonArr.getJSONObject(i);
+                        int seq = jsonObject.getInt("seq");
+                        String notificationTitle = jsonObject.getString("title");
+                        String type = jsonObject.getString("type");
+                        String status = jsonObject.getString("status");
+                        String eventType = jsonObject.getString("eventtype");
+                        String buttonTitle = "Nominate";
+                        if (type.equals(CURRENTLY_ACTIVE_EVENT)) {
+                            if (eventType.equals("chatroom")) {
+                                buttonTitle = "Chatroom";
+                            } else if (eventType.equals("classroom")) {
+                                buttonTitle = "Classroom";
+                            }
                         }
+                        LinearLayout childLayout = (LinearLayout) mInflater.inflate(R.layout.notifications_child_items, mContainer, false);
+                        TextView textView = (TextView) childLayout.findViewById(R.id.notification_title);
+                        textView.setText(notificationTitle);
+                        Button button = (Button) childLayout.findViewById(R.id.notification_button);
+                        button.setText(buttonTitle);
+                        button.setOnClickListener(new startChat(seq, notificationTitle, null, buttonTitle));
+                        textView.setText(notificationTitle);
+                        mNotesLayout.addView(childLayout);
                     }
-                    LinearLayout childLayout = (LinearLayout) mInflater.inflate(R.layout.notifications_child_items, mContainer, false);
-                    TextView textView = (TextView) childLayout.getChildAt(0);
-                    textView.setText(notificationTitle);
-                    Button button = (Button) childLayout.getChildAt(1);
-                    button.setText(buttonTitle);
-                    button.setOnClickListener(new startChat(seq,notificationTitle,null));
-                    textView.setText(notificationTitle);
-                    mFragmentLayout.addView(childLayout);
                 }
             }
         }catch (Exception e){
@@ -156,23 +166,42 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
         }
     }
 
-    @Override
-    public void setCallName(String call) {
 
-    }
 
     class startChat implements View.OnClickListener{
         ChatRoomModel  model;
-        startChat(int seq,String title,String imageUrl){
-             model = new ChatRoomModel(seq,title,imageUrl);
+        String notificationType;
+        startChat(int seq,String title,String imageUrl,String notType){
+            model = new ChatRoomModel(seq,title,imageUrl);
+            notificationType = notType;
         }
         @Override
         public void onClick(View view) {
-            Intent messageChatActivity = new Intent(getActivity(),ChatRoomChatActivity.class);
-            messageChatActivity.putExtra("messageModel",model);
-            startActivity(messageChatActivity);
-            getActivity().overridePendingTransition(R.anim.firstactivity_enter, R.anim.firstactivity_exit);
+            if(notificationType == "Chatroom") {
+                Intent messageChatActivity = new Intent(getActivity(), ChatRoomChatActivity.class);
+                messageChatActivity.putExtra("messageModel", model);
+                startActivity(messageChatActivity);
+                getActivity().overridePendingTransition(R.anim.firstactivity_enter, R.anim.firstactivity_exit);
+            }else if(notificationType == "Classroom"){
+                Intent intent = new Intent(getActivity(), in.learntech.rights.Events.MainActivity.class);
+                startActivity(intent);
+            }else {
+                executeNominateTrainingCall(model.getSeq());
+            }
         }
+    }
+
+
+    @Override
+    public void setCallName(String call) {
+        mCallName = call;
+    }
+
+    private void executeNominateTrainingCall(int trainingSeq){
+        Object[] args = {mUserSeq,mCompanySeq,trainingSeq,0};
+        String notificationUrl = MessageFormat.format(StringConstants.NOMINATE_TRAINING,args);
+        mAuthTask = new ServiceHandler(notificationUrl,this,NOMINATE_TRAINING,getActivity());
+        mAuthTask.execute();
     }
 
 

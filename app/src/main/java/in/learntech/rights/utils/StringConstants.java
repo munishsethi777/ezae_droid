@@ -45,6 +45,7 @@ public class StringConstants {
     public static final String GET_LEADERBOARD_BY_MODULE = ACTION_API_URL + "UserAction.php?call=getLeaderBoardDataByModule&userSeq={0}&companySeq={1}&moduleSeq={2}";
     public static final String GET_LEADERBOARD_BY_PROFILE = ACTION_API_URL + "UserAction.php?call=getLeaderBoardDataByProfile&userSeq={0}&companySeq={1}&profileSeq={2}";
     public static final String GET_LEADERBOARD_BY_LEARNINGPLAN = ACTION_API_URL + "UserAction.php?call=getLeaderBoardDataByLearningPlan&userSeq={0}&companySeq={1}&lpSeq={2}";
+    public static final String NOMINATE_TRAINING = ACTION_API_URL+"UserAction.php?call=nominateCT&userSeq={0}&companySeq={1}&trainingSeq={2}&lpSeq={3}";
     //LearningPlan Actions
     public static final String GET_LEARNING_PLANS = ACTION_API_URL + "LearningPlanAction.php?call=getLearningPlans&userSeq={0}&companySeq={1}";
 
@@ -82,6 +83,8 @@ public class StringConstants {
     public static final String GET_ALL_EVENTS = ACTION_API_URL + "ChatroomAction.php?call=getAllEvents&userSeq={0}&companySeq={1}";
     public static final String GET_CHAT_ROOMS_DETAIL = ACTION_API_URL + "ChatroomAction.php?call=getChatroomDetails&userSeq={0}&companySeq={1}&chatroomId={2}&afterMessageSeq={3}";
     public static final String SEND_CHAT_ROOM_CHAT = ACTION_API_URL + "ChatroomAction.php?call=sendMessageChat&userSeq={0}&companySeq={1}&chatroomId={2}&userType={3}&userName={4}&afterMessageSeq={5}&message={6}";
+
+    //
 
 
 
