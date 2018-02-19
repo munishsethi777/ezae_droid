@@ -146,6 +146,10 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
                             } else if (eventType.equals("classroom")) {
                                 buttonTitle = "Classroom";
                             }
+                        }else{
+                            if(status.equals("unapproved")){
+                                buttonTitle = "Nominated" ;
+                            }
                         }
                         LinearLayout childLayout = (LinearLayout) mInflater.inflate(R.layout.notifications_child_items, mContainer, false);
                         TextView textView = (TextView) childLayout.findViewById(R.id.notification_title);
