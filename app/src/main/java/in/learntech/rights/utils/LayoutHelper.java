@@ -225,6 +225,7 @@ public class LayoutHelper {
                     .centerCrop()
                     .crossFade()
                     .animate(animation)
+                    .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
                     .transform(new ImageViewCircleTransform(mActivity))
                     .into(bg);
         }else{
