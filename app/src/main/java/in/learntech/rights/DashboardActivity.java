@@ -63,6 +63,7 @@ public class DashboardActivity extends AppCompatActivity
     private int mLoggedInUserSeq;
     private int mLoggedInCompanySeq;
     private ImageView mUserImageView;
+    private ImageView userImageView;
     private TextView mUserNameView;
     private TextView mUserEmailView;
     private TextView mUserProfilesView;
@@ -103,8 +104,6 @@ public class DashboardActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction =
                 fragmentManager.beginTransaction();
-        //fragmentTransaction.replace(R.id.linearLayout_leaderboarddata, fragment);
-        //fragmentTransaction.commit();
     }
 
     private void initViews(){
@@ -116,11 +115,13 @@ public class DashboardActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
         mUserImageView = (ImageView)hView.findViewById(R.id.imageView_user);
+        userImageView = (ImageView)findViewById(R.id.imageView_userImage);
         mUserNameView = (TextView)hView.findViewById(R.id.textView_userName);
         mUserEmailView = (TextView)hView.findViewById(R.id.textView_userEmail);
         mUserProfilesView = (TextView)hView.findViewById(R.id.textView_profiles);
         String userImageUrl = mUserMgr.getLoggedInUserImageUrl();
         mLayoutHelper.loadImageRequest(mUserImageView,userImageUrl,true);
+        mLayoutHelper.loadImageRequest(userImageView,userImageUrl,true);
         User user = mUserMgr.getLoggedInUser();
         mUserNameView.setText(user.getFullName());
         mUserEmailView.setText(user.getEmail());
@@ -376,8 +377,8 @@ public class DashboardActivity extends AppCompatActivity
         } else if (id == R.id.imageView_updateProfile) {
             Intent notesIntent = new Intent(this,UpdateProfileActivity.class);
             startActivity(notesIntent);
-        }else if (id == R.id.imageView_chat) {
-            Intent intent = new Intent(this,ChatRoomActivity.class);
+        }else if (id == R.id.imageView_notifications) {
+            Intent intent = new Intent(this,NotificationActivity.class);
             startActivity(intent);
         }
     }
