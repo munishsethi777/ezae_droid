@@ -47,8 +47,10 @@ public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,IServiceHandler,View.OnClickListener , LeaderBoardFragment.OnListFragmentInteractionListener {
     private static final String SUCCESS = "success";
     private static final String DASHBOARD_DATA = "dashboardData";
+    private static final String DASHBOARD_COUNTS = "dashboardCounts";
     private static final String MESSAGE = "message";
     public static final String GET_DASHBOARD_COUNT = "getDashboardCount";
+    public static final String GET_COUNTS = "getCounts";
     public static final String GET_LEARNING_PLANS = "getLearningPlans";
     public static final String SYNC_USERS = "syncUsers";
     public static final String GET_PROFILES_AND_MODULES = "getProfilesAndModules";
@@ -67,6 +69,10 @@ public class DashboardActivity extends AppCompatActivity
     private TextView mUserNameView;
     private TextView mUserEmailView;
     private TextView mUserProfilesView;
+    private TextView notificationCountTextView;
+    private TextView learningPlanCountTextView;
+    private TextView messagesCountTextView;
+
     private LinearLayout mMenuHeaderLayout;
     private LayoutHelper mLayoutHelper;
     private CompanyUserManager mCompanyUserMgr;
@@ -114,6 +120,9 @@ public class DashboardActivity extends AppCompatActivity
         //mCompletedTrainings = (TextView) findViewById(R.id.textView_completed_trainings);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
+        notificationCountTextView = (TextView)findViewById(R.id.notificationCount);
+        learningPlanCountTextView = (TextView)findViewById(R.id.learningPlanCount);
+        messagesCountTextView = (TextView)findViewById(R.id.messagesCount);
         mUserImageView = (ImageView)hView.findViewById(R.id.imageView_user);
         userImageView = (ImageView)findViewById(R.id.imageView_userImage);
         mUserNameView = (TextView)hView.findViewById(R.id.textView_userName);
@@ -135,10 +144,13 @@ public class DashboardActivity extends AppCompatActivity
         int loggedInUserCompanySeq = mUserMgr.getLoggedInUserCompanySeq();
         Object[] args = {loggedInUserSeq,loggedInUserCompanySeq};
         String dashboardCountUrl = MessageFormat.format(StringConstants.GET_DASHBOARD_COUNTS,args);
+        String getCountsUrl = MessageFormat.format(StringConstants.GET_COUNTS,args);
         String syncUsersUrl = MessageFormat.format(StringConstants.SYNCH_USERS,args);
         String learningPlanUrl = MessageFormat.format(StringConstants.GET_LEARNING_PLANS,args);
         String getProfilesAndModulesUrl = MessageFormat.format(StringConstants.GET_PROFILE_AND_MODULES,args);
         mAuthTask = new ServiceHandler(dashboardCountUrl,this, GET_DASHBOARD_COUNT,this);
+        mAuthTask.execute();
+        mAuthTask = new ServiceHandler(getCountsUrl,this, GET_COUNTS,this);
         mAuthTask.execute();
         mAuthTask = new ServiceHandler(learningPlanUrl,this, GET_LEARNING_PLANS,this);
         mAuthTask.execute();
@@ -267,6 +279,8 @@ public class DashboardActivity extends AppCompatActivity
             message = response.getString(MESSAGE);
             if(success){
                 if(mCallName.equals(GET_DASHBOARD_COUNT)){
+                    populateDashboardStates(response);
+                }if(mCallName.equals(GET_COUNTS)){
                     populateDashboardCounts(response);
                 }else if(mCallName.equals(GET_LEARNING_PLANS)){
                     //populateLearningPlans(response);
@@ -286,7 +300,7 @@ public class DashboardActivity extends AppCompatActivity
         }
     }
 
-    private void populateDashboardCounts(JSONObject response)throws  Exception{
+    private void populateDashboardStates(JSONObject response)throws  Exception{
         JSONObject dashboardData = response.getJSONObject(DASHBOARD_DATA);
         String totalScores = dashboardData.getString("totalScores");
         String completedTrainings = dashboardData.getString("completedTrainings");
@@ -295,7 +309,7 @@ public class DashboardActivity extends AppCompatActivity
         String maxScore = pendingTraingsJSON.getString("maxScore");
         String profileRank = dashboardData.getString("userRank");
         String pendingCount = pendingTraingsJSON.getString("pendingCount");
-
+        String points = dashboardData.getString("points");
         String totalScoreStr = totalScores+"/" + maxScore;
         mScores.setText(totalScoreStr);
         if(profileRank == "null"){
@@ -305,10 +319,26 @@ public class DashboardActivity extends AppCompatActivity
         mProfileRank.setText(profileRankStr);
 
         String pendingTrainingsStr = pendingCount;
-        mPendingTrainings.setText(pendingTrainingsStr);
+        mPendingTrainings.setText(points);
 
         String completedTrainingsStr = completedTrainings;
-        mCompletedTrainings.setText(completedTrainingsStr);
+        //mCompletedTrainings.setText(completedTrainingsStr);
+    }
+
+    private void populateDashboardCounts(JSONObject response)throws  Exception{
+        JSONObject dashboardData = response.getJSONObject(DASHBOARD_COUNTS);
+        Integer pendingLpCount = dashboardData.getInt("pendingLpCount");
+        Integer notificationCount = dashboardData.getInt("notificationCount");
+        Integer messagesCount = dashboardData.getInt("messages");
+        if(notificationCount > 0){
+            notificationCountTextView.setText("+"+notificationCount.toString());
+        }
+        if(pendingLpCount > 0) {
+            learningPlanCountTextView.setText("+"+pendingLpCount.toString());
+        }
+        if(messagesCount > 0) {
+            messagesCountTextView.setText("+"+messagesCount.toString());
+        }
     }
 
 //    private void populateLearningPlans(JSONObject response)throws Exception{

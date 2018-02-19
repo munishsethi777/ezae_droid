@@ -13,16 +13,20 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:background="@drawable/login_back_bw_lighter"
-            tools:layout_editor_absoluteY="8dp"
-            tools:layout_editor_absoluteX="8dp">
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,16 +38,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content">
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="4"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"></LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
                         android:orientation="vertical">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -57,10 +63,12 @@
                             android:layout_gravity="center"
                             android:src="@drawable/profiile_pic" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
@@ -75,12 +83,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="Baljeet Gaheer"
-                        android:textSize="18sp"/>
+                        android:textSize="18sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -101,169 +110,199 @@
                     tools:layout_constraintLeft_creator="1"
                     tools:layout_constraintRight_creator="1">
 
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:orientation="vertical"
+                        android:paddingBottom="6dp">
+
+                        <TextView
+                            android:id="@+id/textView_score"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:gravity="bottom"
+                            android:padding="5dp"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:background="@android:color/transparent"
-                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/right_orange" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:paddingBottom="6dp"
-                            android:layout_marginRight="8dp">
+                            android:text="Scores"
+                            android:textAlignment="center"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/textView_score"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="2"
-                                android:gravity="bottom"
-                                android:padding="5dp"
-                                android:text="0"
-                                android:textAlignment="center"
-                                android:textColor="@color/black"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:background="@color/right_orange"/>
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:text="Scores"
-                                android:textAlignment="center"
-                                android:textColor="@color/black" />
-                        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingBottom="6dp">
+
+                        <TextView
+                            android:id="@+id/textView_profile_rank"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:gravity="bottom"
+                            android:padding="5dp"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:paddingBottom="6dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/right_orange" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:layout_marginRight="8dp">
+                            android:text="Rank"
+                            android:textAlignment="center"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/textView_profile_rank"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="2"
-                                android:gravity="bottom"
-                                android:padding="5dp"
-                                android:text="0"
-                                android:textAlignment="center"
-                                android:textColor="@color/black"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:background="@color/right_orange"/>
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:text="Rank"
-                                android:textAlignment="center"
-                                android:textColor="@color/black" />
-                        </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingBottom="6dp">
+
+                        <TextView
+                            android:id="@+id/textView_pending_trainings"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:gravity="bottom"
+                            android:padding="5dp"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:paddingBottom="6dp"
-                            android:layout_weight="1">
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/right_orange" />
 
-                            <TextView
-                                android:id="@+id/textView_pending_trainings"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="2"
-                                android:gravity="bottom"
-                                android:padding="5dp"
-                                android:text="0"
-                                android:textAlignment="center"
-                                android:textColor="@color/black"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:background="@color/right_orange"/>
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:text="Pending"
-                                android:textAlignment="center"
-                                android:textColor="@color/black" />
-                        </LinearLayout>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="Points"
+                            android:textAlignment="center"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
 
 
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="2dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <LinearLayout
                         android:id="@+id/dash_notifications"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
                         android:layout_gravity="center"
-                        android:background="@drawable/dash_notifications_block"
                         android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/dash_notifications_block"
+                        android:orientation="vertical"
                         android:padding="10dp">
+
+                        <TextView
+                            android:id="@+id/notificationCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:textColor="@color/White"
+                            android:textSize="16dp" />
+
                         <ImageButton
                             android:id="@+id/imageView_notifications"
-                            android:onClick="onClick"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/dash_notifications"
-                            android:layout_gravity="center"/>
+                            android:onClick="onClick"
+                            android:src="@drawable/dash_notifications" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Notifications"
-                            android:textSize="16dp"
-                            android:paddingTop="10dp"
                             android:layout_gravity="center"
-                            android:textColor="@color/White"/>
+                            android:paddingTop="10dp"
+                            android:text="Notifications"
+                            android:textColor="@color/White"
+                            android:textSize="16dp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
                         android:layout_gravity="center"
-                        android:background="@drawable/dash_learnings_block"
                         android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/dash_learnings_block"
+                        android:orientation="vertical"
                         android:padding="10dp">
+
+                        <TextView
+                            android:id="@+id/learningPlanCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:textColor="@color/White"
+                            android:textSize="16dp" />
+
                         <ImageButton
                             android:id="@+id/imageView_trainings"
-                            android:onClick="onClick"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/dash_learnings"
-                            android:layout_gravity="center"/>
+                            android:onClick="onClick"
+                            android:src="@drawable/dash_learnings" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Learnings"
-                            android:textSize="16dp"
-                            android:paddingTop="10dp"
                             android:layout_gravity="center"
-                            android:textColor="@color/White"/>
+                            android:paddingTop="10dp"
+                            android:text="Learnings"
+                            android:textColor="@color/White"
+                            android:textSize="16dp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -272,227 +311,260 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
                         android:layout_gravity="center"
-                        android:background="@drawable/dash_messages_block"
                         android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/dash_messages_block"
+                        android:orientation="vertical"
                         android:padding="10dp">
+
+                        <TextView
+                            android:id="@+id/messagesCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:textColor="@color/White"
+                            android:textSize="16dp" />
+
                         <ImageButton
                             android:id="@+id/imageView_messages"
-                            android:onClick="onClick"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/dash_chat"
-                            android:layout_gravity="center"/>
+                            android:onClick="onClick"
+                            android:src="@drawable/dash_chat" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Messages"
-                            android:textSize="16dp"
                             android:layout_gravity="center"
                             android:paddingTop="10dp"
-                            android:textColor="@color/White"/>
+                            android:text="Messages"
+                            android:textColor="@color/White"
+                            android:textSize="16dp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
                         android:layout_gravity="center"
-                        android:background="@drawable/dash_achievements_block"
                         android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/dash_achievements_block"
+                        android:orientation="vertical"
                         android:padding="10dp">
+
                         <ImageButton
                             android:id="@+id/imageView_achievements"
-                            android:onClick="onClick"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/dash_achievements"
-                            android:layout_gravity="center"/>
+                            android:onClick="onClick"
+                            android:src="@drawable/dash_achievements" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Achievements"
-                            android:textSize="16dp"
                             android:layout_gravity="center"
                             android:paddingTop="10dp"
-                            android:textColor="@color/White"/>
+                            android:text="Achievements"
+                            android:textColor="@color/White"
+                            android:textSize="16dp" />
                     </LinearLayout>
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
                         android:layout_gravity="center"
-                        android:background="@drawable/dash_notes_block"
                         android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/dash_notes_block"
+                        android:orientation="vertical"
                         android:padding="10dp">
+
                         <ImageButton
                             android:id="@+id/imageView_notes"
-                            android:onClick="onClick"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/dash_notes"
-                            android:layout_gravity="center"/>
+                            android:onClick="onClick"
+                            android:src="@drawable/dash_notes" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Notes"
-                            android:textSize="16dp"
                             android:layout_gravity="center"
-                            android:textColor="@color/White"/>
+                            android:text="Notes"
+                            android:textColor="@color/White"
+                            android:textSize="16dp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
                         android:layout_gravity="center"
-                        android:background="@drawable/dash_calendar_block"
                         android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/dash_calendar_block"
+                        android:orientation="vertical"
                         android:padding="10dp">
+
                         <ImageButton
                             android:id="@+id/imageView_calendar"
-                            android:onClick="onClick"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/dash_calendar"
-                            android:layout_gravity="center"/>
+                            android:onClick="onClick"
+                            android:src="@drawable/dash_calendar" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Calendar"
-                            android:textSize="16dp"
                             android:layout_gravity="center"
                             android:paddingTop="10dp"
-                            android:textColor="@color/White"/>
-                </LinearLayout>
+                            android:text="Calendar"
+                            android:textColor="@color/White"
+                            android:textSize="16dp" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
                         android:layout_gravity="center"
-                        android:background="@drawable/dash_chatrooms_block"
                         android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/dash_chatrooms_block"
+                        android:orientation="vertical"
                         android:padding="10dp">
+
                         <ImageButton
                             android:id="@+id/imageView_chat"
-                            android:onClick="onClick"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/dash_chatrooms"
-                            android:layout_gravity="center"/>
+                            android:onClick="onClick"
+                            android:src="@drawable/dash_chatrooms" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Chatrooms"
-                            android:textSize="16dp"
                             android:layout_gravity="center"
                             android:paddingTop="10dp"
-                            android:textColor="@color/White"/>
+                            android:text="Chatrooms"
+                            android:textColor="@color/White"
+                            android:textSize="16dp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
                         android:layout_gravity="center"
-                        android:background="@drawable/dash_profile_block"
                         android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/dash_profile_block"
+                        android:orientation="vertical"
                         android:padding="10dp">
+
                         <ImageButton
                             android:id="@+id/imageView_updateProfile"
-                            android:onClick="onClick"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/dash_profile"
-                            android:layout_gravity="center"/>
+                            android:onClick="onClick"
+                            android:src="@drawable/dash_profile" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Profile"
-                            android:textSize="16dp"
                             android:layout_gravity="center"
                             android:paddingTop="10dp"
-                            android:textColor="@color/White"/>
+                            android:text="Profile"
+                            android:textColor="@color/White"
+                            android:textSize="16dp" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
                         android:layout_gravity="center"
-                        android:background="@drawable/dash_password_block"
                         android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/dash_password_block"
+                        android:orientation="vertical"
                         android:padding="10dp">
+
                         <ImageButton
                             android:id="@+id/imageView_password"
-                            android:onClick="onClick"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/dash_password"
-                            android:layout_gravity="center"/>
+                            android:onClick="onClick"
+                            android:src="@drawable/dash_password" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Password"
-                            android:textSize="16dp"
                             android:layout_gravity="center"
                             android:paddingTop="10dp"
-                            android:textColor="@color/White"/>
+                            android:text="Password"
+                            android:textColor="@color/White"
+                            android:textSize="16dp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
                         android:layout_gravity="center"
-                        android:background="@drawable/dash_logout_block"
                         android:layout_margin="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/dash_logout_block"
+                        android:orientation="vertical"
                         android:padding="10dp">
+
                         <ImageButton
                             android:id="@+id/imageView_logout"
-                            android:onClick="onClick"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/dash_logout"
-                            android:layout_gravity="center"/>
+                            android:onClick="onClick"
+                            android:src="@drawable/dash_logout" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Logout"
-                            android:textSize="16dp"
                             android:layout_gravity="center"
                             android:paddingTop="10dp"
-                            android:textColor="@color/White"/>
+                            android:text="Logout"
+                            android:textColor="@color/White"
+                            android:textSize="16dp" />
                     </LinearLayout>
                 </LinearLayout>
 
