@@ -410,7 +410,17 @@ public class DashboardActivity extends AppCompatActivity
         }else if (id == R.id.imageView_notifications) {
             Intent intent = new Intent(this,NotificationActivity.class);
             startActivity(intent);
+        }else if (id == R.id.imageView_chat) {
+            Intent intent = new Intent(this,ChatRoomActivity.class);
+            startActivity(intent);
+        }else if (id == R.id.imageView_password) {
+            Intent intent = new Intent(this,ChangePasswordActivity.class);
+            startActivity(intent);
+        }else if (id == R.id.imageView_calendar) {
+            Intent intent = new Intent(this, in.learntech.rights.Events.MainActivity.class);
+            startActivity(intent);
         }
+
     }
 
     //Leader board container
