@@ -110,7 +110,8 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".Leaderboard.LeaderboardActivity" />
         <activity android:name=".Events.MainActivity" />
-        <activity android:name=".Events.ClassroomActivity"></activity>
+        <activity android:name=".Events.ClassroomActivity" />
+        <activity android:name=".NotificationActivity"></activity>
     </application>
 
 </manifest>
