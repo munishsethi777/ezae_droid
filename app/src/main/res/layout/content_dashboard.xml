@@ -225,84 +225,90 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="2dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp">
 
                     <LinearLayout
-                        android:id="@+id/dash_notifications"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="20dp"
                         android:layout_weight="1"
-                        android:background="@drawable/dash_notifications_block"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:id="@+id/notificationCount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:textColor="@color/White"
-                            android:textSize="16dp" />
-
-                        <ImageButton
-                            android:id="@+id/imageView_notifications"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:onClick="onClick"
-                            android:src="@drawable/dash_notifications" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:paddingTop="10dp"
-                            android:text="Notifications"
-                            android:textColor="@color/White"
-                            android:textSize="16dp" />
+                        android:gravity="right"
+                        android:paddingRight="20dp">
+                        <LinearLayout
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:orientation="vertical"
+                            android:background="@drawable/dash_notifications_block"
+                            android:padding="6dp">
+                            <TextView
+                                android:id="@+id/notificationCount"
+                                android:text="+2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:textColor="@color/White"
+                                android:textSize="14dp" />
+                            <ImageButton
+                                android:id="@+id/imageView_notifications"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:onClick="onClick"
+                                android:src="@drawable/dash_notifications"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Notifications"
+                                android:textColor="@color/White"
+                                android:textSize="15dp"
+                                android:layout_marginTop="8dp" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="20dp"
                         android:layout_weight="1"
-                        android:background="@drawable/dash_learnings_block"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                        android:gravity="left"
+                        android:paddingLeft="20dp">
+                        <LinearLayout
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:orientation="vertical"
+                            android:background="@drawable/dash_learnings_block"
+                            android:padding="6dp">
 
-                        <TextView
-                            android:id="@+id/learningPlanCount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:textColor="@color/White"
-                            android:textSize="16dp" />
+                            <TextView
+                                android:id="@+id/learningPlanCount"
+                                android:text="+2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:textColor="@color/White"
+                                android:textSize="14dp" />
 
-                        <ImageButton
-                            android:id="@+id/imageView_trainings"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:onClick="onClick"
-                            android:src="@drawable/dash_learnings" />
+                            <ImageButton
+                                android:id="@+id/imageView_trainings"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:onClick="onClick"
+                                android:src="@drawable/dash_learnings" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:paddingTop="10dp"
-                            android:text="Learnings"
-                            android:textColor="@color/White"
-                            android:textSize="16dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Learnings"
+                                android:textColor="@color/White"
+                                android:textSize="15dp"
+                                android:layout_marginTop="8dp"/>
+                            </LinearLayout>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -310,261 +316,294 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp">
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="20dp"
                         android:layout_weight="1"
-                        android:background="@drawable/dash_messages_block"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                        android:gravity="right"
+                        android:paddingRight="20dp">
+                        <LinearLayout
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:orientation="vertical"
+                            android:background="@drawable/dash_messages_block"
+                            android:padding="6dp">
 
-                        <TextView
-                            android:id="@+id/messagesCount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:textColor="@color/White"
-                            android:textSize="16dp" />
+                            <TextView
+                                android:id="@+id/messagesCount"
+                                android:text="+2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:textColor="@color/White"
+                                android:textSize="14dp" />
 
-                        <ImageButton
-                            android:id="@+id/imageView_messages"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:onClick="onClick"
-                            android:src="@drawable/dash_chat" />
+                            <ImageButton
+                                android:id="@+id/imageView_messages"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:onClick="onClick"
+                                android:src="@drawable/dash_chat" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:paddingTop="10dp"
-                            android:text="Messages"
-                            android:textColor="@color/White"
-                            android:textSize="16dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Messages"
+                                android:textColor="@color/White"
+                                android:layout_marginTop="8dp"
+                                android:textSize="15dp" />
+                            </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="20dp"
                         android:layout_weight="1"
-                        android:background="@drawable/dash_achievements_block"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                        android:gravity="left"
+                        android:paddingLeft="20dp">
+                        <LinearLayout
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:orientation="vertical"
+                            android:background="@drawable/dash_achievements_block"
+                            android:padding="6dp">
+                            <ImageButton
+                                android:id="@+id/imageView_achievements"
+                                android:layout_marginTop="15dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:onClick="onClick"
+                                android:src="@drawable/dash_achievements" />
 
-                        <ImageButton
-                            android:id="@+id/imageView_achievements"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:onClick="onClick"
-                            android:src="@drawable/dash_achievements" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:paddingTop="10dp"
-                            android:text="Achievements"
-                            android:textColor="@color/White"
-                            android:textSize="16dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Achievements"
+                                android:textColor="@color/White"
+                                android:layout_marginTop="8dp"
+                                android:textSize="15dp"  />
+                            </LinearLayout>
                     </LinearLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp">
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="20dp"
                         android:layout_weight="1"
-                        android:background="@drawable/dash_notes_block"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                        android:gravity="right"
+                        android:paddingRight="20dp">
+                        <LinearLayout
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:orientation="vertical"
+                            android:background="@drawable/dash_notes_block"
+                            android:padding="6dp">
+                            <ImageButton
+                                android:id="@+id/imageView_notes"
+                                android:layout_marginTop="15dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:onClick="onClick"
+                                android:src="@drawable/dash_notes" />
 
-                        <ImageButton
-                            android:id="@+id/imageView_notes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:onClick="onClick"
-                            android:src="@drawable/dash_notes" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Notes"
-                            android:textColor="@color/White"
-                            android:textSize="16dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Notes"
+                                android:textColor="@color/White"
+                                android:layout_marginTop="8dp"
+                                android:textSize="15dp"  />
+                            </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="20dp"
                         android:layout_weight="1"
-                        android:background="@drawable/dash_calendar_block"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                        android:gravity="left"
+                        android:paddingLeft="20dp">
+                        <LinearLayout
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:orientation="vertical"
+                            android:background="@drawable/dash_calendar_block"
+                            android:padding="6dp">
+                            <ImageButton
+                                android:id="@+id/imageView_calendar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:onClick="onClick"
+                                android:src="@drawable/dash_calendar"
+                                android:layout_marginTop="15dp"/>
 
-                        <ImageButton
-                            android:id="@+id/imageView_calendar"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:onClick="onClick"
-                            android:src="@drawable/dash_calendar" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:paddingTop="10dp"
-                            android:text="Calendar"
-                            android:textColor="@color/White"
-                            android:textSize="16dp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="20dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/dash_chatrooms_block"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <ImageButton
-                            android:id="@+id/imageView_chat"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:onClick="onClick"
-                            android:src="@drawable/dash_chatrooms" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:paddingTop="10dp"
-                            android:text="Chatrooms"
-                            android:textColor="@color/White"
-                            android:textSize="16dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="20dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/dash_profile_block"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <ImageButton
-                            android:id="@+id/imageView_updateProfile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:onClick="onClick"
-                            android:src="@drawable/dash_profile" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:paddingTop="10dp"
-                            android:text="Profile"
-                            android:textColor="@color/White"
-                            android:textSize="16dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Calendar"
+                                android:textColor="@color/White"
+                                android:layout_marginTop="8dp"
+                                android:textSize="15dp"  />
+                            </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp">
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="20dp"
                         android:layout_weight="1"
-                        android:background="@drawable/dash_password_block"
-                        android:orientation="vertical"
-                        android:padding="10dp">
-
-                        <ImageButton
-                            android:id="@+id/imageView_password"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:onClick="onClick"
-                            android:src="@drawable/dash_password" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:paddingTop="10dp"
-                            android:text="Password"
-                            android:textColor="@color/White"
-                            android:textSize="16dp" />
+                        android:gravity="right"
+                        android:paddingRight="20dp">
+                        <LinearLayout
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:orientation="vertical"
+                            android:background="@drawable/dash_chatrooms_block"
+                            android:padding="6dp">
+                            <ImageButton
+                                android:id="@+id/imageView_chat"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:onClick="onClick"
+                                android:src="@drawable/dash_chatrooms"
+                                android:layout_marginTop="15dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Chatrooms"
+                                android:textColor="@color/White"
+                                android:layout_marginTop="8dp"
+                                android:textSize="15dp"  />
+                            </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="20dp"
                         android:layout_weight="1"
-                        android:background="@drawable/dash_logout_block"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                        android:gravity="left"
+                        android:paddingLeft="20dp">
+                        <LinearLayout
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:orientation="vertical"
+                            android:background="@drawable/dash_profile_block"
+                            android:padding="6dp">
+                            <ImageButton
+                                android:id="@+id/imageView_updateProfile"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:onClick="onClick"
+                                android:src="@drawable/dash_profile"
+                                android:layout_marginTop="15dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Profile"
+                                android:textColor="@color/White"
+                                android:layout_marginTop="8dp"
+                                android:textSize="15dp"  />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
 
-                        <ImageButton
-                            android:id="@+id/imageView_logout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:onClick="onClick"
-                            android:src="@drawable/dash_logout" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:paddingRight="20dp">
+                        <LinearLayout
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:orientation="vertical"
+                            android:background="@drawable/dash_password_block"
+                            android:padding="6dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:paddingTop="10dp"
-                            android:text="Logout"
-                            android:textColor="@color/White"
-                            android:textSize="16dp" />
+                            <ImageButton
+                                android:id="@+id/imageView_password"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:onClick="onClick"
+                                android:src="@drawable/dash_password"
+                                android:layout_marginTop="15dp"  />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Password"
+                                android:textColor="@color/White"
+                                android:layout_marginTop="8dp"
+                                android:textSize="15dp"  />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:paddingLeft="20dp">
+                        <LinearLayout
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:orientation="vertical"
+                            android:background="@drawable/dash_logout_block"
+                            android:padding="6dp">
+                            <ImageButton
+                                android:id="@+id/imageView_logout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:onClick="onClick"
+                                android:src="@drawable/dash_logout"
+                                android:layout_marginTop="15dp"  />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Logout"
+                                android:textColor="@color/White"
+                                android:layout_marginTop="8dp"
+                                android:textSize="15dp"  />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 

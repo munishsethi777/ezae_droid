@@ -17,6 +17,6 @@
         android:top="15dp" />
 
     <!-- we define corner radius, note that radius can be different for each corner -->
-    <corners android:radius="20dp" />
+    <corners android:radius="10dp" />
 
 </shape>
