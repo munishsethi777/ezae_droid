@@ -4,10 +4,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import java.util.Date;
+
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     CharSequence titles[];
     int numbOfTabs;
+    Date eventDate;
 
     public ViewPagerAdapter(FragmentManager fm, CharSequence titles[], int mNumbOfTabs) {
         super(fm);
@@ -19,6 +22,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         if (position == 0) {
             CompactCalendarTab compactCalendarTab = new CompactCalendarTab();
+            compactCalendarTab.directEventDate = eventDate;
             return compactCalendarTab;
         } else {
             Tab2 tab2 = new Tab2();
