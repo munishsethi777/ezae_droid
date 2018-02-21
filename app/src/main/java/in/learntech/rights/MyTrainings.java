@@ -51,6 +51,9 @@ public class MyTrainings extends AppCompatActivity implements View.OnClickListen
             case R.id.button_moduleLaunch:
                 goUserTrainingActivity(view);
                 break;
+            case R.id.imageView_launch:
+                goUserTrainingActivity(view);
+                break;
             default:
                 break;
         }
