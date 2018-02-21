@@ -17,11 +17,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.MessageFormat;
+import java.util.Date;
 
 import in.learntech.rights.Chatroom.ChatRoomChatActivity;
 import in.learntech.rights.Chatroom.ChatRoomModel;
 import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
+import in.learntech.rights.utils.DateUtil;
 import in.learntech.rights.utils.StringConstants;
 
 
@@ -139,6 +141,10 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
                         String type = jsonObject.getString("type");
                         String status = jsonObject.getString("status");
                         String eventType = jsonObject.getString("eventtype");
+                        String from = jsonObject.getString("from");
+                        Date fromDate = DateUtil.stringToDate(from);
+                        from = DateUtil.dateToFormat(fromDate,DateUtil.format);
+                        notificationTitle  += "\n on " + from;
                         String buttonTitle = "Nominate";
                         if (type.equals(CURRENTLY_ACTIVE_EVENT)) {
                             if (eventType.equals("chatroom")) {
@@ -157,7 +163,7 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
                         Button button = (Button) childLayout.findViewById(R.id.notification_button);
                         button.setText(buttonTitle);
                         if(!buttonTitle.equals("Nominated")){
-                            button.setOnClickListener(new startChat(seq, notificationTitle, null, buttonTitle));
+                            button.setOnClickListener(new startChat(seq, notificationTitle, null, buttonTitle,fromDate));
                         }
                         textView.setText(notificationTitle);
                         mNotesLayout.addView(childLayout);
@@ -177,9 +183,11 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
     class startChat implements View.OnClickListener{
         ChatRoomModel  model;
         String notificationType;
-        startChat(int seq,String title,String imageUrl,String notType){
+        Date eventFromDate;
+        startChat(int seq,String title,String imageUrl,String notType,Date fromDate){
             model = new ChatRoomModel(seq,title,imageUrl);
             notificationType = notType;
+            eventFromDate = fromDate;
         }
         @Override
         public void onClick(View view) {
@@ -190,6 +198,7 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
                 getActivity().overridePendingTransition(R.anim.firstactivity_enter, R.anim.firstactivity_exit);
             }else if(notificationType == "Classroom"){
                 Intent intent = new Intent(getActivity(), in.learntech.rights.Events.MainActivity.class);
+                intent.putExtra(StringConstants.EVENT_DATE,eventFromDate);
                 startActivity(intent);
             }else {
                 executeNominateTrainingCall(model.getSeq());
