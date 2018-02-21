@@ -31,6 +31,7 @@ import static in.learntech.rights.Events.lib.CompactCalendarView.FILL_LARGE_INDI
 import static in.learntech.rights.Events.lib.CompactCalendarView.NO_FILL_LARGE_INDICATOR;
 import static in.learntech.rights.Events.lib.CompactCalendarView.SMALL_INDICATOR;
 import in.learntech.rights.R;
+import in.learntech.rights.utils.DateUtil;
 
 class CompactCalendarController {
 
@@ -355,6 +356,11 @@ class CompactCalendarController {
             setCurrentDate(calendarWithFirstDayOfMonth.getTime());
         }
         performMonthScrollCallback();
+    }
+
+    void showDirectEvent(Date eventDate){
+        setCalenderToFirstDayOfMonth(calendarWithFirstDayOfMonth, eventDate, 0, 0);
+        setCurrentDate(eventDate);
     }
 
     void setLocale(TimeZone timeZone, Locale locale) {

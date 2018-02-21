@@ -53,6 +53,7 @@ public class CompactCalendarTab extends Fragment implements IServiceHandler {
     private List<Event>rowListItem;
     private List<Event> mutableBookings;
     private EventAdapter adapter;
+    public Date directEventDate;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.main_tab,container,false);
@@ -62,8 +63,6 @@ public class CompactCalendarTab extends Fragment implements IServiceHandler {
         final Button showPreviousMonthBut = (Button) v.findViewById(R.id.prev_button);
         final Button showNextMonthBut = (Button) v.findViewById(R.id.next_button);
 
-//        final ArrayAdapter adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, mutableBookings);
-//        bookingsListView.setAdapter(adapter);
         adapter = new EventAdapter(mutableBookings, getContext());
         bookingsListView.setAdapter(adapter);
         compactCalendarView = (CompactCalendarView) v.findViewById(R.id.compactcalendar_view);
@@ -123,10 +122,15 @@ public class CompactCalendarTab extends Fragment implements IServiceHandler {
             public void onClosed() {
             }
         });
+
         return v;
     }
 
-
+    private void loadDirectEvent(){
+        if(directEventDate != null)
+        compactCalendarView.showDirectEvent(directEventDate);
+        addAllEventsByDate(directEventDate);
+    }
     private void addAllEventsByDate(Date date){
         toolbar.setTitle(dateFormatForMonth.format(date));
         List<Event> bookingsFromMap = compactCalendarView.getEvents(date);
@@ -214,6 +218,7 @@ public class CompactCalendarTab extends Fragment implements IServiceHandler {
 
                 }
                 compactCalendarView.addEvents(rowListItem);
+                loadDirectEvent();
             }
         }catch (Exception e){
             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();

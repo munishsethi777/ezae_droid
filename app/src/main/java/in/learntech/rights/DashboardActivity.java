@@ -69,6 +69,8 @@ public class DashboardActivity extends AppCompatActivity
     private TextView mUserNameView;
     private TextView mUserEmailView;
     private TextView mUserProfilesView;
+    private TextView mUserName;
+    private TextView mProfiles;
     private TextView notificationCountTextView;
     private TextView learningPlanCountTextView;
     private TextView messagesCountTextView;
@@ -124,6 +126,8 @@ public class DashboardActivity extends AppCompatActivity
         learningPlanCountTextView = (TextView)findViewById(R.id.learningPlanCount);
         messagesCountTextView = (TextView)findViewById(R.id.messagesCount);
         mUserImageView = (ImageView)hView.findViewById(R.id.imageView_user);
+        mUserName = (TextView)findViewById(R.id.textView_username_dash);
+        mProfiles = (TextView)findViewById(R.id.textView_profiles_dash);
         userImageView = (ImageView)findViewById(R.id.imageView_userImage);
         mUserNameView = (TextView)hView.findViewById(R.id.textView_userName);
         mUserEmailView = (TextView)hView.findViewById(R.id.textView_userEmail);
@@ -133,9 +137,11 @@ public class DashboardActivity extends AppCompatActivity
         mLayoutHelper.loadImageRequest(userImageView,userImageUrl,true);
         User user = mUserMgr.getLoggedInUser();
         mUserNameView.setText(user.getFullName());
+        mUserName.setText(user.getFullName());
+        mProfiles.setText(user.getProfiles());
         mUserEmailView.setText(user.getEmail());
         if(user.getProfiles() != null && user.getProfiles() != "") {
-            mUserProfilesView.setText("Profiles : " + user.getProfiles());
+            mUserProfilesView.setText(user.getProfiles());
         }
     }
 
@@ -419,6 +425,8 @@ public class DashboardActivity extends AppCompatActivity
         }else if (id == R.id.imageView_calendar) {
             Intent intent = new Intent(this, in.learntech.rights.Events.MainActivity.class);
             startActivity(intent);
+        }else if (id == R.id.imageView_logout) {
+            logout();
         }
 
     }
