@@ -29,8 +29,11 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
+import in.learntech.rights.BusinessObjects.QuestionProgress;
+import in.learntech.rights.Managers.QuestionProgressMgr;
 import in.learntech.rights.R;
 
 /**
@@ -90,6 +93,9 @@ public class LayoutHelper {
             ImageView imageView = (ImageView) moduleInternalLayout.findViewById(R.id.imageView_moduleImage);
             loadImageRequest(imageView, imageUrl, true);
             Button button_launch = (Button)moduleInternalLayout.findViewById(R.id.button_moduleLaunch);
+            ImageView imageView_launch = (ImageView) moduleInternalLayout.findViewById(R.id.imageView_launch);
+            QuestionProgressMgr qpm = QuestionProgressMgr.getInstance(mActivity);
+            JSONArray localProgress = qpm.getProgressListByModule(moduleSeq,lpSeq);
             if (progress.equals("null")) {
                 progress = "0";
             }
@@ -98,41 +104,56 @@ public class LayoutHelper {
                 if(i > 0 && lasProgress < 100){
                     button_launch.setEnabled(false);
                     button_launch.setTextColor(Color.GRAY);
+                    imageView_launch.setEnabled(false);
                 }
             }
             button_launch.setTag(R.string.lp_seq,lpSeq);
             button_launch.setTag(R.string.module_seq,moduleSeq);
+            imageView_launch.setTag(R.string.lp_seq,lpSeq);
+            imageView_launch.setTag(R.string.module_seq,moduleSeq);
             if (moduleType.equals("lesson")) {
                 circleText = "L";
             } else if (moduleType.equals("survey")) {
                 circleText = "S";
             }
 
+            TextView textView_leaderboard = (TextView) moduleInternalLayout.findViewById(R.id.textView_leaderboard);
 
+            TextView textView_rank = (TextView) moduleInternalLayout.findViewById(R.id.textView_rank);
+            textView_leaderboard.setVisibility(View.GONE);
+            textView_rank.setVisibility(View.GONE);
             int circleColorId = R.color.Red;
-            if (progressInt > 0 && progressInt < 100) {
+            if (localProgress.length() > 0 && progressInt < 100) {
                 circleColorId = R.color.Orange;
-                LinearLayout timeAllowedLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.inProgressLayout);
-                timeAllowedLayout.setVisibility(View.VISIBLE);
-                TextView textView_progress = (TextView) moduleInternalLayout.findViewById(R.id.textView_progress);
-                textView_progress.setText(progress + "%");
-                button_launch.setText("In Progress");
+                loadImage(imageView_launch,"arrow_green");
+                //LinearLayout timeAllowedLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.inProgressLayout);
+               // timeAllowedLayout.setVisibility(View.VISIBLE);
+               //TextView textView_progress = (TextView) moduleInternalLayout.findViewById(R.id.textView_progress);
+               // textView_progress.setText(progress + "%");
+               // button_launch.setText("In Progress");
+                //textView_rank.setVisibility(View.VISIBLE);
+                //textView_rank.setText(progress + "%");
+                button_launch.setText("Continue");
             }else{
                 if(timeAllowed > 0 && progressInt != 100) {
-                    LinearLayout inProgressLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.timeAllotedLayout);
-                    inProgressLayout.setVisibility(View.VISIBLE);
-                    TextView textView_timeAllowed = (TextView) moduleInternalLayout.findViewById(R.id.textView_moduleTime);
-                    textView_timeAllowed.setText(timeAllowed + " Mins");
+                   // LinearLayout inProgressLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.timeAllotedLayout);
+                   // inProgressLayout.setVisibility(View.VISIBLE);
+                   // TextView textView_timeAllowed = (TextView) moduleInternalLayout.findViewById(R.id.textView_moduleTime);
+                   // textView_timeAllowed.setText(timeAllowed + " Mins");
                 }
             }
             if (progressInt == 100) {
                 circleColorId = R.color.Green;
+                loadImage(imageView_launch,"arrow_orange");
+                button_launch.setText("Review");
+                textView_rank.setVisibility(View.VISIBLE);
                 if(moduleType.equals("quiz")) {
-                    LinearLayout completedLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.completedLayout);
-                    completedLayout.setVisibility(View.VISIBLE);
-                    TextView textView_rank = (TextView) moduleInternalLayout.findViewById(R.id.textView_rank);
+                   // LinearLayout completedLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.completedLayout);
+                    //completedLayout.setVisibility(View.VISIBLE);
+                    textView_leaderboard.setVisibility(View.VISIBLE);
                     textView_rank.setText(rank.toString());
-                    button_launch.setText("Review");
+                }else{
+                    textView_rank.setText(progress + "%");
                 }
 
             }
@@ -140,8 +161,8 @@ public class LayoutHelper {
             JSONArray earnedBadgesArr = jsonObject.getJSONArray("badges");
             if(earnedBadgesArr.length() > 0) {
                 LinearLayout badgeImageLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.layout_badgeImages);
-                TextView textView_lbl_badgeImage = (TextView) moduleInternalLayout.findViewById(R.id.textView_lbl_badges);
-                textView_lbl_badgeImage.setVisibility(View.VISIBLE);
+                //TextView textView_lbl_badgeImage = (TextView) moduleInternalLayout.findViewById(R.id.textView_lbl_badges);
+               // textView_lbl_badgeImage.setVisibility(View.VISIBLE);
                 for (int j = 0; j < earnedBadgesArr.length(); j++) {
                     JSONObject badgeJson = earnedBadgesArr.getJSONObject(j);
                     String badgeImageUrl =  badgeJson.getString("imagepath");
@@ -237,7 +258,15 @@ public class LayoutHelper {
                     .into(bg);
         }
     }
+    public void loadImage(ImageView imageView,String imageName){
+        Glide.with(mActivity).load(getImage(imageName)).into(imageView);
+    }
+    public int getImage(String imageName) {
 
+        int drawableResourceId = mActivity.getResources().getIdentifier(imageName, "drawable", mActivity.getPackageName());
+
+        return drawableResourceId;
+    }
     public static void showToast(Context context,String message){
         if(message != null && !message.equals("")){
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
