@@ -1,12 +1,17 @@
 package in.learntech.rights.Events;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.Date;
+
 import in.learntech.rights.R;
+import in.learntech.rights.utils.StringConstants;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -21,7 +26,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Intent intent = getIntent();
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null){
@@ -33,7 +38,11 @@ public class MainActivity extends ActionBarActivity {
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter =  new ViewPagerAdapter(getSupportFragmentManager(), titles, numberOfTabs);
-
+        if(intent.hasExtra(StringConstants.EVENT_DATE)) {
+            Bundle bundle = intent.getExtras();
+            Date eventDate = (Date) bundle.get(StringConstants.EVENT_DATE);
+            adapter.eventDate = eventDate;
+        }
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
