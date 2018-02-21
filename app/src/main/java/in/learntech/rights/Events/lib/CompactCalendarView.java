@@ -367,6 +367,10 @@ public class CompactCalendarView extends View {
         invalidate();
     }
 
+    public void showDirectEvent(Date eventDate){
+        compactCalendarController.showDirectEvent(eventDate);
+    }
+
     public boolean isAnimating(){
         return animationHandler.isAnimating();
     }
