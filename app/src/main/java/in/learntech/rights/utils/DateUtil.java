@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class DateUtil {
-
+    public static String format = "MMM d, y hh:mm a";
     public static Date stringToDate(String dateStr){
         SimpleDateFormat sdf =
                 new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -36,6 +36,12 @@ public class DateUtil {
 
     public static String dateToFromat(Date date){
         Format formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+        String s = formatter.format(date);
+        return s;
+    }
+
+    public static String dateToFormat(Date date,String format){
+        Format formatter = new SimpleDateFormat(format);
         String s = formatter.format(date);
         return s;
     }
