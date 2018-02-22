@@ -296,7 +296,8 @@ public class LayoutHelper {
 
     public LinearLayout getViewByType(String viewType,String value){
         LinearLayout textTypeLayout = (LinearLayout) mInflater.inflate(R.layout.edit_text, null);
-        final EditText editText = (EditText) textTypeLayout.getChildAt(1);
+        final LinearLayout linearLayout = (LinearLayout) textTypeLayout.getChildAt(0);
+        final EditText editText = (EditText) linearLayout.getChildAt(1);
         final Calendar myCalendar = Calendar.getInstance();
         if(viewType.toLowerCase().equals("date")){
             if(value != null && !value.isEmpty()){
