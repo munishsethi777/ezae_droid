@@ -1,191 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_margin="6dp"
+        android:background="@color/lp_block_backround"
+        android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/lp_block_backround"
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/imageView_moduleImage"
+                android:layout_width="60dp"
+                android:layout_height="68dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/loginsignup6_bg" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:orientation="vertical"
-            android:layout_margin="8dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="6dp"
-            android:paddingTop="6dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_weight="20">
+            <TextView
+                android:id="@+id/textView_moduleName"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/imageView_moduleImage"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="2dp"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/loginsignup6_bg" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/textView_moduleName"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:textStyle="bold"
-                        android:paddingTop="3dp"
-                        android:text="Module Title goes here. Module title goes here. Module title goes here"
-                        android:textColor="@color/DarkDarkgrey" />
-
-                    <LinearLayout
-                        android:id="@+id/timeAllotedLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/textView_moduleTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:drawablePadding="2dp"
-                            android:drawableStart="@mipmap/ic_clock_small"
-                            android:text="25 Mins" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Time Alloted"
-                            android:textAlignment="center"
-                            android:textSize="10dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/inProgressLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/textView_progress"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:drawablePadding="2dp"
-                            android:drawableStart="@mipmap/ic_bar_chart"
-                            android:text="25 %" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Completed"
-                            android:textAlignment="center"
-                            android:textSize="10dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/completedLayout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/textView_rank"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:drawablePadding="3dp"
-                            android:drawableStart="@mipmap/ic_gift"
-                            android:text="25" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Leaderboard"
-                            android:textSize="10dp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:text="Module Title" />
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/textView_moduleScore"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:drawableLeft="@mipmap/ic_gamepad"
-                    android:drawablePadding="3dp"
-                    android:text="456"
-                    android:textColor="@color/Darkgrey"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/textView_modulePoint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:drawableLeft="@mipmap/ic_bar_chart"
-                    android:drawablePadding="3dp"
-                    android:text="35%"
-                    android:textColor="@color/Darkgrey"
-                    android:textSize="14sp" />
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content">
                 <LinearLayout
-                    android:id="@+id/layout_badgeImages"
-                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
+                    android:orientation="vertical"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:id="@+id/textView_lbl_badges"
+                        android:id="@+id/textView_score_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Badges:"
-                        android:visibility="gone"
-                        android:textColor="@color/Darkgrey"
-                        android:textSize="14sp" />
+                        android:textSize="13sp"
+                        android:layout_marginLeft="5dp"
+                        android:text="Score" />
+                    <TextView
+                        android:id="@+id/textView_moduleScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:layout_marginLeft="4dp"
+                        android:text="0" />
                 </LinearLayout>
-
-                <Button
-                    android:id="@+id/button_moduleLaunch"
-                    style="@style/ButtonGray"
-                    android:layout_width="match_parent"
-                    android:layout_height="18dp"
-                    android:layout_weight="3"
-                    android:background="@android:color/transparent"
-                    android:drawablePadding="5dp"
-                    android:drawableRight="@mipmap/ic_rocket"
-                    android:gravity="right|bottom"
-                    android:onClick="onClick"
-                    android:text="Launch"
-                    android:textAllCaps="false"
-                    android:textColor="@color/BlueMain"
-                    android:textSize="14sp" />
-
-
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/textView_points_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:layout_marginLeft="5dp"
+                        android:text="Points" />
+                    <TextView
+                        android:id="@+id/textView_modulePoint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:layout_marginLeft="4dp"
+                        android:text="0" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/layout_badgeImages"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_height="wrap_content">
+                </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="right"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+            <TextView
+                android:id="@+id/textView_rank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:layout_gravity="center"
+                android:text="1" />
+            <TextView
+                android:id="@+id/textView_leaderboard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:layout_gravity="center"
+                android:text="Leaderboard" />
+            <ImageView
+                android:id="@+id/imageView_launch"
+                android:layout_gravity="center"
+                android:onClick="onClick"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/arrow_up"/>
+            <Button
+                android:id="@+id/button_moduleLaunch"
+                style="@style/ButtonGray"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:onClick="onClick"
+                android:text="Launch"
+                android:textColor="@color/BlueMain"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
