@@ -1,14 +1,17 @@
 package in.learntech.rights;
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +27,7 @@ import in.learntech.rights.Chatroom.ChatRoomModel;
 import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
 import in.learntech.rights.utils.DateUtil;
+import in.learntech.rights.utils.LayoutHelper;
 import in.learntech.rights.utils.StringConstants;
 
 
@@ -51,6 +55,7 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
     private LinearLayout mChildItemsLayout;
     private LinearLayout mNotesLayout;
     private LayoutInflater mInflater;
+    private LayoutHelper layoutHelper;
     private ViewGroup mContainer;
     private OnFragmentInteractionListener mListener;
     private String mCallName;
@@ -83,7 +88,7 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
             mUserSeq = getArguments().getInt(ARG_USER_SEQ);
             mCompanySeq = getArguments().getInt(ARG_COMPANY_SEQ);
         }
-
+        layoutHelper =  new LayoutHelper(getActivity());
     }
 
     @Override
@@ -131,7 +136,8 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
             if(success){
                 if (mCallName != null && mCallName.equals(NOMINATE_TRAINING)) {
                     Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                    executeGetNotificationCall();
+                    getActivity().finish();
+                    startActivity(getActivity().getIntent());
                 }else {
                     JSONArray notificationJsonArr = response.getJSONArray("notifications");
                     for (int i = 0; i < notificationJsonArr.length(); i++) {
@@ -146,9 +152,14 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
                         from = DateUtil.dateToFormat(fromDate,DateUtil.format);
                         notificationTitle  += "\n on " + from;
                         String buttonTitle = "Nominate";
+                        LinearLayout childLayout = (LinearLayout) mInflater.inflate(R.layout.notifications_child_items, mContainer, false);
+                        TextView textView_nominated = (TextView)childLayout.findViewById(R.id.textView_nominated);
+                        ImageView imageView_notification = (ImageView)childLayout.findViewById(R.id.imageView_notifications);
                         if (type.equals(CURRENTLY_ACTIVE_EVENT)) {
                             if (eventType.equals("chatroom")) {
                                 buttonTitle = "Chatroom";
+                                layoutHelper.loadImage(imageView_notification,"icons8_communication_60");
+
                             } else if (eventType.equals("classroom")) {
                                 buttonTitle = "Classroom";
                             }
@@ -157,14 +168,18 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
                                 buttonTitle = "Nominated" ;
                             }
                         }
-                        LinearLayout childLayout = (LinearLayout) mInflater.inflate(R.layout.notifications_child_items, mContainer, false);
+
+                        textView_nominated.setText(buttonTitle);
+                        textView_nominated.setVisibility(View.VISIBLE);
                         TextView textView = (TextView) childLayout.findViewById(R.id.notification_title);
                         textView.setText(notificationTitle);
                         Button button = (Button) childLayout.findViewById(R.id.notification_button);
+                        ImageView imageView_button = (ImageView)childLayout.findViewById(R.id.imageView_chatroom);
                         button.setText(buttonTitle);
-                        if(!buttonTitle.equals("Nominated")){
+                        //if(!buttonTitle.equals("Nominated")){
                             button.setOnClickListener(new startChat(seq, notificationTitle, null, buttonTitle,fromDate));
-                        }
+                            imageView_button.setOnClickListener(new startChat(seq, notificationTitle, null, buttonTitle,fromDate));
+                        //}
                         textView.setText(notificationTitle);
                         mNotesLayout.addView(childLayout);
                     }
@@ -200,8 +215,11 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
                 Intent intent = new Intent(getActivity(), in.learntech.rights.Events.MainActivity.class);
                 intent.putExtra(StringConstants.EVENT_DATE,eventFromDate);
                 startActivity(intent);
-            }else {
-                executeNominateTrainingCall(model.getSeq());
+            }else if(notificationType == "Nominated"){
+                Toast.makeText(getActivity(),"Training Already Nomintated",Toast.LENGTH_LONG).show();
+            }
+            else {
+                nominateTraining(model.getSeq());
             }
         }
     }
@@ -211,6 +229,27 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
     public void setCallName(String call) {
         mCallName = call;
     }
+
+
+    public void nominateTraining(final int trainingSeq) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Nominate Training");
+        builder.setMessage("Do you really want to Nominate for this Training?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                executeNominateTrainingCall(trainingSeq);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
 
     private void executeNominateTrainingCall(int trainingSeq){
         Object[] args = {mUserSeq,mCompanySeq,trainingSeq,0};
