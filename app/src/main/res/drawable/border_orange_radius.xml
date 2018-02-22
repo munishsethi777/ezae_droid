@@ -6,7 +6,7 @@
         android:bottom="0dp">
 
         <shape android:shape="rectangle">
-            <corners android:radius="5dp" />
+            <corners android:radius="10dp" />
             <solid android:color="@color/lp_block_backround"/>
             <stroke
                 android:width="2dp"
