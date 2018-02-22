@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.CardView;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -50,6 +51,11 @@ public class LayoutHelper {
         mContainer = container;
 
     }
+
+    public LayoutHelper(Activity activity){
+        mActivity = activity;
+    }
+
     public void jsonToModuleLayout(JSONArray modulesJsonArr, boolean isLockSequence,LinearLayout mParentLayout) throws Exception {
         int moduleCardMargins = 10;
         int count = modulesJsonArr.length();
@@ -89,7 +95,7 @@ public class LayoutHelper {
             String imageUrl = StringConstants.IMAGE_URL + "modules/" + moduleImage;
             LinearLayout moduleInternalLayout = (LinearLayout)
                     mInflater.inflate(R.layout.my_training_module_fragment, mContainer, false);
-
+            LinearLayout moduleLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.module_block);
             ImageView imageView = (ImageView) moduleInternalLayout.findViewById(R.id.imageView_moduleImage);
             loadImageRequest(imageView, imageUrl, true);
             Button button_launch = (Button)moduleInternalLayout.findViewById(R.id.button_moduleLaunch);
@@ -120,13 +126,15 @@ public class LayoutHelper {
             TextView textView_leaderboard = (TextView) moduleInternalLayout.findViewById(R.id.textView_leaderboard);
 
             TextView textView_rank = (TextView) moduleInternalLayout.findViewById(R.id.textView_rank);
-            textView_leaderboard.setVisibility(View.GONE);
-            textView_rank.setVisibility(View.GONE);
+            textView_leaderboard.setVisibility(View.INVISIBLE);
+            textView_rank.setVisibility(View.INVISIBLE);
             int circleColorId = R.color.Red;
+            int backroundDrawable = R.drawable.border_shape_blue;
             if (localProgress.length() > 0 && progressInt < 100) {
                 circleColorId = R.color.Orange;
                 loadImage(imageView_launch,"arrow_green");
-                //LinearLayout timeAllowedLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.inProgressLayout);
+                backroundDrawable = R.drawable.border_shape_green;
+                 //LinearLayout timeAllowedLayout = (LinearLayout) moduleInternalLayout.findViewById(R.id.inProgressLayout);
                // timeAllowedLayout.setVisibility(View.VISIBLE);
                //TextView textView_progress = (TextView) moduleInternalLayout.findViewById(R.id.textView_progress);
                // textView_progress.setText(progress + "%");
@@ -145,6 +153,7 @@ public class LayoutHelper {
             if (progressInt == 100) {
                 circleColorId = R.color.Green;
                 loadImage(imageView_launch,"arrow_orange");
+                backroundDrawable = R.drawable.border_shape_orange;
                 button_launch.setText("Review");
                 textView_rank.setVisibility(View.VISIBLE);
                 if(moduleType.equals("quiz")) {
@@ -157,6 +166,7 @@ public class LayoutHelper {
                 }
 
             }
+            moduleLayout.setBackground(ResourcesCompat.getDrawable(mActivity.getResources(), backroundDrawable, null));
             //Allotted Badges
             JSONArray earnedBadgesArr = jsonObject.getJSONArray("badges");
             if(earnedBadgesArr.length() > 0) {
