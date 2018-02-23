@@ -23,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -90,9 +92,13 @@ public class UpdateProfileActivity extends AppCompatActivity implements IService
         boolean cancel = false;
         View focusView = null;
         try{
-            for (int i = 2; i < count; i++) {
+            for (int i = 1; i < count; i++) {
                 ViewGroup parent = (ViewGroup) mProfileLayout.getChildAt(i);
-                View view = parent.getChildAt(1);
+                LinearLayout linearLayout = (LinearLayout) parent.getChildAt(0);
+                if(linearLayout == null){
+                    continue;
+                }
+                View view = linearLayout.getChildAt(1);
                 if (view instanceof EditText) {
                     EditText editText = (EditText)view;
                     JSONObject args = (JSONObject) view.getTag();
@@ -118,7 +124,9 @@ public class UpdateProfileActivity extends AppCompatActivity implements IService
                 String notificationUrl = MessageFormat.format(StringConstants.UPDATE_USER_PROFILE, args);
                 mAuthTask = new ServiceHandler(notificationUrl, this, UPDATE_USER_PROFILE, this);
                 mAuthTask.setFileUploadRequest(true);
-                Bitmap bitmap = ((BitmapDrawable)mUserImageView.getDrawable()).getBitmap();
+                BitmapDrawable drawable = (BitmapDrawable) mUserImageView.getDrawable();
+                Bitmap bitmap = drawable.getBitmap();
+                //Bitmap bitmap = ((BitmapDrawable)mUserImageView.getDrawable()).getBitmap();
                 mAuthTask.setBitmap(bitmap);
                 mAuthTask.execute();
             }
@@ -165,7 +173,8 @@ public class UpdateProfileActivity extends AppCompatActivity implements IService
             String fieldType = customField.getString("fieldType");
             String fieldValue = customField.getString("fieldValue");
             int required = customField.getInt("isRequired");
-            LinearLayout linearLayout = mLayoutHelper.getViewByType(fieldType,fieldValue);
+            LinearLayout parentLinearLayout = mLayoutHelper.getViewByType(fieldType,fieldValue);
+            LinearLayout linearLayout = (LinearLayout) parentLinearLayout.getChildAt(0);
             TextView labelTextView = (TextView) linearLayout.getChildAt(0);
             labelTextView.setText(fieldTitle);
             mView = (EditText)linearLayout.getChildAt(1);
@@ -177,7 +186,7 @@ public class UpdateProfileActivity extends AppCompatActivity implements IService
             args.put("required",required);
             mView.setTag(args);
             mView.setHint(fieldTitle);
-            mProfileLayout.addView(linearLayout);
+            mProfileLayout.addView(parentLinearLayout);
         }
     }
 
