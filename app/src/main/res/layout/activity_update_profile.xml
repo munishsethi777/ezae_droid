@@ -65,43 +65,44 @@
 						android:clickable="true"
 						android:onClick="onClick"
 						app:srcCompat="@drawable/ic_edit"
-						android:background="@color/right_orange"
+						android:background="@color/right_profile"
 						android:layout_gravity="center"/>
 
 
 						<LinearLayout
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:background="@color/lp_block_backround"
 							android:id="@+id/layout_updateProfile"
 							android:layout_marginBottom="@dimen/activity_vertical_margin"
 							android:layout_marginLeft="@dimen/activity_horizontal_margin"
 							android:layout_marginRight="@dimen/activity_horizontal_margin"
 							android:layout_marginTop="30dp"
 							android:orientation="vertical">
-
-							<TextView
-								android:id="@+id/txtForgotPassword"
-								android:layout_width="wrap_content"
-								android:layout_height="wrap_content"
-								android:paddingLeft="12dp"
-								android:paddingTop="6dp"
-								android:text="Email"
-								android:textColor="@color/loginSignup11text" />
-							<EditText
-								android:id="@+id/editText_email"
-								style="@style/LoginSignUp2Input"
-								android:hint="Email" />
-							<RelativeLayout
+							<LinearLayout
 								android:layout_width="match_parent"
-								android:layout_height="wrap_content"
-								android:layout_margin="@dimen/activity_horizontal_margin">
-							</RelativeLayout>
+								android:orientation="vertical"
+								android:background="@drawable/border_green_right"
+								android:layout_height="wrap_content">
+								<TextView
+									android:id="@+id/txtForgotPassword"
+									android:layout_width="wrap_content"
+									android:layout_height="wrap_content"
+									android:paddingLeft="12dp"
+									android:paddingTop="6dp"
+									android:text="Email"
+									android:textColor="@color/loginSignup11text" />
+								<EditText
+									android:id="@+id/editText_email"
+									style="@style/LoginSignUp2Input"
+									android:hint="Email" />
+
+							</LinearLayout>
+
 						</LinearLayout>
 
 					<Button
 						android:id="@+id/button_updateProfile"
-						style="@style/ButtonOrange"
+						style="@style/ButtonLightGreen"
 						android:layout_width="match_parent"
 						android:layout_height="46dp"
 						android:layout_below="@+id/inputCont"
