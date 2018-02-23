@@ -262,8 +262,8 @@ public class LayoutHelper {
         }else{
             Glide.with(mActivity)
                     .load(url)
+                    .asBitmap()
                     .thumbnail(0.01f)
-                    .crossFade()
                     .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
                     .into(bg);
         }
