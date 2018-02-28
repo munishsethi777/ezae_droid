@@ -30,7 +30,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/lp_block_backround"
+                android:background="@color/dashboard_top_darker_backround"
                 android:orientation="vertical"
                 android:padding="10dp">
 
@@ -90,6 +90,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="Baljeet Gaheer"
+                        android:textColor="@color/black"
                         android:textSize="18sp" />
 
                     <TextView
@@ -97,6 +98,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:textColor="@color/black"
                         android:text="My Profile, Beginners profile" />
                 </LinearLayout>
 

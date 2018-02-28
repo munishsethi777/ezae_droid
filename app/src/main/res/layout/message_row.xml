@@ -55,6 +55,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginTop="4dp"
+                            android:textColor="@color/black"
                             android:text="Tony Ramirez"
                             android:textStyle="bold" />
                         <TextView
@@ -83,6 +84,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
                             android:layout_marginTop="-2dp"
+                            android:textColor="@color/DarkDarkgrey"
                             android:text="Test value" />
                         <ImageView
                             android:id="@+id/check"

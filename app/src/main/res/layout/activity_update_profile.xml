@@ -4,18 +4,20 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:background="@drawable/login_back_bw_lighter"
 	tools:context="in.learntech.rights.ChangePasswordActivity">
 	<android.support.design.widget.AppBarLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:theme="@style/AppTheme.AppBarOverlay"
-		android:background="@color/White">
+		android:background="#00000000">
 
 		<android.support.v7.widget.Toolbar
 			android:id="@+id/toolbar"
 			android:layout_width="match_parent"
 			android:layout_height="?attr/actionBarSize"
-			android:background="@color/right_profile"
+			android:background="@color/right_profile_topbar"
+			android:titleTextColor="@color/black"
 			app:popupTheme="@style/AppTheme.PopupOverlay" />
 
 	</android.support.design.widget.AppBarLayout>
@@ -24,7 +26,7 @@
 		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:background="@drawable/login_back_bw_lighter"
+
 		app:layout_behavior="@string/appbar_scrolling_view_behavior"
 		tools:context="in.learntech.rights.ChangePasswordActivity">
 
@@ -52,11 +54,11 @@
 					<ImageView
 						android:id="@+id/imageView_user"
 						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
+						android:layout_height="150dp"
 						android:layout_gravity="center"
 						android:layout_marginTop="10dp"
 						android:clickable="true"
-						android:src="@mipmap/loginsignup6_bg" />
+						android:src="@mipmap/ic_profile" />
 
 					<ImageButton
 						android:id="@+id/upload_imageButton"

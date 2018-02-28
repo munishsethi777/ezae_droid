@@ -33,7 +33,7 @@
 
     <!--style 2-->
     <color name="LoginSignup2colorAccent">#fe5824</color>
-    <color name="loginSignup2InputBg">#f1f5f8</color>
+    <color name="loginSignup2InputBg">#ffffff</color>
 
     <!--style 3-->
     <color name="loginSignup3colorPrimary">#fe5824</color>
@@ -1484,11 +1484,16 @@
     <color name="BlueMain">#CC2892e2</color>
     <color name="OrangeMain">#ff9100</color>
     <color name="white_transparent">#CCffffff</color>
-    <color name="bg_relative">#E6FFFFFF</color>
+    <color name="bg_relative">#c2ffffff</color>
     <color name="black">#000</color>
     <color name="dark_red">#B71C1C</color>
     <color name="lp_color">#6E8F82</color>
     <color name="lp_block_backround">#aaffffff</color>
+
+    <color name="dashboard_top_darker_backround">#38000000</color>
+
+
+
 
     <color name="right_orange">#CCe77c22</color>
     <color name="right_learnings">#e16E8F82</color>
@@ -1497,4 +1502,14 @@
     <color name="right_chatroom">#e1D1A36A</color>
     <color name="right_profile">#e180A684</color>
     <color name="right_notifications">#e1AB404B</color>
+
+    <color name="right_orange_topbar">#94e77c22</color>
+    <color name="right_notifications_topbar">#94AB404B</color>
+    <color name="right_achievement_topbar">#94466ea5</color>
+    <color name="right_learnings_topbar">#946E8F82</color>
+    <color name="right_notes_topbar">#946390C6</color>
+    <color name="right_chatroom_topbar">#94D1A36A</color>
+    <color name="right_profile_topbar">#9480a684</color>
+    <color name="right_changepas_topbar">#94FF6633</color>
+
 </resources>
