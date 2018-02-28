@@ -1,5 +1,6 @@
 package in.learntech.rights.messages;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,6 +27,7 @@ import in.learntech.rights.R;
 import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
 import in.learntech.rights.utils.ImageViewCircleTransform;
+import in.learntech.rights.utils.PreferencesUtil;
 import in.learntech.rights.utils.StringConstants;
 
 import java.net.URLEncoder;
@@ -35,6 +38,7 @@ import java.util.logging.LogRecord;
 
 public class MessageChatActivity extends AppCompatActivity implements View.OnClickListener,
                                     MessageClickListener,IServiceHandler {
+
 
     private static String GET_MESSAGE_DETAILS = "getMessageDetails";
     private static String SEND_MESSAGE_CHAT = "sendMessageChat";
@@ -48,7 +52,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
     MessageChatAdapter rcAdapter;
     RecyclerView rView;
     Thread refreshThread;
-
+    private PreferencesUtil mPrefUtil;
     @Override
     protected void onStop() {
         super.onStop();
@@ -58,6 +62,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        clearReferences();
         refreshThread.interrupt();
     }
 
@@ -65,6 +70,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_chat);
+        mPrefUtil = PreferencesUtil.getInstance(this);
         mMessageModel = (MessageModel)getIntent().getExtras().getSerializable("messageModel");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -104,6 +110,23 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
         executeGetMessageDetailsCall();
         refreshChatUI();
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPrefUtil.setCurrentActivityName(StringConstants.MESSAGE_CHAT_ACTIVITY);
+    }
+
+    @Override
+    protected void onPause() {
+        clearReferences();
+        super.onPause();
+    }
+
+    private void clearReferences(){
+        String currentActivityName = mPrefUtil.getCurrentActivityName();
+        if (StringConstants.MESSAGE_CHAT_ACTIVITY.equals(currentActivityName))
+            mPrefUtil.setCurrentActivityName(null);
+    }
 
     private void refreshChatUI(){
         refreshThread = new Thread() {
@@ -135,6 +158,22 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                Intent intent = new Intent(this, MessageActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -204,7 +243,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
                 String dated = jsonObject.getString("dated");
                 String messagetext = jsonObject.getString("messagetext");
                 int fromUserSeq = 0;
-                if (jsonObject.getString("fromuserseq") != null) {
+                if (jsonObject.getString("fromuserseq") != null && jsonObject.getString("fromuserseq") != "null") {
                     fromUserSeq = jsonObject.getInt("fromuserseq");
                 }
                 boolean isSent = false;
@@ -227,7 +266,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
                 rView.smoothScrollToPosition(rowListItem.size() - 1);
             }
         }catch(Exception e) {
-
+                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
 

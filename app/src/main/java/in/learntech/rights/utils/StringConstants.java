@@ -13,7 +13,10 @@ public class StringConstants {
     public static final String NOTIFICATION_STATE = "notificationState";
     public static final String NOTIFICATION_ENTITY_SEQ = "notificationEntitySeq";
     public static final String NOTIFICATION_ENTITY_TYPE = "notificationEntityType";
+    public static final String FROM_USER_NAME = "fromUserName";
     public static final String LOGGED_IN_USER_COMPANY_SEQ = "loggedInUserCompanySeq";
+    public static final String CURRENT_ACTIVITY_NAME = "currentActivityName";
+    public static final String MESSAGE_CHAT_ACTIVITY = "MessageChatActivity";
     public static  final String VERSION = "versionCode";
     public static final String SHORTCUT = "SHORTCUT";
     public static final String SUCCESS = "success";
@@ -23,6 +26,7 @@ public class StringConstants {
     public static final String USER_DUMMY_IMAGE_NAME = "dummy.jpg";
     public static final String NOTE_SEQ = "noteSeq";
     public static final String EVENT_DATE = "eventDate";
+    public static final String DATA_STRING = "dataString";
 
     //API URL STRINGS
     public static final String ACTION_API_URL = "http://www.ezae.in/Actions/Mobile/";

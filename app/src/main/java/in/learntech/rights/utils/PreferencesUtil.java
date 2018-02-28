@@ -1,8 +1,12 @@
 package in.learntech.rights.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Objects;
 
@@ -96,18 +100,37 @@ public class PreferencesUtil {
     public void setNotificationState(boolean state){
         setPreferencesBool(StringConstants.NOTIFICATION_STATE, true);
     }
-     public void setNotificationData(String entitySeq,String entityType){
-        setPreferences(StringConstants.NOTIFICATION_ENTITY_SEQ, entitySeq);
-        setPreferences(StringConstants.NOTIFICATION_ENTITY_TYPE, entityType);
+     public void setNotificationData(String entitySeq,String entityType,String fromUserName) {
+         setPreferences(StringConstants.NOTIFICATION_ENTITY_SEQ, entitySeq);
+         setPreferences(StringConstants.NOTIFICATION_ENTITY_TYPE, entityType);
+         setPreferences(StringConstants.FROM_USER_NAME, fromUserName);
      }
+    public void setNotificationData(JSONObject jsonObject){
+        try {
+            Integer entitySeq = jsonObject.getInt("entitySeq");
+            String entityType = jsonObject.getString("entityType");
+            String fromUserName = "";
+            if(jsonObject.has("fromUserName")){
+                fromUserName = jsonObject.getString("fromUserName");
+            }
+            setPreferences(StringConstants.NOTIFICATION_ENTITY_SEQ, entitySeq.toString());
+            setPreferences(StringConstants.NOTIFICATION_ENTITY_TYPE, entityType);
+            setPreferences(StringConstants.FROM_USER_NAME, fromUserName);
+        }catch (JSONException e){
+
+        }
+
+    }
 
     public Object[] getNotificationData(){
         SharedPreferences prefs = mContext.getSharedPreferences(StringConstants.PREFS_NAME, mContext.MODE_PRIVATE);
         String entitySeq = prefs.getString(StringConstants.NOTIFICATION_ENTITY_SEQ, null);//"No name defined" is the default value.
         String  entityType = prefs.getString(StringConstants.NOTIFICATION_ENTITY_TYPE,null);
+        String  fromUserName = prefs.getString(StringConstants.FROM_USER_NAME,null);
         Object notificationData[] = new String[2];
         notificationData[0] = entitySeq;
         notificationData[1] = entityType;
+        notificationData[2] = fromUserName;
         return notificationData;
     }
 
@@ -117,6 +140,14 @@ public class PreferencesUtil {
         removePreferences(StringConstants.NOTIFICATION_ENTITY_TYPE);
     }
 
+    public void setCurrentActivityName(String activityName){
+        setPreferences(StringConstants.CURRENT_ACTIVITY_NAME, activityName);
+    }
+
+    public String getCurrentActivityName(){
+        String value = getPreferences(StringConstants.CURRENT_ACTIVITY_NAME);
+        return value;
+    }
 
     public void setVersion(int version){
         setPreferences(StringConstants.VERSION,String.valueOf(version));

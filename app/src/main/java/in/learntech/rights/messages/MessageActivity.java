@@ -8,13 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.tubb.smrv.SwipeMenuRecyclerView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import in.learntech.rights.DashboardActivity;
 import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.MyTrainings;
 import in.learntech.rights.R;
@@ -40,12 +43,12 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     private ItemTouchHelper mItemTouchHelper;
     private SwipeMenuRecyclerView rView;
     private MessageAdapter messageAdapter;
-
+    private Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_message);
+        intent = getIntent();
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null){
@@ -68,6 +71,16 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         messageAdapter.setClickListener(this);
 
         executeGetMessagesCall();
+        Intent intent = getIntent();
+        if(intent.hasExtra(StringConstants.DATA_STRING)){
+            String dataJsonString = intent.getExtras().getString(StringConstants.DATA_STRING);
+            try {
+                JSONObject dataJson = new JSONObject(dataJsonString);
+                openDirectMessage(dataJson);
+
+            }catch (JSONException ex){}
+
+        }
     }
 
     @Override
@@ -87,6 +100,20 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         int pos = position + 1;
         //Toast.makeText(this, "Position " + pos + " clicked!", Toast.LENGTH_SHORT).show();
         MessageModel mm = rowListItem.get(position);
+        Intent messageChatActivity = new Intent(this,MessageChatActivity.class);
+        messageChatActivity.putExtra("messageModel",mm);
+        startActivity(messageChatActivity);
+        overridePendingTransition(R.anim.firstactivity_enter, R.anim.firstactivity_exit);
+    }
+
+    private  void openDirectMessage(JSONObject dataJson) throws JSONException{
+        Integer entitySeq = dataJson.getInt("entitySeq");
+        String entityType = dataJson.getString("entityType");
+        String fromUserName = dataJson.getString("fromUserName");
+        MessageModel mm = new MessageModel();
+        mm.setChattingUser(fromUserName);
+        mm.setChattingUserSeq(entitySeq);
+        mm.setChattingUserType(entityType);
         Intent messageChatActivity = new Intent(this,MessageChatActivity.class);
         messageChatActivity.putExtra("messageModel",mm);
         startActivity(messageChatActivity);
@@ -135,7 +162,21 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
             //Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
         }
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                Intent intent = new Intent(this, DashboardActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     @Override
     public void setCallName(String call) {
         mCallName = call;

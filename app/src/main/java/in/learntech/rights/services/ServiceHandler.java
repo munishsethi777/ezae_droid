@@ -55,6 +55,7 @@ public class ServiceHandler extends AsyncTask<Void, Void, JSONObject>{
         isShowProgress = true;
         initProgressDialog();
     }
+
     public void setFileUploadRequest(Boolean isFileUploadRequest){
         this.isFileUploadRequest = isFileUploadRequest;
     }
@@ -149,10 +150,10 @@ public class ServiceHandler extends AsyncTask<Void, Void, JSONObject>{
     }
 
     private void initProgressDialog() {
-            mProgressDialog = new ProgressDialog(mActivity);
-            mProgressDialog.setIndeterminate(true);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setMessage("Wait...");
+        mProgressDialog = new ProgressDialog(mActivity);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setMessage("Wait...");
     }
 
 
