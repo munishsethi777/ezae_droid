@@ -82,6 +82,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".messages.MessageChatActivity"
+            android:parentActivityName=".messages.MessageActivity"
             android:configChanges="orientation|screenSize"
             android:label="MessageChatActivity"
             android:theme="@style/AppTheme">

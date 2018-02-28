@@ -1,5 +1,7 @@
 package in.learntech.rights.BroadcastReceiver;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -18,6 +20,7 @@ import android.view.View;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.List;
 
 import in.learntech.rights.DashboardActivity;
 import in.learntech.rights.LoginActivity;
@@ -25,6 +28,9 @@ import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.MyAchievements;
 import in.learntech.rights.R;
 import in.learntech.rights.UserTrainingActivity;
+import in.learntech.rights.messages.MessageActivity;
+import in.learntech.rights.messages.MessageChatActivity;
+import in.learntech.rights.messages.MessageModel;
 import in.learntech.rights.utils.PreferencesUtil;
 import in.learntech.rights.utils.StringConstants;
 
@@ -38,7 +44,11 @@ public class GcmIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
+        PreferencesUtil preferencesUtil = PreferencesUtil.getInstance(getApplicationContext());
+        String currentActivity = preferencesUtil.getCurrentActivityName();
+        if(currentActivity != null && currentActivity.equals(StringConstants.MESSAGE_CHAT_ACTIVITY)){
+            return;
+        }
         mNotificationManager = (NotificationManager)
             this.getSystemService(Context.NOTIFICATION_SERVICE);
         String jsonString = intent.getExtras().getString("message");
@@ -54,16 +64,23 @@ public class GcmIntentService extends IntentService {
             String entityType = jsonObject.getString("entityType");
             UserMgr mUserManager = UserMgr.getInstance(getApplicationContext());
             if(!mUserManager.isUserLoggedIn()){
-                PreferencesUtil preferencesUtil = PreferencesUtil.getInstance(getApplicationContext());
                 preferencesUtil.setNotificationState(true);
-                preferencesUtil.setNotificationData(entitySeq.toString(),entityType);
+                preferencesUtil.setNotificationData(jsonObject);
             }else{
                 if(entityType.equals("module")){
                     newIntent = new Intent(this,UserTrainingActivity.class);
                     newIntent.putExtra(StringConstants.LP_SEQ,0);
                     newIntent.putExtra(StringConstants.MODULE_SEQ,entitySeq);
-                }else{
+                }else if(entityType.equals("badge")){
                     newIntent = new Intent(this,MyAchievements.class);
+                }else{
+                    newIntent = new Intent(this,MessageChatActivity.class);
+                    String fromUserName = jsonObject.getString("fromUserName");
+                    MessageModel mm = new MessageModel();
+                    mm.setChattingUser(fromUserName);
+                    mm.setChattingUserSeq(entitySeq);
+                    mm.setChattingUserType(entityType);
+                    newIntent.putExtra("messageModel",mm);
                 }
             }
         }catch (Exception e){

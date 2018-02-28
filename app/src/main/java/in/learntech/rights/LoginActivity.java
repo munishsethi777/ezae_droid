@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.text.MessageFormat;
 
 import in.learntech.rights.Managers.UserMgr;
+import in.learntech.rights.messages.MessageChatActivity;
+import in.learntech.rights.messages.MessageModel;
 import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
 import in.learntech.rights.utils.LayoutHelper;
@@ -241,6 +243,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 intent.putExtra(StringConstants.MODULE_SEQ,entitySeq);
             }else if(entityType.equals("badge")){
                 intent = new Intent(this,MyAchievements.class);
+            }else{
+                intent = new Intent(this,MessageChatActivity.class);
+                String fromUserName = data[2].toString();
+                MessageModel mm = new MessageModel();
+                mm.setChattingUser(fromUserName);
+                mm.setChattingUserSeq(entitySeq);
+                mm.setChattingUserType(entityType);
+                intent.putExtra("messageModel",mm);
             }
             mPreferencesUtil.resetNotificationData();
         }
