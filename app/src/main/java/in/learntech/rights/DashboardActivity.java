@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -42,9 +43,10 @@ import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
 import in.learntech.rights.utils.LayoutHelper;
 import in.learntech.rights.utils.StringConstants;
+import in.learntech.rights.utils.sorting.MySwipeRefreshLayout;
 
 public class DashboardActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,IServiceHandler,View.OnClickListener , LeaderBoardFragment.OnListFragmentInteractionListener {
+        implements SwipeRefreshLayout.OnRefreshListener,NavigationView.OnNavigationItemSelectedListener,IServiceHandler,View.OnClickListener , LeaderBoardFragment.OnListFragmentInteractionListener {
     private static final String SUCCESS = "success";
     private static final String DASHBOARD_DATA = "dashboardData";
     private static final String DASHBOARD_COUNTS = "dashboardCounts";
@@ -78,6 +80,7 @@ public class DashboardActivity extends AppCompatActivity
     private LinearLayout mMenuHeaderLayout;
     private LayoutHelper mLayoutHelper;
     private CompanyUserManager mCompanyUserMgr;
+    private SwipeRefreshLayout swipeLayout;
     private Spinner mSpinner;
 
     @Override
@@ -102,10 +105,11 @@ public class DashboardActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         mLayoutHelper = new LayoutHelper(this,null,null);
         initViews();
-        executeCalls();
-        android.app.Fragment fragment = NotificationsFragment.newInstance(mLoggedInUserSeq,mLoggedInCompanySeq);
+        executeCalls(true);
+        //android.app.Fragment fragment = NotificationsFragment.newInstance(mLoggedInUserSeq,mLoggedInCompanySeq);
         //getFragmentManager().beginTransaction().replace(R.id.layout_notifications,fragment).commit();
-
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(this);
     }
 
     protected void setFragment(Fragment fragment) {
@@ -145,28 +149,35 @@ public class DashboardActivity extends AppCompatActivity
         }
     }
 
-    private void executeCalls(){
+    /**
+     * Called when a swipe gesture triggers a refresh.
+     */
+    @Override
+    public void onRefresh() {
+        executeCalls(false);
+    }
+
+    private void executeCalls(boolean isShowProgress){
         int loggedInUserSeq = mUserMgr.getLoggedInUserSeq();
         int loggedInUserCompanySeq = mUserMgr.getLoggedInUserCompanySeq();
         Object[] args = {loggedInUserSeq,loggedInUserCompanySeq};
         String dashboardCountUrl = MessageFormat.format(StringConstants.GET_DASHBOARD_COUNTS,args);
         String getCountsUrl = MessageFormat.format(StringConstants.GET_COUNTS,args);
         String syncUsersUrl = MessageFormat.format(StringConstants.SYNCH_USERS,args);
-        String learningPlanUrl = MessageFormat.format(StringConstants.GET_LEARNING_PLANS,args);
-        String getProfilesAndModulesUrl = MessageFormat.format(StringConstants.GET_PROFILE_AND_MODULES,args);
+
         mAuthTask = new ServiceHandler(dashboardCountUrl,this, GET_DASHBOARD_COUNT,this);
+        mAuthTask.setShowProgress(isShowProgress);
         mAuthTask.execute();
+
         mAuthTask = new ServiceHandler(getCountsUrl,this, GET_COUNTS,this);
+        mAuthTask.setShowProgress(isShowProgress);
         mAuthTask.execute();
-        mAuthTask = new ServiceHandler(learningPlanUrl,this, GET_LEARNING_PLANS,this);
-        mAuthTask.execute();
+
         //SYNC USERS
         mAuthTask = new ServiceHandler(syncUsersUrl,this, SYNC_USERS,this);
         mAuthTask.setShowProgress(false);
         mAuthTask.execute();
-        //Get Profiles and Modules for leaderboard
-        mAuthTask = new ServiceHandler(getProfilesAndModulesUrl,this, GET_PROFILES_AND_MODULES,this);
-        mAuthTask.execute();
+
     }
 
 //    private void populateProfileAndModules(JSONObject response)throws Exception{
@@ -344,6 +355,9 @@ public class DashboardActivity extends AppCompatActivity
         }
         if(messagesCount > 0) {
             messagesCountTextView.setText("+"+messagesCount.toString());
+        }
+        if(swipeLayout != null){
+            swipeLayout.setRefreshing(false);
         }
     }
 
