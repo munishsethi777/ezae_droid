@@ -59,6 +59,7 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
     private ViewGroup mContainer;
     private OnFragmentInteractionListener mListener;
     private String mCallName;
+    private NotificationActivity parentActivity;
     public NotificationsFragment() {
         // Required empty public constructor
     }
@@ -72,12 +73,13 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
      * @return A new instance of fragment NotificationsFragment.
      */
 
-    public static NotificationsFragment newInstance(int userSeq, int companySeq) {
+    public static NotificationsFragment newInstance(int userSeq, int companySeq,NotificationActivity parent) {
         NotificationsFragment fragment = new NotificationsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_USER_SEQ, userSeq);
         args.putInt(ARG_COMPANY_SEQ, companySeq);
         fragment.setArguments(args);
+        fragment.parentActivity = parent;
         return fragment;
     }
 
@@ -98,7 +100,7 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
         mInflater = inflater;
         mContainer = container;
         //mFragmentLayout =  (LinearLayout) inflater.inflate(R.layout.dashboard_notification_fragment, container, false);
-        ConstraintLayout mFragmentLayout =  (ConstraintLayout) inflater.inflate(R.layout.content_notes, container, false);
+        ConstraintLayout mFragmentLayout =  (ConstraintLayout) inflater.inflate(R.layout.content_notification_child, container, false);
         mNotesLayout = (LinearLayout) mFragmentLayout.findViewById(R.id.notesLayout);
         executeGetNotificationCall();
         return mFragmentLayout;
@@ -115,6 +117,9 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
         Object[] args = {mUserSeq,mCompanySeq};
         String notificationUrl = MessageFormat.format(StringConstants.GET_NOTIFICATIONS,args);
         mAuthTask = new ServiceHandler(notificationUrl,this,getActivity());
+        if(parentActivity.swipeLayout != null){
+            mAuthTask.setShowProgress(!parentActivity.swipeLayout.isRefreshing());
+        }
         mAuthTask.execute();
     }
 
@@ -182,6 +187,9 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
                         //}
                         textView.setText(notificationTitle);
                         mNotesLayout.addView(childLayout);
+                    }
+                    if(parentActivity.swipeLayout != null) {
+                        parentActivity.swipeLayout.setRefreshing(false);
                     }
                 }
             }

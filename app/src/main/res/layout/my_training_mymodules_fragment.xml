@@ -11,38 +11,38 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/scroll"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <LinearLayout
-                android:id="@+id/layout_module"
+            android:layout_height="match_parent">
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/scroll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:focusableInTouchMode="true"
-                android:orientation="vertical"
-                android:paddingBottom="8dp">
-                <TextView
-                    android:id="@+id/moduleHeader"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <LinearLayout
+                    android:id="@+id/layout_module"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@color/right_learnings"
-                    android:padding="5dp"
-                    android:textSize="15sp"
-                    android:text="My Modules \n 12 Modules"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
-                    android:textColor="@color/White"/>
+                    android:layout_height="match_parent"
+                    android:focusableInTouchMode="true"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp">
+                    <TextView
+                        android:id="@+id/moduleHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/right_learnings"
+                        android:padding="5dp"
+                        android:textSize="15sp"
+                        android:text="My Modules \n 12 Modules"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:textColor="@color/White"/>
 
-            </LinearLayout>
-
-
-
-
-
-        </android.support.v4.widget.NestedScrollView>
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </android.support.design.widget.CoordinatorLayout>
 

@@ -2,6 +2,7 @@ package in.learntech.rights;
 
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -24,7 +25,7 @@ import in.learntech.rights.services.ServiceHandler;
 import in.learntech.rights.utils.ImageViewCircleTransform;
 import in.learntech.rights.utils.StringConstants;
 
-public class MyAchievements extends AppCompatActivity implements IServiceHandler {
+public class MyAchievements extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, IServiceHandler {
 
     private static final String SUCCESS = "success";
     private static final String MESSAGE = "message";
@@ -42,7 +43,7 @@ public class MyAchievements extends AppCompatActivity implements IServiceHandler
     private TextView mScores;
     private TextView mProfileRank;
     private TextView mPoints;
-
+    private SwipeRefreshLayout swipeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,12 +58,13 @@ public class MyAchievements extends AppCompatActivity implements IServiceHandler
         mUserMgr = UserMgr.getInstance(this);
         initViews();
         makeServiceCalls();
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(this);
     }
     private void initViews(){
         mScores = (TextView) findViewById(R.id.score);
         mProfileRank = (TextView) findViewById(R.id.rank);
         mPoints = (TextView) findViewById(R.id.points);
-
     }
 
     private void makeServiceCalls(){
@@ -72,8 +74,14 @@ public class MyAchievements extends AppCompatActivity implements IServiceHandler
         String achievementsCountUrl = MessageFormat.format(StringConstants.GET_MYACHIEVEMENT_COUNTS,args);
         String myBadgesURL = MessageFormat.format(StringConstants.GET_MYACHIEVEMENT_MY_BADGES,args);
         mAuthTask = new ServiceHandler(achievementsCountUrl,this, GET_MY_ACHIEVEMENTS,this);
+        if(swipeLayout != null){
+            mAuthTask.setShowProgress(!swipeLayout.isRefreshing());
+        }
         mAuthTask.execute();
         mAuthTask = new ServiceHandler(myBadgesURL,this, GET_MY_ACHIEVEMENT_BADGES,this);
+        if(swipeLayout != null){
+            mAuthTask.setShowProgress(!swipeLayout.isRefreshing());
+        }
         mAuthTask.execute();
     }
 
@@ -91,6 +99,9 @@ public class MyAchievements extends AppCompatActivity implements IServiceHandler
                     populateAchievementCounts(response);
                 }else if(mCallName.equals(GET_MY_ACHIEVEMENT_BADGES)){
                     populateBadges(response);
+                }
+                if(swipeLayout != null){
+                    swipeLayout.setRefreshing(false);
                 }
             }
         }catch (Exception e){
@@ -172,5 +183,13 @@ public class MyAchievements extends AppCompatActivity implements IServiceHandler
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    /**
+     * Called when a swipe gesture triggers a refresh.
+     */
+    @Override
+    public void onRefresh() {
+        makeServiceCalls();
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,13 +22,13 @@ import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.services.ServiceHandler;
 import in.learntech.rights.utils.StringConstants;
 
-public class NotesActivity extends AppCompatActivity implements View.OnClickListener{
+public class NotesActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener{
 
     NotesFragment mFragment;
     Toolbar mToolbar;
     int mDeletingNoteSeq;
     UserMgr mUserMgr;
-
+    protected SwipeRefreshLayout swipeLayout;
 
 
     @Override
@@ -52,8 +53,10 @@ public class NotesActivity extends AppCompatActivity implements View.OnClickList
         });
 
         mUserMgr = UserMgr.getInstance(this);
-        mFragment = NotesFragment.newInstance(mUserMgr);
+        mFragment = NotesFragment.newInstance(mUserMgr,this);
         getFragmentManager().beginTransaction().replace(R.id.notesLayout,mFragment).commit();
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(this);
 
         //SORTING WIDGET
         //showFragment(ListFragment.newInstance());
@@ -106,4 +109,13 @@ public class NotesActivity extends AppCompatActivity implements View.OnClickList
         finish();
     }
 
+
+    /**
+     * Called when a swipe gesture triggers a refresh.
+     */
+    @Override
+    public void onRefresh() {
+        mFragment = NotesFragment.newInstance(mUserMgr,this);
+        getFragmentManager().beginTransaction().replace(R.id.notesLayout,mFragment).commit();
+    }
 }

@@ -3,6 +3,7 @@ package in.learntech.rights;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ import in.learntech.rights.utils.StringConstants;
  * Created by munishsethi on 04/09/17.
  */
 @SuppressLint("ValidFragment")
-public class MyTrainings_LearningPlansFragment extends Fragment implements IServiceHandler{
+public class MyTrainings_LearningPlansFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, IServiceHandler{
     private static final String ARG_USER_SEQ = "userSeq";
     private static final String ARG_COMPANY_SEQ = "companySeq";
     private ServiceHandler mAuthTask = null;
@@ -39,6 +40,7 @@ public class MyTrainings_LearningPlansFragment extends Fragment implements IServ
     private ViewGroup mContainer;
     private LinearLayout mPrentLayout;
     private LayoutHelper mLayoutHelper;
+    private SwipeRefreshLayout swipeLayout;
     public static MyTrainings_LearningPlansFragment newInstance(int userSeq, int companySeq) {
         MyTrainings_LearningPlansFragment fragment = new MyTrainings_LearningPlansFragment();
         Bundle args = new Bundle();
@@ -61,6 +63,9 @@ public class MyTrainings_LearningPlansFragment extends Fragment implements IServ
         Object[] args = {mUserSeq,mCompanySeq};
         String getLPDetailUrl = MessageFormat.format(StringConstants.GET_LEARNING_PLAN_DETAIL,args);
         mAuthTask = new ServiceHandler(getLPDetailUrl,this,getActivity());
+        if(swipeLayout != null){
+            mAuthTask.setShowProgress(!swipeLayout.isRefreshing());
+        }
         mAuthTask.execute();
     }
 
@@ -68,6 +73,8 @@ public class MyTrainings_LearningPlansFragment extends Fragment implements IServ
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View drawerLayout = inflater.inflate(R.layout.my_training_learningplans_fragment, container, false);
         mPrentLayout = (LinearLayout) drawerLayout.findViewById(R.id.layout_lp);
+        swipeLayout = (SwipeRefreshLayout) drawerLayout.findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(this);
         mContainer = container;
         mInflater = inflater;
         mLayoutHelper = new LayoutHelper(getActivity(),mInflater,mContainer);
@@ -125,6 +132,9 @@ public class MyTrainings_LearningPlansFragment extends Fragment implements IServ
                     mPrentLayout.addView(lpInternalLayout);
                     mLayoutHelper.jsonToModuleLayout(modulesJsonArr,isLockSequence,mPrentLayout);
                 }
+                if(swipeLayout != null){
+                    swipeLayout.setRefreshing(false);
+                }
             }
         }catch (Exception e){
 
@@ -138,5 +148,13 @@ public class MyTrainings_LearningPlansFragment extends Fragment implements IServ
     @Override
     public void setCallName(String call) {
 
+    }
+
+    /**
+     * Called when a swipe gesture triggers a refresh.
+     */
+    @Override
+    public void onRefresh() {
+        executeGetLPDetail();
     }
 }

@@ -3,6 +3,7 @@ package in.learntech.rights;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ import in.learntech.rights.utils.StringConstants;
  * Created by munishsethi on 04/09/17.
  */
 @SuppressLint("ValidFragment")
-public class MyTrainings_MyModulesFragment extends Fragment implements IServiceHandler{
+public class MyTrainings_MyModulesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, IServiceHandler{
     private LayoutInflater mInflater;
     private ViewGroup mContainer;
     private static final String ARG_USER_SEQ = "userSeq";
@@ -39,6 +40,7 @@ public class MyTrainings_MyModulesFragment extends Fragment implements IServiceH
     private View mDrawerLayout;
     private LinearLayout mParentLayout;
     private LayoutHelper mLayoutHelper;
+    private SwipeRefreshLayout swipeLayout;
     public static MyTrainings_MyModulesFragment newInstance(int userSeq, int companySeq) {
         MyTrainings_MyModulesFragment fragment = new MyTrainings_MyModulesFragment();
         Bundle args = new Bundle();
@@ -61,6 +63,8 @@ public class MyTrainings_MyModulesFragment extends Fragment implements IServiceH
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mDrawerLayout = inflater.inflate(R.layout.my_training_mymodules_fragment, container, false);
         mParentLayout = (LinearLayout) mDrawerLayout.findViewById(R.id.layout_module);
+        swipeLayout = (SwipeRefreshLayout) mDrawerLayout.findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(this);
         mContainer = container;
         mInflater = inflater;
         mLayoutHelper = new LayoutHelper(getActivity(),mInflater,mContainer);
@@ -72,6 +76,9 @@ public class MyTrainings_MyModulesFragment extends Fragment implements IServiceH
         Object[] args = {mUserSeq,mCompanySeq};
         String getModulesUrl = MessageFormat.format(StringConstants.GET_MODULES,args);
         mAuthTask = new ServiceHandler(getModulesUrl,this,getActivity());
+        if(swipeLayout != null){
+            mAuthTask.setShowProgress(!swipeLayout.isRefreshing());
+        }
         mAuthTask.execute();
     }
 
@@ -111,6 +118,9 @@ public class MyTrainings_MyModulesFragment extends Fragment implements IServiceH
                 textView_moduleHeader.setText(moduleTabHeader);
                 mLayoutHelper.jsonToModuleLayout(modulesJsonArr,false,mParentLayout);
             }
+            if(swipeLayout != null){
+                swipeLayout.setRefreshing(false);
+            }
         }catch (Exception e){
 
             message = "Error :- " + e.getMessage();
@@ -126,4 +136,11 @@ public class MyTrainings_MyModulesFragment extends Fragment implements IServiceH
     }
 
 
+    /**
+     * Called when a swipe gesture triggers a refresh.
+     */
+    @Override
+    public void onRefresh() {
+        executeGetModule();
+    }
 }

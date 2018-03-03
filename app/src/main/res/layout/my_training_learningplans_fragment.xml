@@ -14,46 +14,44 @@
         android:layout_height="match_parent">
 
 
-
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/scroll"
-            android:layout_width="match_parent"
-
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <LinearLayout
-                android:id="@+id/layout_lp"
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:focusableInTouchMode="true"
-                android:orientation="vertical"
-                android:paddingBottom="8dp">
+                android:layout_height="match_parent">
+                <android.support.v4.widget.NestedScrollView
+                    android:id="@+id/scroll"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="match_parent"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                    <LinearLayout
+                        android:id="@+id/layout_lp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:focusableInTouchMode="true"
+                        android:orientation="vertical"
+                        android:paddingBottom="8dp">
 
 
-               <!-- <include layout="@layout/my_training_learningplan_header"/>
+                       <!-- <include layout="@layout/my_training_learningplan_header"/>
 
-                <include layout="@layout/my_training_module_fragment" />
+                        <include layout="@layout/my_training_module_fragment" />
 
-                <include layout="@layout/my_training_module_fragment"/>
-                <include layout="@layout/my_training_module_fragment"/>
+                        <include layout="@layout/my_training_module_fragment"/>
+                        <include layout="@layout/my_training_module_fragment"/>
 
-                <include layout="@layout/my_training_learningplan_header"/>
-                <include layout="@layout/my_training_module_fragment"/>
+                        <include layout="@layout/my_training_learningplan_header"/>
+                        <include layout="@layout/my_training_module_fragment"/>
 
-                <include layout="@layout/my_training_learningplan_header"/>
-                <include layout="@layout/my_training_module_fragment"/>
-                <include layout="@layout/my_training_module_fragment"/>
-                <include layout="@layout/my_training_module_fragment"/>-->
+                        <include layout="@layout/my_training_learningplan_header"/>
+                        <include layout="@layout/my_training_module_fragment"/>
+                        <include layout="@layout/my_training_module_fragment"/>
+                        <include layout="@layout/my_training_module_fragment"/>-->
 
-            </LinearLayout>
-
-
-
-
-
-        </android.support.v4.widget.NestedScrollView>
-
+                    </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+         </android.support.v4.widget.SwipeRefreshLayout>
     </android.support.design.widget.CoordinatorLayout>
 
 
