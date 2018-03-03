@@ -4,6 +4,7 @@ package in.learntech.rights.messages;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -30,7 +31,7 @@ import in.learntech.rights.utils.StringConstants;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
-public class MessageActivity extends AppCompatActivity implements View.OnClickListener,
+public class MessageActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener,
                                         MessageClickListener, IServiceHandler {
     private static String GET_MESSAGES = "getMessages";
     private ServiceHandler mAuthTask = null;
@@ -43,6 +44,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
     private ItemTouchHelper mItemTouchHelper;
     private SwipeMenuRecyclerView rView;
     private MessageAdapter messageAdapter;
+    private SwipeRefreshLayout swipeLayout;
     private Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,8 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         messageAdapter = new MessageAdapter(this,rowListItem);
         rView.setAdapter(messageAdapter);
         messageAdapter.setClickListener(this);
-
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(this);
         executeGetMessagesCall();
         Intent intent = getIntent();
         if(intent.hasExtra(StringConstants.DATA_STRING)){
@@ -82,8 +85,19 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
 
         }
     }
-
+    /**
+     * Called when a swipe gesture triggers a refresh.
+     */
     @Override
+    public void onRefresh() {
+        rowListItem = new ArrayList<>();
+        messageAdapter = new MessageAdapter(this,rowListItem);
+        rView.setAdapter(messageAdapter);
+        messageAdapter.setClickListener(this);
+        executeGetMessagesCall();
+    }
+
+        @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fab_sendMessage:
@@ -124,6 +138,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         Object[] args = {mUserMgr.getLoggedInUserSeq(),mUserMgr.getLoggedInUserCompanySeq()};
         String notificationUrl = MessageFormat.format(StringConstants.GET_MESSAGES,args);
         mAuthTask = new ServiceHandler(notificationUrl,this,GET_MESSAGES,this);
+        mAuthTask.setShowProgress(!swipeLayout.isRefreshing());
         mAuthTask.execute();
     }
 
@@ -152,6 +167,9 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
                     }
                     messageAdapter.notifyItemInserted(rowListItem.size()-1);
                     rView.smoothScrollToPosition(rowListItem.size()-1);
+                    if(swipeLayout != null){
+                        swipeLayout.setRefreshing(false);
+                    }
                 }
             }
         }catch (Exception e){
@@ -187,4 +205,7 @@ public class MessageActivity extends AppCompatActivity implements View.OnClickLi
         onBackPressed();
         return true;
     }
+
+
+
 }
