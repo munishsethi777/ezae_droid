@@ -1,6 +1,7 @@
 package in.learntech.rights.Chatroom;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,12 +23,13 @@ import in.learntech.rights.services.ServiceHandler;
 import in.learntech.rights.utils.StringConstants;
 
 public class ChatRoomActivity extends AppCompatActivity implements
-        View.OnClickListener, ChatRoomClickListener ,IServiceHandler{
+        SwipeRefreshLayout.OnRefreshListener,View.OnClickListener, ChatRoomClickListener ,IServiceHandler{
     private UserMgr mUserMgr;
     private SwipeMenuRecyclerView rView;
     private ChatRoomAdapter chatRoomAdapter;
     ArrayList<ChatRoomModel> rowListItem;
     private ServiceHandler mAuthTask = null;
+    private SwipeRefreshLayout swipeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +54,17 @@ public class ChatRoomActivity extends AppCompatActivity implements
         rView.setAdapter(chatRoomAdapter);
         chatRoomAdapter.setClickListener(this);
         executeGetChatRoomsCall();
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(this);
     }
 
     public void executeGetChatRoomsCall(){
         Object[] args = {mUserMgr.getLoggedInUserSeq(),mUserMgr.getLoggedInUserCompanySeq()};
         String getChatRoomUrl = MessageFormat.format(StringConstants.GET_CHAT_ROOMS,args);
         mAuthTask = new ServiceHandler(getChatRoomUrl,this,this);
+        if(swipeLayout != null) {
+            mAuthTask.setShowProgress(!swipeLayout.isRefreshing());
+        }
         mAuthTask.execute();
     }
 
@@ -102,6 +109,9 @@ public class ChatRoomActivity extends AppCompatActivity implements
                 }
                 chatRoomAdapter.notifyItemInserted(rowListItem.size()-1);
                 rView.smoothScrollToPosition(rowListItem.size()-1);
+                if(swipeLayout != null) {
+                    swipeLayout.setRefreshing(false);
+                }
             }
         }catch (Exception e){
 
@@ -115,5 +125,17 @@ public class ChatRoomActivity extends AppCompatActivity implements
     @Override
     public void setCallName(String call) {
 
+    }
+
+    /**
+     * Called when a swipe gesture triggers a refresh.
+     */
+    @Override
+    public void onRefresh() {
+        rowListItem = new ArrayList<>();
+        chatRoomAdapter = new ChatRoomAdapter(this,rowListItem);
+        rView.setAdapter(chatRoomAdapter);
+        chatRoomAdapter.setClickListener(this);
+        executeGetChatRoomsCall();
     }
 }

@@ -8,7 +8,10 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="in.learntech.rights.DashboardActivity"
     tools:showIn="@layout/app_bar_dashboard">
-
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -248,7 +251,6 @@
                             android:padding="6dp">
                             <TextView
                                 android:id="@+id/notificationCount"
-                                android:text="+2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
@@ -288,7 +290,7 @@
 
                             <TextView
                                 android:id="@+id/learningPlanCount"
-                                android:text="+2"
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
@@ -338,7 +340,6 @@
 
                             <TextView
                                 android:id="@+id/messagesCount"
-                                android:text="+2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
@@ -620,7 +621,6 @@
 
             </LinearLayout>
         </LinearLayout>
-
     </ScrollView>
-
+    </android.support.v4.widget.SwipeRefreshLayout>
 </android.support.constraint.ConstraintLayout>

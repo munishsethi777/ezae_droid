@@ -7,17 +7,22 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".messages.MessageActivity"
     tools:showIn="@layout/activity_message">
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scroll"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <com.tubb.smrv.SwipeMenuRecyclerView
-            android:id="@+id/recyclerView"
-            style="@style/Activity6ScrollbarStyle"
+        android:layout_height="match_parent">
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/scroll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    
+            <com.tubb.smrv.SwipeMenuRecyclerView
+                android:id="@+id/recyclerView"
+                style="@style/Activity6ScrollbarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-    </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </android.support.constraint.ConstraintLayout>
