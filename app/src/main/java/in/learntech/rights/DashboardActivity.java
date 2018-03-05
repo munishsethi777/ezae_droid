@@ -349,12 +349,18 @@ public class DashboardActivity extends AppCompatActivity
         Integer messagesCount = dashboardData.getInt("messages");
         if(notificationCount > 0){
             notificationCountTextView.setText("+"+notificationCount.toString());
+        }else{
+            notificationCountTextView.setText("");
         }
         if(pendingLpCount > 0) {
             learningPlanCountTextView.setText("+"+pendingLpCount.toString());
+        }else{
+            learningPlanCountTextView.setText("");
         }
         if(messagesCount > 0) {
             messagesCountTextView.setText("+"+messagesCount.toString());
+        }else{
+            messagesCountTextView.setText("");
         }
         if(swipeLayout != null){
             swipeLayout.setRefreshing(false);

@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.tubb.smrv.SwipeHorizontalMenuLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sml"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@id/smContentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:animateLayoutChanges="true"
+        android:onClick="onClick"
         android:layout_margin="6dp">
         <LinearLayout
             android:orientation="horizontal"
@@ -62,5 +69,22 @@
                 android:text="Chatroom"
                 android:textSize="10sp" />
         </LinearLayout>
-</LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@id/smMenuViewRight"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_red_light"
+        android:orientation="horizontal"
+        android:onClick="onClick">
 
+        <ImageView
+            android:id="@+id/buttonDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_close_white" />
+
+    </RelativeLayout>
+</com.tubb.smrv.SwipeHorizontalMenuLayout>

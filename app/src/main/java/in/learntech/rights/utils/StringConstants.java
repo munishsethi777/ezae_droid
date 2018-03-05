@@ -43,6 +43,7 @@ public class StringConstants {
     public static final String GET_DASHBOARD_COUNTS = ACTION_API_URL+"UserAction.php?call=getDashboardStats&userSeq={0}&companySeq={1}";
     public static final String GET_MYACHIEVEMENT_COUNTS = ACTION_API_URL + "UserAction.php?call=myAchievements&userSeq={0}&companyseq={1}";
     public static final String GET_NOTIFICATIONS = ACTION_API_URL + "UserAction.php?userSeq={0}&companySeq={1}&call=getNotifications";
+
     public static final String CHANGE_PASSWORD = ACTION_API_URL + "UserAction.php?call=changePassword&userSeq={0}&companySeq={1}&earlierPassword={2}&newPassword={3}";
     public static final String GET_USER_DETAIL = ACTION_API_URL + "UserAction.php?call=getUserDetail&userSeq={0}&companySeq={1}";
     public static final String UPDATE_USER_PROFILE = ACTION_API_URL + "UserAction.php?call=updateUserProfile&userSeq={0}&companySeq={1}&userProfileDetail={2}";
@@ -90,7 +91,10 @@ public class StringConstants {
     public static final String GET_CHAT_ROOMS_DETAIL = ACTION_API_URL + "ChatroomAction.php?call=getChatroomDetails&userSeq={0}&companySeq={1}&chatroomId={2}&afterMessageSeq={3}";
     public static final String SEND_CHAT_ROOM_CHAT = ACTION_API_URL + "ChatroomAction.php?call=sendMessageChat&userSeq={0}&companySeq={1}&chatroomId={2}&userType={3}&userName={4}&afterMessageSeq={5}&message={6}";
 
-    //
+    //Notification Action
+    public static final String GET_NOTIFICATIONS_NEW = ACTION_API_URL + "NotificationAction.php?call=getAllNotifications&userSeq={0}&companySeq={1}";
+    public static final String MARK_AS_READ_NOTIFICATION = ACTION_API_URL + "NotificationAction.php?call=markReadOrUnRead&isRead=1&userSeq={0}&companySeq={1}";
+    public static final String DELETE_NOTIFICATION = ACTION_API_URL + "NotificationAction.php?call=markAsClearNotification&userSeq={0}&companySeq={1}&seq={2}";
 
 
 
