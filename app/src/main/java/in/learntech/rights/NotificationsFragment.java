@@ -3,9 +3,11 @@ package in.learntech.rights;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -216,18 +218,53 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
         int unReadCount = 0;
         for (int i = 0; i < notificationJsonArr.length(); i++) {
             SwipeHorizontalMenuLayout childLayout = (SwipeHorizontalMenuLayout) mInflater.inflate(R.layout.notifications_child_items, mContainer, false);
+            LinearLayout linearLayout = (LinearLayout)childLayout.findViewById(R.id.colorMask);
             TextView textView_nominated = (TextView)childLayout.findViewById(R.id.textView_nominated);
             ImageView imageView_button = (ImageView)childLayout.findViewById(R.id.imageView_chatroom);
+            ImageView imageView_notification = (ImageView)childLayout.findViewById(R.id.imageView_notifications);
             JSONObject jsonObject = notificationJsonArr.getJSONObject(i);
             int seq = jsonObject.getInt("seq");
             childLayout.setId(seq);
             String notificationTitle = jsonObject.getString("title");
             int isRead = jsonObject.getInt("isread");
-            if(isRead == 0){
-                unReadCount++;
+
+            String entityType = jsonObject.getString("entitytype");
+            String notificationType = jsonObject.getString("notificationtype");
+            int entitySeq = jsonObject.getInt("entityseq");
+            String from = jsonObject.getString("startdate");
+            Date fromDate = DateUtil.stringToDate(from);
+            Button button = (Button) childLayout.findViewById(R.id.notification_button);
+            String buttonTitle = "Nominate";
+            if(entityType.equals("module")){
+                if(!notificationType.equals("onEnrollment")){
+                    button.setVisibility(View.GONE);
+                    imageView_button.setVisibility(View.GONE);
+                }
+                 buttonTitle = "Module";
+            }else if (entityType.equals("chatroom")
+                    && !notificationType.equals("self_nomination")) {
+                buttonTitle = "Chatroom";
+                layoutHelper.loadImage(imageView_notification, "icons8_communication_60");
+            } else if (entityType.equals("classroom")
+                    && !notificationType.equals("self_nomination")) {
+                buttonTitle = "Classroom";
+            } else if(entityType.equals("badge")){
+                buttonTitle = "Badge Allotted";
             }
+            if(notificationType.equals("nominated")) {
+                 buttonTitle = "Nominated";
+            }
+            button.setText(buttonTitle);
+            button.setOnClickListener(new startChat(entitySeq, notificationTitle, null, buttonTitle,fromDate));
+            imageView_button.setOnClickListener(new startChat(entitySeq, notificationTitle, null, buttonTitle,fromDate));
+            textView_nominated.setText(buttonTitle);
+            textView_nominated.setVisibility(View.VISIBLE);
             TextView textView = (TextView) childLayout.findViewById(R.id.notification_title);
             textView.setText(notificationTitle);
+            if(isRead == 0){
+                linearLayout.setBackground(ResourcesCompat.getDrawable(getActivity().getResources(), R.drawable.border_orange_right_backround, null));
+                unReadCount++;
+            }
             RelativeLayout deleteRL = (RelativeLayout) childLayout.findViewById(R.id.smMenuViewRight);
             deleteRL.setTag(R.string.notificationSeq, seq);
             mNotesLayout.addView(childLayout);
@@ -267,6 +304,16 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
                 startActivity(intent);
             }else if(notificationType == "Nominated"){
                 Toast.makeText(getActivity(),"Training Already Nomintated",Toast.LENGTH_LONG).show();
+            }else if(notificationType == "Module"){
+                int lpSeq = 0;
+                int moduleSeq = model.getSeq();
+                Intent intent = new Intent(getActivity(),UserTrainingActivity.class);
+                intent.putExtra(StringConstants.LP_SEQ,lpSeq);
+                intent.putExtra(StringConstants.MODULE_SEQ,moduleSeq);
+                startActivity(intent);
+            }else if(notificationType == "Badge Allotted"){
+                Intent intent = new Intent(getActivity(), MyAchievements.class);
+                startActivity(intent);
             }
             else {
                 nominateTraining(model.getSeq());
