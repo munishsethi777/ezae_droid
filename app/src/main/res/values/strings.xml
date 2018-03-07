@@ -17,6 +17,7 @@
     <string name="lp_seq">lpSeq</string>
     <string name="module_seq">moduleSeq</string>
     <string name="noteSeq">noteSeq</string>
+    <string name="notificationSeq">notificationSeq</string>
     <string name="title_activity_notes">Notes</string>
     <string name="title_activity_notes_editor">Notes Editor</string>
     <string name="title_activity_update_profile">Update Profile</string>
