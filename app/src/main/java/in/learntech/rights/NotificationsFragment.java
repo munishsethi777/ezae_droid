@@ -303,7 +303,7 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
                 intent.putExtra(StringConstants.EVENT_DATE,eventFromDate);
                 startActivity(intent);
             }else if(notificationType == "Nominated"){
-                Toast.makeText(getActivity(),"Training Already Nomintated",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"Training Already Nominated",Toast.LENGTH_LONG).show();
             }else if(notificationType == "Module"){
                 int lpSeq = 0;
                 int moduleSeq = model.getSeq();
