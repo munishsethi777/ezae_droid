@@ -250,9 +250,13 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
                 buttonTitle = "Classroom";
             } else if(entityType.equals("badge")){
                 buttonTitle = "Badge Allotted";
+                layoutHelper.loadImage(imageView_notification, "icons8_prize_50");
             }
             if(notificationType.equals("nominated")) {
                  buttonTitle = "Nominated";
+            }else if(notificationType.equals("reject")){
+                buttonTitle = "Rejected";
+                imageView_button.setVisibility(View.GONE);
             }
             button.setText(buttonTitle);
             button.setOnClickListener(new startChat(entitySeq, notificationTitle, null, buttonTitle,fromDate));
@@ -314,6 +318,8 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
             }else if(notificationType == "Badge Allotted"){
                 Intent intent = new Intent(getActivity(), MyAchievements.class);
                 startActivity(intent);
+            }else if(notificationType == "Rejected"){
+
             }
             else {
                 nominateTraining(model.getSeq());
