@@ -16,6 +16,12 @@ public class MessageModel implements Serializable{
     private int chattingUserSeq;
     private String imageURL;
 
+
+    private boolean isRead;
+
+
+
+
     public MessageModel(){}
 
     public MessageModel(String _messageText,String _dated,String _chattingUser, String _imageURL, String chtUserType, int chtUserSeq){
@@ -25,6 +31,15 @@ public class MessageModel implements Serializable{
         imageURL = _imageURL;
         chattingUserType = chtUserType;
         chattingUserSeq = chtUserSeq;
+    }
+    public MessageModel(String _messageText,String _dated,String _chattingUser, String _imageURL, String chtUserType, int chtUserSeq,boolean isRead){
+        messageText = _messageText;
+        dated = _dated;
+        chattingUser = _chattingUser;
+        imageURL = _imageURL;
+        chattingUserType = chtUserType;
+        chattingUserSeq = chtUserSeq;
+        this.isRead = isRead;
     }
 
 
@@ -84,5 +99,12 @@ public class MessageModel implements Serializable{
         this.chattingUserSeq = chattingUserSeq;
     }
 
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
+    }
 
 }

@@ -56,8 +56,8 @@
                             android:layout_centerVertical="true"
                             android:layout_marginTop="4dp"
                             android:textColor="@color/black"
-                            android:text="Tony Ramirez"
-                            android:textStyle="bold" />
+                            android:textSize="15sp"
+                            android:text="Tony Ramirez" />
                         <TextView
                             android:id="@+id/timeMesage"
                             android:layout_width="wrap_content"
@@ -84,6 +84,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
                             android:layout_marginTop="-2dp"
+                            android:textSize="14sp"
                             android:textColor="@color/DarkDarkgrey"
                             android:text="Test value" />
                         <ImageView

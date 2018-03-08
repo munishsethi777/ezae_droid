@@ -84,6 +84,7 @@ public class StringConstants {
     public static final String GET_MESSAGE_DETAILS = ACTION_API_URL + "MessageAction.php?call=getMessageDetails&userSeq={0}&companySeq={1}&chattingWithUserSeq={2}&chattingWithUserType={3}&afterMessageSeq={4}";
     public static final String SEND_MESSAGE_CHAT = ACTION_API_URL + "MessageAction.php?call=sendMessageChat&userSeq={0}&companySeq={1}&chattingWithUserSeq={2}&chattingWithUserType={3}&message={4}&chatLoadedTillSeq={5}";
     public static final String DELETE_CONVERSATION = ACTION_API_URL + "MessageAction.php?call=deleteChatConversation&userSeq={0}&companySeq={1}&chattingWithUserSeq={2}&chattingWithUserType={3}";
+    public static final String  MESSAGE_MARK_AS_READ = ACTION_API_URL + "MessageAction.php?call=markReadAndUnRead&userSeq={0}&companySeq={1}&chattingWithUserSeq={2}&chattingWithUserType={3}&isRead={4}";
 
     //Chatroom Action
     public static final String GET_CHAT_ROOMS = ACTION_API_URL + "ChatroomAction.php?call=getChatrooms&userSeq={0}&companySeq={1}";
