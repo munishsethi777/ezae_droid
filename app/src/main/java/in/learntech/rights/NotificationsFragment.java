@@ -255,7 +255,7 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
             if(notificationType.equals("nominated")) {
                  buttonTitle = "Nominated";
             }else if(notificationType.equals("reject")){
-                buttonTitle = "Rejected";
+                buttonTitle = "Nomination Rejected";
                 imageView_button.setVisibility(View.GONE);
             }
             button.setText(buttonTitle);
@@ -318,7 +318,7 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
             }else if(notificationType == "Badge Allotted"){
                 Intent intent = new Intent(getActivity(), MyAchievements.class);
                 startActivity(intent);
-            }else if(notificationType == "Rejected"){
+            }else if(notificationType == "Nomination Rejected"){
 
             }
             else {
