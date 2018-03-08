@@ -1,6 +1,7 @@
 package in.learntech.rights.messages;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ItemView
         boolean swipeEnable = true;
         holder.sml.setSwipeEnable(swipeEnable);
         holder.textName.setText(dataList.get(position).getChattingUser());
+        boolean isRead = dataList.get(position).isRead();
+        if(!isRead) {
+            holder.message.setTypeface(holder.message.getTypeface(), Typeface.BOLD);
+        }else{
+            holder.message.setTypeface(holder.message.getTypeface(), Typeface.NORMAL);
+        }
         holder.message.setText(dataList.get(position).getMessageText());
         holder.timeMesage.setText(dataList.get(position).getDated());
     }

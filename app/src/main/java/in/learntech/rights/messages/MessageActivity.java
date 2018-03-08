@@ -34,6 +34,7 @@ import java.util.ArrayList;
 public class MessageActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener,
                                         MessageClickListener, IServiceHandler {
     private static String GET_MESSAGES = "getMessages";
+    private static String MARK_AS_READ = "markAsRead";
     private ServiceHandler mAuthTask = null;
     private static final String SUCCESS = "success";
     private static final String MESSAGE = "message";
@@ -118,6 +119,21 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
         messageChatActivity.putExtra("messageModel",mm);
         startActivity(messageChatActivity);
         overridePendingTransition(R.anim.firstactivity_enter, R.anim.firstactivity_exit);
+        if(!mm.isRead()){
+            executeMarkAsReadCall(mm);
+        }
+    }
+
+    public void executeMarkAsReadCall(MessageModel mm){
+        Object[] args = {mUserMgr.getLoggedInUserSeq(),
+                mUserMgr.getLoggedInUserCompanySeq(),
+                mm.getChattingUserSeq(),
+                mm.getChattingUserType(),
+                1};
+        String notificationUrl = MessageFormat.format(StringConstants.MESSAGE_MARK_AS_READ,args);
+        mAuthTask = new ServiceHandler(notificationUrl,this,MARK_AS_READ,this);
+        mAuthTask.setShowProgress(false);
+        mAuthTask.execute();
     }
 
     private  void openDirectMessage(JSONObject dataJson) throws JSONException{
@@ -161,8 +177,10 @@ public class MessageActivity extends AppCompatActivity implements SwipeRefreshLa
                         String imageUrl = StringConstants.WEB_URL + jsonObject.getString("userImage");
                         String chattingWithUserType = jsonObject.getString("userType");
                         int chattingWithUserSeq = jsonObject.getInt("userSeq");
+                        int read = jsonObject.getInt("isRead");
+                        boolean isRead = read == 1;
                         MessageModel mm = new MessageModel(messageText,dated,chattingUser,imageUrl,
-                                        chattingWithUserType,chattingWithUserSeq);
+                                        chattingWithUserType,chattingWithUserSeq,isRead);
                         rowListItem.add(mm);
                     }
                     messageAdapter.notifyItemInserted(rowListItem.size()-1);
