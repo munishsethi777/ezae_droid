@@ -52,6 +52,9 @@ public class DBUtil extends SQLiteOpenHelper {
 
         String CREATE_COMPANY_USERS = CompanyUserDataStore.CREATE_TABLE;
         db.execSQL(CREATE_COMPANY_USERS);
+
+        String CREATE_PENDING_MODULES = ModuleDataStore.CREATE_TABLE;
+        db.execSQL(CREATE_PENDING_MODULES);
     }
 
     // Called when the database needs to be upgraded.
