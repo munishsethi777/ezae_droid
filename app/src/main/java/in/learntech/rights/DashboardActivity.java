@@ -105,7 +105,7 @@ public class DashboardActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         mLayoutHelper = new LayoutHelper(this,null,null);
         initViews();
-        executeCalls(true);
+        //executeCalls(true);
         //android.app.Fragment fragment = NotificationsFragment.newInstance(mLoggedInUserSeq,mLoggedInCompanySeq);
         //getFragmentManager().beginTransaction().replace(R.id.layout_notifications,fragment).commit();
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
@@ -116,6 +116,13 @@ public class DashboardActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction =
                 fragmentManager.beginTransaction();
+    }
+
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        executeCalls(true);
     }
 
     private void initViews(){
