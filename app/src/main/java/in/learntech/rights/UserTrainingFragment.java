@@ -47,10 +47,12 @@ import java.util.List;
 import java.util.Random;
 
 import in.learntech.rights.Controls.SwipeDirection;
+import in.learntech.rights.Managers.ModuleMgr;
 import in.learntech.rights.Managers.QuestionProgressMgr;
 import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
+import in.learntech.rights.utils.AppStatus;
 import in.learntech.rights.utils.LayoutHelper;
 import in.learntech.rights.utils.StringConstants;
 import in.learntech.rights.utils.seekbar.CustomSeekBar;
@@ -528,16 +530,25 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
 
     private void executeTrainingSubmitCall(){
         try {
+            boolean isNetworkAvailable = AppStatus.getInstance(getContext()).isOnline();
             int moduleSeq = currentQuestion.getInt("moduleSeq");
             int learningPlanSeq = currentQuestion.getInt("learningPlanSeq");
-            JSONArray progressArr = mQuesProgressMgr.getProgressListByModule(moduleSeq,learningPlanSeq);
-            String jsonArrString = progressArr.toString();
-            jsonArrString = URLEncoder.encode(jsonArrString, "UTF-8");
-            Object[] args = {mUserSeq,mCompanySeq,jsonArrString};
-            String notificationUrl = MessageFormat.format(StringConstants.SUBMIT_QUIZ_PROGRESS,args);
-            mAuthTask = new ServiceHandler(notificationUrl, this, SAVE_QUIZ_PROGRESS, getActivity());
-            mAuthTask.setShowProgress(false);
-            mAuthTask.execute();
+            if(isNetworkAvailable){
+                JSONArray progressArr = mQuesProgressMgr.getProgressListByModule(moduleSeq,learningPlanSeq);
+                String jsonArrString = progressArr.toString();
+                jsonArrString = URLEncoder.encode(jsonArrString, "UTF-8");
+                Object[] args = {mUserSeq,mCompanySeq,jsonArrString};
+                String notificationUrl = MessageFormat.format(StringConstants.SUBMIT_QUIZ_PROGRESS,args);
+                mAuthTask = new ServiceHandler(notificationUrl, this, SAVE_QUIZ_PROGRESS, getActivity());
+                mAuthTask.setShowProgress(false);
+                mAuthTask.execute();
+            }else{
+                ModuleMgr moduleMgr = ModuleMgr.getInstance(getContext());
+                moduleMgr.savePendingModules(moduleSeq,learningPlanSeq);
+                Toast.makeText(getContext(),"Training compelted successfully",Toast.LENGTH_LONG).show();
+                mParentActivity.goToTrainingActivity();
+            }
+
         }catch (Exception e){
             LayoutHelper.showToast(getActivity(),e.getMessage());
         }

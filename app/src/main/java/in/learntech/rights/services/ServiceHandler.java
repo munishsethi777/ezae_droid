@@ -56,6 +56,14 @@ public class ServiceHandler extends AsyncTask<Void, Void, JSONObject>{
         initProgressDialog();
     }
 
+    public ServiceHandler(String apiUrl,IServiceHandler serviceHandler,String callName) {
+        mApiUrl = apiUrl;
+        mIActivity = serviceHandler;
+        mRequestType = StringConstants.GET;
+        mCall =  callName;
+        mActivity = null;
+    }
+
     public void setFileUploadRequest(Boolean isFileUploadRequest){
         this.isFileUploadRequest = isFileUploadRequest;
     }
