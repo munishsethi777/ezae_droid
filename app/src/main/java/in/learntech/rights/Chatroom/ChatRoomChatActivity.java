@@ -216,7 +216,9 @@ public class ChatRoomChatActivity extends AppCompatActivity implements View.OnCl
                    isSent = true;
                 }
                 ChatRoomChatModel mcm = new ChatRoomChatModel(chatSeq, messagetext, dated, name,isSent);
-                rowListItem.add(mcm);
+                if(!rowListItem.contains(mcm)) {
+                    rowListItem.add(mcm);
+                }
             }
             ChatRoomChatModel lastMCM = rowListItem.get(rowListItem.size()-1);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

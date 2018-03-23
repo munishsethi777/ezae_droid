@@ -123,6 +123,7 @@ public class DashboardActivity extends AppCompatActivity
     {  // After a pause OR at startup
         super.onResume();
         executeCalls(true);
+        populateUserProfile();
     }
 
     private void initViews(){
@@ -143,9 +144,6 @@ public class DashboardActivity extends AppCompatActivity
         mUserNameView = (TextView)hView.findViewById(R.id.textView_userName);
         mUserEmailView = (TextView)hView.findViewById(R.id.textView_userEmail);
         mUserProfilesView = (TextView)hView.findViewById(R.id.textView_profiles);
-        String userImageUrl = mUserMgr.getLoggedInUserImageUrl();
-        mLayoutHelper.loadImageRequest(mUserImageView,userImageUrl,true);
-        mLayoutHelper.loadImageRequest(userImageView,userImageUrl,true);
         User user = mUserMgr.getLoggedInUser();
         mUserNameView.setText(user.getFullName());
         mUserName.setText(user.getFullName());
@@ -164,6 +162,11 @@ public class DashboardActivity extends AppCompatActivity
         executeCalls(false);
     }
 
+    private void populateUserProfile(){
+        String userImageUrl = mUserMgr.getLoggedInUserImageUrl();
+        mLayoutHelper.loadImageRequest(mUserImageView,userImageUrl,true);
+        mLayoutHelper.loadImageRequest(userImageView,userImageUrl,true);
+    }
     private void executeCalls(boolean isShowProgress){
         int loggedInUserSeq = mUserMgr.getLoggedInUserSeq();
         int loggedInUserCompanySeq = mUserMgr.getLoggedInUserCompanySeq();

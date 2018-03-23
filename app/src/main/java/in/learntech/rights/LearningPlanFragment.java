@@ -120,8 +120,8 @@ public class LearningPlanFragment extends Fragment implements IServiceHandler{
                     String title = lpJson.getString("title");
                     LinearLayout lpFragment = (LinearLayout)
                             mInflater.inflate(R.layout.learning_plan_list_fragment, mContainer, false);
-                    ImageView lpImage = (ImageView)lpFragment.findViewById(R.id.imageView_lpImage);
-                    loadImageCircleRequest(lpImage,imageUrl);
+//                    ImageView lpImage = (ImageView)lpFragment.findViewById(R.id.imageView_lpImage);
+//                    loadImageCircleRequest(lpImage,imageUrl);
 
                     TextView textView_title = (TextView) lpFragment.findViewById(R.id.textview_lpTitle);
                     textView_title.setText(title);
