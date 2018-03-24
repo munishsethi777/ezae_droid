@@ -47,6 +47,7 @@ public class ChatRoomChatActivity extends AppCompatActivity implements View.OnCl
     ChatRoomChatAdapter rcAdapter;
     RecyclerView rView;
     Thread refreshThread;
+    ArrayList<Integer>chatSeqs;
 
     @Override
     protected void onStop() {
@@ -84,6 +85,7 @@ public class ChatRoomChatActivity extends AppCompatActivity implements View.OnCl
 
         mUserMgr = UserMgr.getInstance(this);
         rowListItem = new ArrayList<>();
+        chatSeqs = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         rView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -216,7 +218,8 @@ public class ChatRoomChatActivity extends AppCompatActivity implements View.OnCl
                    isSent = true;
                 }
                 ChatRoomChatModel mcm = new ChatRoomChatModel(chatSeq, messagetext, dated, name,isSent);
-                if(!rowListItem.contains(mcm)) {
+                if(!chatSeqs.contains(chatSeq)) {
+                    chatSeqs.add(chatSeq);
                     rowListItem.add(mcm);
                 }
             }

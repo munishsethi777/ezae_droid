@@ -49,6 +49,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
     private UserMgr mUserMgr;
     private MessageModel mMessageModel;
     ArrayList<MessageChatModel> rowListItem;
+    ArrayList<Integer>messageSeqs;
     MessageChatAdapter rcAdapter;
     RecyclerView rView;
     Thread refreshThread;
@@ -97,6 +98,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
         }
         mUserMgr = UserMgr.getInstance(this);
         rowListItem = new ArrayList<>();
+        messageSeqs = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         rView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -146,7 +148,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         };
-        refreshThread.start();
+       refreshThread.start();
     }
 
 
@@ -251,8 +253,10 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
                     isSent = true;
                 }
                 MessageChatModel mcm = new MessageChatModel(chatSeq, messagetext, dated, isSent);
-                rowListItem.add(mcm);
-
+                if(!messageSeqs.contains(chatSeq)) {
+                    messageSeqs.add(chatSeq);
+                    rowListItem.add(mcm);
+                }
             }
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             TextView toolBarLastTime = (TextView) toolbar.findViewById(R.id.timeLastViews);

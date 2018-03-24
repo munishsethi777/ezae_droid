@@ -147,6 +147,8 @@ public class UpdateProfileActivity extends AppCompatActivity implements IService
             if(success){
                 if(mCallName.equals(GET_PROFILE_DETAIL)) {
                     createCustomFieldViews(response.getJSONObject("userDetail"));
+                }else{
+                    UserMgr.getInstance(this).saveUserFromResponse(response);
                 }
             }
         }catch (Exception e){

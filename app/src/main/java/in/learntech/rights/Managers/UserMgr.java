@@ -88,7 +88,7 @@ public class UserMgr {
         int userSeq  = mPreferencesUtil.getLoggedInUserSeq();
         User user = userDataStore.getUserByUserSeq(userSeq);
         String userImage = StringConstants.USER_DUMMY_IMAGE_NAME;
-        if(user.getUserImageUrl() != null && !user.getUserImageUrl().equals("null")){
+        if(user.getUserImageUrl() != null && !user.getUserImageUrl().equals("") && !user.getUserImageUrl().equals("null")){
             userImage = user.getUserImageUrl();
         }
         return StringConstants.IMAGE_URL + "UserImages/"+userImage;
