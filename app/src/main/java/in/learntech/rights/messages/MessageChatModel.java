@@ -10,6 +10,7 @@ public class MessageChatModel {
     private String message;
     private String time;
     private boolean isSend;
+    private boolean isNew;
 
     public MessageChatModel(){}
 
@@ -52,6 +53,14 @@ public class MessageChatModel {
     public void setSend(boolean send) {
         isSend = send;
     }
+
+    public boolean isNew() {
+        return isNew;
+    }
+    public void setNew(boolean aNew) {
+        isNew = aNew;
+    }
+
 
 
 }

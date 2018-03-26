@@ -26,13 +26,16 @@ import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.R;
 import in.learntech.rights.services.Interface.IServiceHandler;
 import in.learntech.rights.services.ServiceHandler;
+import in.learntech.rights.utils.DateUtil;
 import in.learntech.rights.utils.ImageViewCircleTransform;
+import in.learntech.rights.utils.LayoutHelper;
 import in.learntech.rights.utils.PreferencesUtil;
 import in.learntech.rights.utils.StringConstants;
 
 import java.net.URLEncoder;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
@@ -50,6 +53,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
     private MessageModel mMessageModel;
     ArrayList<MessageChatModel> rowListItem;
     ArrayList<Integer>messageSeqs;
+    ArrayList<Integer>newMessagePosition;
     MessageChatAdapter rcAdapter;
     RecyclerView rView;
     Thread refreshThread;
@@ -57,14 +61,14 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onStop() {
         super.onStop();
-        refreshThread.interrupt();
+        //refreshThread.interrupt();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         clearReferences();
-        refreshThread.interrupt();
+        //refreshThread.interrupt();
     }
 
     @Override
@@ -99,6 +103,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
         mUserMgr = UserMgr.getInstance(this);
         rowListItem = new ArrayList<>();
         messageSeqs = new ArrayList<>();
+        newMessagePosition = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         rView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -110,12 +115,13 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
         rView.setAdapter(rcAdapter);
         rcAdapter.setClickListener(this);
         executeGetMessageDetailsCall();
-        refreshChatUI();
+        //refreshChatUI();
     }
     @Override
     protected void onResume() {
         super.onResume();
         mPrefUtil.setCurrentActivityName(StringConstants.MESSAGE_CHAT_ACTIVITY);
+        PreferencesUtil.setCurrentActivity(this);
     }
 
     @Override
@@ -126,29 +132,51 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
 
     private void clearReferences(){
         String currentActivityName = mPrefUtil.getCurrentActivityName();
-        if (StringConstants.MESSAGE_CHAT_ACTIVITY.equals(currentActivityName))
+        if (StringConstants.MESSAGE_CHAT_ACTIVITY.equals(currentActivityName)) {
             mPrefUtil.setCurrentActivityName(null);
+            PreferencesUtil.setCurrentActivity(null);
+        }
     }
 
     private void refreshChatUI(){
+//        refreshThread = new Thread() {
+//            @Override
+//            public void run() {
+//                try {
+//                    while (!isInterrupted()) {
+//                        Thread.sleep(6000);
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                executeGetMessageDetailsCall();
+//                            }
+//                        });
+//                    }
+//                } catch (InterruptedException e) {
+//                }
+//            }
+//        };
+      // refreshThread.start();
+    }
+
+    public void addReceivedMessage(final JSONArray chatJsonArr){
         refreshThread = new Thread() {
             @Override
             public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        Thread.sleep(6000);
+
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                executeGetMessageDetailsCall();
+                                refreshThread.interrupt();
+                                addMessagesChatModel(chatJsonArr);
                             }
                         });
-                    }
-                } catch (InterruptedException e) {
-                }
+
+
             }
         };
-       refreshThread.start();
+        refreshThread.start();
     }
 
 
@@ -191,6 +219,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
         mAuthTask = new ServiceHandler(url,this,GET_MESSAGE_DETAILS,this);
         mAuthTask.setShowProgress(false);
         mAuthTask.execute();
+
     }
 
     public void executeSendMessageCall(){
@@ -208,6 +237,13 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
             mAuthTask = new ServiceHandler(url, this, SEND_MESSAGE_CHAT, this);
             mAuthTask.setShowProgress(false);
             mAuthTask.execute();
+            try {
+
+                addMessageChatInstant(composeMessageText.getText().toString());
+                composeMessageText.setText("");
+            }catch (Exception e){
+                LayoutHelper.showToast(this,e.getMessage());
+            }
         }
     }
 
@@ -226,10 +262,10 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
                     addMessagesChatModel(chatJsonArr);
 
                 }else if(mCallName.equals(SEND_MESSAGE_CHAT)){
-                    JSONArray chatJsonArr = response.getJSONArray("messages");
-                    addMessagesChatModel(chatJsonArr);
-                    EditText composeMessageText = (EditText)findViewById(R.id.messageText);
-                    composeMessageText.setText("");
+                    //JSONArray chatJsonArr = response.getJSONArray("messages");
+                    //addMessagesChatModel(chatJsonArr,true);
+                    //EditText composeMessageText = (EditText)findViewById(R.id.messageText);
+                    //composeMessageText.setText("");
                 }
             }
         }catch (Exception e){
@@ -237,7 +273,21 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private void addMessagesChatModel(JSONArray chatJsonArr){
+
+
+    private void addMessageChatInstant(String messageStr)throws Exception{
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("seq",0);
+        jsonObject.put("dated", DateUtil.dateToString(new Date()));
+        jsonObject.put("messagetext",messageStr);
+        jsonObject.put("fromuserseq",mPrefUtil.getLoggedInUserSeq());
+        jsonArray.put(jsonObject);
+        addMessagesChatModel(jsonArray);
+    }
+
+
+    public void addMessagesChatModel(JSONArray chatJsonArr){
         try {
             for (int i = 0; i < chatJsonArr.length(); i++) {
                 JSONObject jsonObject = chatJsonArr.getJSONObject(i);
@@ -253,10 +303,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
                     isSent = true;
                 }
                 MessageChatModel mcm = new MessageChatModel(chatSeq, messagetext, dated, isSent);
-                if(!messageSeqs.contains(chatSeq)) {
-                    messageSeqs.add(chatSeq);
                     rowListItem.add(mcm);
-                }
             }
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             TextView toolBarLastTime = (TextView) toolbar.findViewById(R.id.timeLastViews);
@@ -270,7 +317,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
                 rView.smoothScrollToPosition(rowListItem.size() - 1);
             }
         }catch(Exception e) {
-                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
 

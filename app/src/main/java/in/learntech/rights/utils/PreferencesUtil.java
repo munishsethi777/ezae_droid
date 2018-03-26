@@ -10,12 +10,15 @@ import org.json.JSONObject;
 
 import java.util.Objects;
 
+import in.learntech.rights.messages.MessageChatActivity;
+
 /**
  * Created by baljeetgaheer on 2/18/2016.
  */
 public class PreferencesUtil {
     private Context mContext = null;
     private static PreferencesUtil mPreferencesUtil = null;
+    private static Activity mActivity;
     public PreferencesUtil(Context context){
         mContext = context;
     }
@@ -147,6 +150,13 @@ public class PreferencesUtil {
     public String getCurrentActivityName(){
         String value = getPreferences(StringConstants.CURRENT_ACTIVITY_NAME);
         return value;
+    }
+
+    public static void setCurrentActivity(Activity activity){
+        mActivity = activity;
+    }
+    public static Activity getCurrentActivity(){
+        return mActivity;
     }
 
     public void setVersion(int version){

@@ -7,6 +7,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,9 +18,11 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 import in.learntech.rights.DashboardActivity;
@@ -31,6 +34,7 @@ import in.learntech.rights.UserTrainingActivity;
 import in.learntech.rights.messages.MessageActivity;
 import in.learntech.rights.messages.MessageChatActivity;
 import in.learntech.rights.messages.MessageModel;
+import in.learntech.rights.utils.DateUtil;
 import in.learntech.rights.utils.PreferencesUtil;
 import in.learntech.rights.utils.StringConstants;
 
@@ -45,10 +49,6 @@ public class GcmIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         PreferencesUtil preferencesUtil = PreferencesUtil.getInstance(getApplicationContext());
-        String currentActivity = preferencesUtil.getCurrentActivityName();
-        if(currentActivity != null && currentActivity.equals(StringConstants.MESSAGE_CHAT_ACTIVITY)){
-            return;
-        }
         mNotificationManager = (NotificationManager)
             this.getSystemService(Context.NOTIFICATION_SERVICE);
         String jsonString = intent.getExtras().getString("message");
@@ -74,6 +74,19 @@ public class GcmIntentService extends IntentService {
                 }else if(entityType.equals("badge")){
                     newIntent = new Intent(this,MyAchievements.class);
                 }else{
+                    String currentActivity = preferencesUtil.getCurrentActivityName();
+                    if(currentActivity != null && currentActivity.equals(StringConstants.MESSAGE_CHAT_ACTIVITY)){
+                        MessageChatActivity activity = (MessageChatActivity) PreferencesUtil.getCurrentActivity();
+                        JSONArray jsonArray = new JSONArray();
+                        JSONObject messageJson = new JSONObject();
+                        messageJson.put("seq",0);
+                        messageJson.put("dated", DateUtil.dateToString(new Date()));
+                        messageJson.put("messagetext",jsonObject.getString("description"));
+                        messageJson.put("fromuserseq",entitySeq);
+                        jsonArray.put(messageJson);
+                        activity.addReceivedMessage(jsonArray);
+                        return;
+                    }
                     newIntent = new Intent(this,MessageChatActivity.class);
                     String fromUserName = jsonObject.getString("fromUserName");
                     MessageModel mm = new MessageModel();
