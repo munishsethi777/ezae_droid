@@ -20,8 +20,6 @@ import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
 import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.R;
 import in.learntech.rights.services.Interface.IServiceHandler;
@@ -163,8 +161,6 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
         refreshThread = new Thread() {
             @Override
             public void run() {
-
-
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -172,8 +168,6 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
                                 addMessagesChatModel(chatJsonArr);
                             }
                         });
-
-
             }
         };
         refreshThread.start();
@@ -238,7 +232,6 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
             mAuthTask.setShowProgress(false);
             mAuthTask.execute();
             try {
-
                 addMessageChatInstant(composeMessageText.getText().toString());
                 composeMessageText.setText("");
             }catch (Exception e){
