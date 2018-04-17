@@ -219,7 +219,7 @@ public class MessageChatActivity extends AppCompatActivity implements View.OnCli
     public void executeSendMessageCall(){
         EditText composeMessageText = (EditText)findViewById(R.id.messageText);
         String messageStr = URLEncoder.encode(String.valueOf(composeMessageText.getText()));
-        if(messageStr != "" && messageStr != null) {
+        if(!messageStr.equals("") && messageStr != null) {
             int lastSeq = 0;
             if(rowListItem.size() > 0) {
                 MessageChatModel lastMCM = rowListItem.get(rowListItem.size() - 1);

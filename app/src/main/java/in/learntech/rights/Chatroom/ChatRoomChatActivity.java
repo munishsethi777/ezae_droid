@@ -151,7 +151,7 @@ public class ChatRoomChatActivity extends AppCompatActivity implements View.OnCl
     public void executeSendMessageCall(){
         EditText composeMessageText = (EditText)findViewById(R.id.messageText);
         String messageStr = URLEncoder.encode(String.valueOf(composeMessageText.getText()));
-        if(messageStr != "" && messageStr != null) {
+        if(!messageStr.equals("") && messageStr != null) {
             int afterMessageSeq = 0;
             if(rowListItem.size() > 0) {
                 ChatRoomChatModel chatRoomChatModel = rowListItem.get(rowListItem.size() - 1);
