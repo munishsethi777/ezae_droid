@@ -44,6 +44,7 @@ public class MyAchievements extends AppCompatActivity implements SwipeRefreshLay
     private TextView mProfileRank;
     private TextView mPoints;
     private SwipeRefreshLayout swipeLayout;
+    LinearLayout mainLinearLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +57,8 @@ public class MyAchievements extends AppCompatActivity implements SwipeRefreshLay
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         mUserMgr = UserMgr.getInstance(this);
+        ConstraintLayout mainLayout = (ConstraintLayout) this.findViewById(R.id.myachievements_layout);
+        mainLinearLayout = (LinearLayout) mainLayout.findViewById(R.id.mainLayout);
         initViews();
         makeServiceCalls();
         swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
@@ -131,8 +134,7 @@ public class MyAchievements extends AppCompatActivity implements SwipeRefreshLay
         JSONArray badgesJSONArray = response.getJSONArray(BADGES);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(this.LAYOUT_INFLATER_SERVICE);
 
-        ConstraintLayout mainLayout = (ConstraintLayout) this.findViewById(R.id.myachievements_layout);
-        LinearLayout mainLinearLayout = (LinearLayout) mainLayout.findViewById(R.id.mainLayout);
+
         LinearLayout fragmentLayout = null;
         int count = 0;
         for (int i=0; i < badgesJSONArray.length(); i++) {
@@ -190,6 +192,7 @@ public class MyAchievements extends AppCompatActivity implements SwipeRefreshLay
      */
     @Override
     public void onRefresh() {
+        mainLinearLayout.removeViews(3, mainLinearLayout.getChildCount() - 3);
         makeServiceCalls();
     }
 }
