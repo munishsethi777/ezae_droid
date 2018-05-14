@@ -140,7 +140,8 @@ public class MyTrainings_MyModulesFragment extends Fragment implements SwipeRefr
      * Called when a swipe gesture triggers a refresh.
      */
     @Override
-    public void onRefresh() {
+    public void onRefresh(){
+        mParentLayout.removeViews(1, mParentLayout.getChildCount() - 1);
         executeGetModule();
     }
 }

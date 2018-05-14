@@ -155,6 +155,7 @@ public class MyTrainings_LearningPlansFragment extends Fragment implements Swipe
      */
     @Override
     public void onRefresh() {
+        mPrentLayout.removeAllViews();
         executeGetLPDetail();
     }
 }
