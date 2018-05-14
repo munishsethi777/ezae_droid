@@ -457,6 +457,9 @@ public class DashboardActivity extends AppCompatActivity
             startActivity(intent);
         }else if (id == R.id.imageView_logout) {
             logout();
+        }else if(id == R.id.imageView_userImage){
+            Intent intent = new Intent(this, UpdateProfileActivity.class);
+            startActivity(intent);
         }
 
     }
