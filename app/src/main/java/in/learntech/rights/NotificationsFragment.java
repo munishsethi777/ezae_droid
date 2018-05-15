@@ -232,6 +232,7 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
             String notificationType = jsonObject.getString("notificationtype");
             int entitySeq = jsonObject.getInt("entityseq");
             String from = jsonObject.getString("startdate");
+            int lpSeq = jsonObject.getInt("lpseq");
             Date fromDate = DateUtil.stringToDate(from);
             Button button = (Button) childLayout.findViewById(R.id.notification_button);
             String buttonTitle = "Nominate";
@@ -259,8 +260,8 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
                 imageView_button.setVisibility(View.GONE);
             }
             button.setText(buttonTitle);
-            button.setOnClickListener(new startChat(entitySeq, notificationTitle, null, buttonTitle,fromDate));
-            imageView_button.setOnClickListener(new startChat(entitySeq, notificationTitle, null, buttonTitle,fromDate));
+            button.setOnClickListener(new startChat(entitySeq, notificationTitle, null, buttonTitle,fromDate,lpSeq));
+            imageView_button.setOnClickListener(new startChat(entitySeq, notificationTitle, null, buttonTitle,fromDate,lpSeq));
             textView_nominated.setText(buttonTitle);
             textView_nominated.setVisibility(View.VISIBLE);
             TextView textView = (TextView) childLayout.findViewById(R.id.notification_title);
@@ -290,10 +291,12 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
         ChatRoomModel  model;
         String notificationType;
         Date eventFromDate;
-        startChat(int seq,String title,String imageUrl,String notType,Date fromDate){
+        int lpSeq;
+        startChat(int seq,String title,String imageUrl,String notType,Date fromDate,int learningPlanSeq){
             model = new ChatRoomModel(seq,title,imageUrl);
             notificationType = notType;
             eventFromDate = fromDate;
+            lpSeq = learningPlanSeq;
         }
         @Override
         public void onClick(View view) {
@@ -309,7 +312,6 @@ public class NotificationsFragment extends Fragment implements IServiceHandler{
             }else if(notificationType == "Nominated"){
                 Toast.makeText(getActivity(),"Training Already Nominated",Toast.LENGTH_LONG).show();
             }else if(notificationType == "Module"){
-                int lpSeq = 0;
                 int moduleSeq = model.getSeq();
                 Intent intent = new Intent(getActivity(),UserTrainingActivity.class);
                 intent.putExtra(StringConstants.LP_SEQ,lpSeq);
