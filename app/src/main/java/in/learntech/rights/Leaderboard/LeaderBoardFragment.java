@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,7 @@ public class LeaderBoardFragment extends Fragment implements IServiceHandler {
     private int mUserSeq;
     private int mCompanySeq;
     private RecyclerView mRecyclerView;
+    private static SwipeRefreshLayout swipeLayout;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -52,10 +54,11 @@ public class LeaderBoardFragment extends Fragment implements IServiceHandler {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static LeaderBoardFragment newInstance(String selectedItemId) {
+    public static LeaderBoardFragment newInstance(String selectedItemId,SwipeRefreshLayout swipeLayout) {
         LeaderBoardFragment fragment = new LeaderBoardFragment();
         Bundle args = new Bundle();
         args.putString(SELECTED_ITEM_ID, selectedItemId);
+        LeaderBoardFragment.swipeLayout = swipeLayout;
         fragment.setArguments(args);
         return fragment;
     }
@@ -99,6 +102,9 @@ public class LeaderBoardFragment extends Fragment implements IServiceHandler {
         Object args[] = {mUserSeq,mCompanySeq,id};
         String url = MessageFormat.format(actionUrl,args);
         mAuthTask = new ServiceHandler(url,this,getActivity());
+        if(LeaderBoardFragment.swipeLayout != null){
+            mAuthTask.setShowProgress(!swipeLayout.isRefreshing());
+        }
         mAuthTask.execute();
     }
 
@@ -154,6 +160,9 @@ public class LeaderBoardFragment extends Fragment implements IServiceHandler {
 
                  }
                 mRecyclerView.setAdapter(new LeaderboardRecyclerViewAdapter(getActivity().getApplicationContext(),models));
+                if(swipeLayout != null){
+                    swipeLayout.setRefreshing(false);
+                }
             }
         }catch (Exception e){
             message = "Error :- " + e.getMessage();
