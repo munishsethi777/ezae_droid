@@ -62,6 +62,7 @@ public class GcmIntentService extends IntentService {
             description = jsonObject.getString("description");
             Integer entitySeq = jsonObject.getInt("entitySeq");
             String entityType = jsonObject.getString("entityType");
+            String lpSeq = jsonObject.getString("lpSeq");
             UserMgr mUserManager = UserMgr.getInstance(getApplicationContext());
             if(!mUserManager.isUserLoggedIn()){
                 preferencesUtil.setNotificationState(true);
@@ -69,7 +70,11 @@ public class GcmIntentService extends IntentService {
             }else{
                 if(entityType.equals("module")){
                     newIntent = new Intent(this,UserTrainingActivity.class);
-                    newIntent.putExtra(StringConstants.LP_SEQ,0);
+                    int learningPlanSeq = 0;
+                    if(lpSeq != null && !lpSeq.isEmpty() && !lpSeq .equals("null")){
+                        learningPlanSeq = Integer.parseInt(lpSeq);
+                    }
+                    newIntent.putExtra(StringConstants.LP_SEQ,learningPlanSeq);
                     newIntent.putExtra(StringConstants.MODULE_SEQ,entitySeq);
                 }else if(entityType.equals("badge")){
                     newIntent = new Intent(this,MyAchievements.class);

@@ -128,8 +128,45 @@
                     </LinearLayout>
 
             </LinearLayout>
-
-
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/right_achievement"
+                        android:padding="10dp"
+                        android:text="Leaderboard"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_weight="0"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:background="@color/lp_block_backround"
+                        android:layout_margin="4dp"
+                        android:paddingBottom="5dp">
+                        <Spinner
+                            android:id="@+id/spinner_profile_module"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:spinnerMode="dialog">
+                        </Spinner>
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:id="@+id/layout_leaderboard"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                        </LinearLayout>
+                    </LinearLayout>
+            </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
