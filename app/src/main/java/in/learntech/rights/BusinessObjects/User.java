@@ -10,6 +10,7 @@ public class User {
     private String userImageUrl;
     private boolean isManager;
     private String profiles;
+    private String companyImage;
 
     public String getProfiles() {
         return profiles;
@@ -82,5 +83,12 @@ public class User {
     }
     public void setEmail(String email){
         this.email = email;
+    }
+
+    public String getCompanyImage(){
+        return this.companyImage;
+    }
+    public void setCompanyImage(String companyImage){
+        this.companyImage = companyImage;
     }
 }
