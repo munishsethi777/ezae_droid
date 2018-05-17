@@ -37,6 +37,7 @@ public class UserMgr {
         String userImage = userJson.getString("userImage");
         String profiles = userJson.getString("profiles");
         String fullName = userJson.getString("fullName");
+        String companyLogo = userJson.getString("companyLogo");
         boolean isManager = false;
         User existingUser = getUserByUserSeq(userSeq);
         User user = null;
@@ -53,6 +54,7 @@ public class UserMgr {
         user.setManager(isManager);
         user.setUserImageUrl(userImage);
         user.setProfiles(profiles);
+        user.setCompanyImage(companyLogo);
         userDataStore.save(user);
         mPreferencesUtil.setLoggedInUserSeq(userSeq);
         mPreferencesUtil.setLoggedInUserCompanySeq(companySeq);
@@ -92,6 +94,20 @@ public class UserMgr {
             userImage = user.getUserImageUrl();
         }
         return StringConstants.IMAGE_URL + "UserImages/"+userImage;
+    }
+
+    public String getLoggedInUserCompanyImageUrl(){
+        int userSeq  = mPreferencesUtil.getLoggedInUserSeq();
+        User user = userDataStore.getUserByUserSeq(userSeq);
+        String companyImage = null;
+        if(user.getCompanyImage() != null && !user.getCompanyImage().equals("") && !user.getCompanyImage().equals("null")){
+            companyImage = user.getCompanyImage();
+        }
+        if(companyImage != null ) {
+            return StringConstants.IMAGE_URL + "CompanyImages/companylogo/" + companyImage;
+        }else{
+            return null;
+        }
     }
 
     public void resentPreferences(){

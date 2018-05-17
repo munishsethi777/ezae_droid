@@ -18,7 +18,7 @@ public class DBUtil extends SQLiteOpenHelper {
     // Database Info
     private static final String TAG = "satya.DBUtil";
     private static final String DATABASE_NAME = "jumpkingapp";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 6;
     private static DBUtil sInstance;
     private static String CREATE_TABLE;
 
@@ -65,6 +65,9 @@ public class DBUtil extends SQLiteOpenHelper {
         if (oldVersion != newVersion) {
             // Simplest implementation is to drop all old tables and recreate them
             db.execSQL("DROP TABLE IF EXISTS " + User.TABLE_NAME);
+            db.execSQL("DROP TABLE IF EXISTS " + QuestionProgressDataStore.TABLE_NAME);
+            db.execSQL("DROP TABLE IF EXISTS " + CompanyUserDataStore.TABLE_NAME);
+            db.execSQL("DROP TABLE IF EXISTS " + ModuleDataStore.TABLE_NAME);
             onCreate(db);
         }
     }

@@ -16,10 +16,6 @@ public class UserDataStore{
 
     private Context mContext;
     private DBUtil mDBUtil;
-
-
-
-
     public static final String COLUMN_SEQ = "id";
     public static final String COLUMN_USER_SEQ = "userseq";
     public static final String COLUMN_NAME = "username";
@@ -29,6 +25,7 @@ public class UserDataStore{
     public static final String COLUMN_IS_MANAGER = "ismanager";
     public static final String COLUMN_USER_IMAGE_URL = "userimageurl";
     public static final String COLUMN_PROFILES = "profiles";
+    public static final String COLUMN_COMPANY_IMAGE = "companyimage";
 
     public static final String TABLE_NAME = "users";
 
@@ -40,7 +37,8 @@ public class UserDataStore{
             + COLUMN_USER_SEQ + " INTEGER, "
             + COLUMN_COMPANY_SEQ + " INTEGER, "
             + COLUMN_IS_MANAGER + " BOOLEAN, " + COLUMN_USER_IMAGE_URL + " TEXT ,"
-            + COLUMN_PROFILES + " TEXT )";
+            + COLUMN_PROFILES + " TEXT ,"
+            + COLUMN_COMPANY_IMAGE + " TEXT )";
     public static final String FIND_USER_BY_SEQ = "Select * from users where " + COLUMN_USER_SEQ + "={0}";
     public static final String COUNT_USER_BY_USER_NAME = "Select count(*) from users where " + COLUMN_NAME + "={0}";
 
@@ -58,6 +56,7 @@ public class UserDataStore{
         values.put(COLUMN_IS_MANAGER,user.isManager());
         values.put(COLUMN_USER_IMAGE_URL,user.getUserImageUrl());
         values.put(COLUMN_PROFILES,user.getProfiles());
+        values.put(COLUMN_COMPANY_IMAGE,user.getCompanyImage());
         int seq = user.getId();
         return mDBUtil.addOrUpdateUser(this.TABLE_NAME,values,String.valueOf(seq));
     }
@@ -91,7 +90,7 @@ public class UserDataStore{
         String isManager = c.getString(6);
         String imageUrl = c.getString(7);
         String userProfiles = c.getString(8);
-
+        String companyImage = c.getString(9);
         User user = new User();
         user.setId(id);
         user.setUserName(userName);
@@ -102,6 +101,7 @@ public class UserDataStore{
         user.setManager(isManager == "1");
         user.setUserImageUrl(imageUrl);
         user.setProfiles(userProfiles);
+        user.setCompanyImage(companyImage);
         return user;
     }
 
