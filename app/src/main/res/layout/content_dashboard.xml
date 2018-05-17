@@ -52,8 +52,7 @@
                             android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:onClick="onClick"
-                            android:src="@drawable/dummy"
-                            android:visibility="invisible"/>
+                            android:src="@drawable/dummy" />
                     </LinearLayout>
 
                     <LinearLayout

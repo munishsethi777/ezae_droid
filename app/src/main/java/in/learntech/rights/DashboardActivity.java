@@ -31,6 +31,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import java.text.MessageFormat;
 import java.util.HashMap;
+
+import in.learntech.rights.BusinessObjects.CompanyUser;
 import in.learntech.rights.BusinessObjects.User;
 import in.learntech.rights.Chatroom.ChatRoomActivity;
 import in.learntech.rights.Events.*;
@@ -82,6 +84,7 @@ public class DashboardActivity extends AppCompatActivity
     private CompanyUserManager mCompanyUserMgr;
     private SwipeRefreshLayout swipeLayout;
     private Spinner mSpinner;
+    private ImageView mCompanyImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +147,7 @@ public class DashboardActivity extends AppCompatActivity
         mUserNameView = (TextView)hView.findViewById(R.id.textView_userName);
         mUserEmailView = (TextView)hView.findViewById(R.id.textView_userEmail);
         mUserProfilesView = (TextView)hView.findViewById(R.id.textView_profiles);
+        mCompanyImage = (ImageView) findViewById(R.id.companyImageView);
         User user = mUserMgr.getLoggedInUser();
         mUserNameView.setText(user.getFullName());
         mUserName.setText(user.getFullName());
@@ -166,6 +170,13 @@ public class DashboardActivity extends AppCompatActivity
         String userImageUrl = mUserMgr.getLoggedInUserImageUrl();
         mLayoutHelper.loadImageRequest(mUserImageView,userImageUrl,true);
         mLayoutHelper.loadImageRequest(userImageView,userImageUrl,true);
+        String companyImageUrl = mUserMgr.getLoggedInUserCompanyImageUrl();
+        mCompanyImage.setVisibility(View.INVISIBLE);
+        if(companyImageUrl != null) {
+            mCompanyImage.setVisibility(View.VISIBLE);
+            mLayoutHelper.loadImageRequest(mCompanyImage, companyImageUrl, false);
+        }
+
     }
     private void executeCalls(boolean isShowProgress){
         int loggedInUserSeq = mUserMgr.getLoggedInUserSeq();
@@ -326,6 +337,8 @@ public class DashboardActivity extends AppCompatActivity
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     private void populateDashboardStates(JSONObject response)throws  Exception{
         JSONObject dashboardData = response.getJSONObject(DASHBOARD_DATA);
