@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.MessageFormat;
 
+import in.learntech.rights.BusinessObjects.User;
 import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.messages.MessageChatActivity;
 import in.learntech.rights.messages.MessageModel;
@@ -61,8 +62,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mUsernameView = (EditText) findViewById(R.id.username_view);
         mUserMgr = UserMgr.getInstance(this);
         int loggedInUserSeq = mUserMgr.getLoggedInUserSeq();
+        User loggedInUser = mUserMgr.getUserByUserSeq(loggedInUserSeq);
         mPreferencesUtil = PreferencesUtil.getInstance(getApplicationContext());
-        if(loggedInUserSeq > 0){
+        if(loggedInUserSeq > 0 && loggedInUser != null){
             goToDashboardActivity();
         }
         String url = BuildConfig.IMAGE_URL + "login-signup/style-12/Login-Register-12-960.jpg";

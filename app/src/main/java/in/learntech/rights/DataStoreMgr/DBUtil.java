@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import in.learntech.rights.BusinessObjects.User;
+import in.learntech.rights.utils.PreferencesUtil;
 
 
 /**
@@ -21,6 +22,7 @@ public class DBUtil extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 6;
     private static DBUtil sInstance;
     private static String CREATE_TABLE;
+    private static Context context;
 
     public DBUtil(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,6 +33,7 @@ public class DBUtil extends SQLiteOpenHelper {
         // See this article for more information: http://bit.ly/6LRzfx
         if (sInstance == null){
             sInstance = new DBUtil(context.getApplicationContext());
+            DBUtil.context = context;
         }
         return sInstance;
     }
@@ -63,6 +66,7 @@ public class DBUtil extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion != newVersion) {
+            PreferencesUtil.getInstance( DBUtil.context).resetPreferences();
             // Simplest implementation is to drop all old tables and recreate them
             db.execSQL("DROP TABLE IF EXISTS " + User.TABLE_NAME);
             db.execSQL("DROP TABLE IF EXISTS " + QuestionProgressDataStore.TABLE_NAME);
