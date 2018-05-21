@@ -98,7 +98,6 @@
             android:name=".UpdateProfileActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_update_profile" />
-        <activity android:name=".WebActivity" />
         <activity
             android:name=".Chatroom.ChatRoomChatActivity"
             android:configChanges="orientation|screenSize"

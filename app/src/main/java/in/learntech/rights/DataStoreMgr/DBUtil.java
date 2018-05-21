@@ -19,7 +19,7 @@ public class DBUtil extends SQLiteOpenHelper {
     // Database Info
     private static final String TAG = "satya.DBUtil";
     private static final String DATABASE_NAME = "jumpkingapp";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 4;
     private static DBUtil sInstance;
     private static String CREATE_TABLE;
     private static Context context;
