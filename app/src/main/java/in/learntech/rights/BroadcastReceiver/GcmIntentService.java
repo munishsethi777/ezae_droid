@@ -29,6 +29,7 @@ import in.learntech.rights.DashboardActivity;
 import in.learntech.rights.LoginActivity;
 import in.learntech.rights.Managers.UserMgr;
 import in.learntech.rights.MyAchievements;
+import in.learntech.rights.NotificationActivity;
 import in.learntech.rights.R;
 import in.learntech.rights.UserTrainingActivity;
 import in.learntech.rights.messages.MessageActivity;
@@ -78,7 +79,10 @@ public class GcmIntentService extends IntentService {
                     newIntent.putExtra(StringConstants.MODULE_SEQ,entitySeq);
                 }else if(entityType.equals("badge")){
                     newIntent = new Intent(this,MyAchievements.class);
-                }else{
+                } else if(entityType.equals("chatroom") || entityType.equals("classroom") ){
+                    newIntent = new Intent(this,NotificationActivity.class);
+                }
+                else{
                     String currentActivity = preferencesUtil.getCurrentActivityName();
                     if(currentActivity != null && currentActivity.equals(StringConstants.MESSAGE_CHAT_ACTIVITY)){
                         MessageChatActivity activity = (MessageChatActivity) PreferencesUtil.getCurrentActivity();
