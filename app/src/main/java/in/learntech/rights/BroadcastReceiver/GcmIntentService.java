@@ -63,13 +63,14 @@ public class GcmIntentService extends IntentService {
             description = jsonObject.getString("description");
             Integer entitySeq = jsonObject.getInt("entitySeq");
             String entityType = jsonObject.getString("entityType");
-            String lpSeq = jsonObject.getString("lpSeq");
+
             UserMgr mUserManager = UserMgr.getInstance(getApplicationContext());
             if(!mUserManager.isUserLoggedIn()){
                 preferencesUtil.setNotificationState(true);
                 preferencesUtil.setNotificationData(jsonObject);
             }else{
                 if(entityType.equals("module")){
+                    String lpSeq = jsonObject.getString("lpSeq");
                     newIntent = new Intent(this,UserTrainingActivity.class);
                     int learningPlanSeq = 0;
                     if(lpSeq != null && !lpSeq.isEmpty() && !lpSeq .equals("null")){
