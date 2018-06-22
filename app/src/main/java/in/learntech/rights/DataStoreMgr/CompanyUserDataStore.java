@@ -39,7 +39,7 @@ public class CompanyUserDataStore {
             + COLUMN_COMPANY_SEQ + " TEXT ,"
             + COLUMN_FULLNAME + " TEXT )";
     public static final String FIND_BY_COMPANY_SEQ = "Select * from companyusers where "
-            + COLUMN_COMPANY_SEQ + "= {0} ";
+            + COLUMN_COMPANY_SEQ + "= {0,number,#} ";
 
     public CompanyUserDataStore(Context context) {
         mContext = context;
@@ -60,7 +60,7 @@ public class CompanyUserDataStore {
 
 
     public ArrayList<CompanyUser> getCompanyUsersByCompanySeq(int companySeq) {
-        Object[] args = {companySeq};
+        Integer[] args = {companySeq};
         String query = MessageFormat.format(FIND_BY_COMPANY_SEQ, args);
         Cursor c = mDBUtil.executeQuery(query);
         ArrayList<CompanyUser> companyUserList = CursorToList(c);
