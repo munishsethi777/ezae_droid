@@ -99,7 +99,7 @@ public class LeaderBoardFragment extends Fragment implements IServiceHandler {
         }else if(prefix.equals("lp")){
             actionUrl = StringConstants.GET_LEADERBOARD_BY_LEARNINGPLAN;
         }
-        Object args[] = {mUserSeq,mCompanySeq,id};
+        Object args[] = {mUserSeq,mCompanySeq,Integer.parseInt(id)};
         String url = MessageFormat.format(actionUrl,args);
         mAuthTask = new ServiceHandler(url,this,getActivity());
         if(LeaderBoardFragment.swipeLayout != null){
