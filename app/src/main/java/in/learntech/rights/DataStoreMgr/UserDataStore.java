@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import java.text.MessageFormat;
+import java.text.NumberFormat;
 
 import in.learntech.rights.BusinessObjects.User;
 
@@ -39,7 +40,7 @@ public class UserDataStore{
             + COLUMN_IS_MANAGER + " BOOLEAN, " + COLUMN_USER_IMAGE_URL + " TEXT ,"
             + COLUMN_PROFILES + " TEXT ,"
             + COLUMN_COMPANY_IMAGE + " TEXT )";
-    public static final String FIND_USER_BY_SEQ = "Select * from users where " + COLUMN_USER_SEQ + "={0}";
+    public static final String FIND_USER_BY_SEQ = "Select * from users where " + COLUMN_USER_SEQ + "={0,number,#}";
     public static final String COUNT_USER_BY_USER_NAME = "Select count(*) from users where " + COLUMN_NAME + "={0}";
 
     public UserDataStore(Context context){
@@ -64,7 +65,7 @@ public class UserDataStore{
 
 
     public User getUserByUserSeq(int userSeq){
-        Object[] args  = {userSeq};
+        Integer[] args  = {userSeq};
         String query = MessageFormat.format(FIND_USER_BY_SEQ,args);
         Cursor c = mDBUtil.executeQuery(query);
         if(c.moveToFirst()) {
