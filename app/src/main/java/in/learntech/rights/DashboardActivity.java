@@ -59,6 +59,8 @@ public class DashboardActivity extends AppCompatActivity
     public static final String SYNC_USERS = "syncUsers";
     public static final String GET_PROFILES_AND_MODULES = "getProfilesAndModules";
     private ServiceHandler mAuthTask = null;
+    private ServiceHandler mAuthGetCountTask = null;
+    private ServiceHandler mAuthSynchUserTask = null;
     private UserMgr mUserMgr ;
     private TextView mScores;
     private TextView mProfileRank;
@@ -85,6 +87,7 @@ public class DashboardActivity extends AppCompatActivity
     private SwipeRefreshLayout swipeLayout;
     private Spinner mSpinner;
     private ImageView mCompanyImage;
+    private Boolean isEnabledCompany;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +111,7 @@ public class DashboardActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         mLayoutHelper = new LayoutHelper(this,null,null);
         initViews();
+        isEnabledCompany = true;
         //executeCalls(true);
         //android.app.Fragment fragment = NotificationsFragment.newInstance(mLoggedInUserSeq,mLoggedInCompanySeq);
         //getFragmentManager().beginTransaction().replace(R.id.layout_notifications,fragment).commit();
@@ -190,14 +194,14 @@ public class DashboardActivity extends AppCompatActivity
         mAuthTask.setShowProgress(isShowProgress);
         mAuthTask.execute();
 
-        mAuthTask = new ServiceHandler(getCountsUrl,this, GET_COUNTS,this);
-        mAuthTask.setShowProgress(isShowProgress);
-        mAuthTask.execute();
+        mAuthGetCountTask = new ServiceHandler(getCountsUrl,this, GET_COUNTS,this);
+        mAuthGetCountTask.setShowProgress(isShowProgress);
+        //mAuthGetCountTask.execute();
 
         //SYNC USERS
-        mAuthTask = new ServiceHandler(syncUsersUrl,this, SYNC_USERS,this);
-        mAuthTask.setShowProgress(false);
-        mAuthTask.execute();
+        mAuthSynchUserTask = new ServiceHandler(syncUsersUrl,this, SYNC_USERS,this);
+        mAuthSynchUserTask.setShowProgress(false);
+        //mAuthSynchUserTask.execute();
 
     }
 
@@ -329,6 +333,14 @@ public class DashboardActivity extends AppCompatActivity
                     //populateProfileAndModules(response);
                     message = null;
                 }
+            }else{
+                if(response.has("isenabled")){
+                    boolean isEnabled =  response.getBoolean("isenabled");
+                    if(!isEnabled){
+                        logout();
+                        return;
+                    }
+                }
             }
         }catch (Exception e){
             message = "Error :- " + e.getMessage();
@@ -363,6 +375,8 @@ public class DashboardActivity extends AppCompatActivity
 
         String completedTrainingsStr = completedTrainings;
         //mCompletedTrainings.setText(completedTrainingsStr);
+        mAuthGetCountTask.execute();
+        mAuthSynchUserTask.execute();
     }
 
     private void populateDashboardCounts(JSONObject response)throws  Exception{
