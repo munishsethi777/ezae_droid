@@ -172,7 +172,8 @@ public class SendMessageActivity extends AppCompatActivity implements View.OnCli
         final ArrayList<CompanyUser> filteredModelList = new ArrayList<>();
         for (CompanyUser model : models) {
             final String text = model.getUserName().toLowerCase();
-            if (text.contains(lowerCaseQuery)) {
+            final String fullName = model.getFullName().toLowerCase();
+            if (text.contains(lowerCaseQuery) || fullName.contains(lowerCaseQuery)) {
                 filteredModelList.add(model);
             }
         }
