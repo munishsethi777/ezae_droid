@@ -37,7 +37,7 @@ public class ModuleDataStore {
             COLUMN_DATED + " LONG)";
 
     public static final String FIND_MODULE_PROGRESSES = "Select * from pendingmodules where "
-            + COLUMN_USER_SEQ + "= {0} ";
+            + COLUMN_USER_SEQ + "= {0,number,#}";
 
     public long save(PendingToUpload module){
         ContentValues values = new ContentValues();
@@ -65,7 +65,7 @@ public class ModuleDataStore {
     }
 
     public List<PendingToUpload> getPendingModules(int userSeq){
-        Object[] args  = {userSeq};
+        Integer[] args  = {userSeq};
         String query = MessageFormat.format(FIND_MODULE_PROGRESSES,args);
         Cursor c = mDBUtil.executeQuery(query);
         List<PendingToUpload> questionProgressesList = CursorToList(c);
