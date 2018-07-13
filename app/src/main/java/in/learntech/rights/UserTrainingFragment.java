@@ -451,7 +451,20 @@ public class UserTrainingFragment extends Fragment implements IServiceHandler {
             @Override
             public void onClick(View v)
             {
-                mSelectedAnsSeqs.add(v.getTag().toString());
+                boolean isChecked = false;
+                if(v instanceof  CheckBox){
+                    CheckBox c = (CheckBox) v;
+                    isChecked = c.isChecked();
+                }else if(v instanceof  RadioButton){
+                    RadioButton r = (RadioButton)v;
+                    isChecked = r.isChecked();
+                    mSelectedAnsSeqs.clear();
+                }
+                if(isChecked) {
+                    mSelectedAnsSeqs.add(v.getTag().toString());
+                }else{
+                    mSelectedAnsSeqs.remove(v.getTag().toString());
+                }
             }
         });
     }
