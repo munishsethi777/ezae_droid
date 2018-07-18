@@ -198,7 +198,9 @@ public class UserTrainingActivity extends AppCompatActivity implements IServiceH
             }else{
                 questionNoStr += " Pages";
             }
-            mQuestionNoTextView.setText(questionNoStr);
+            if(mModuleQuestionsJson.length() > 1) {
+                mQuestionNoTextView.setText(questionNoStr);
+            }
             JSONArray progressArray = ques.getJSONArray("progress");
             JSONArray localProgress = mQuesMgr.getProgressJsonArr(ques.getInt("seq"),mModuleSeq,mLpSeq);
             progressArray = LayoutHelper.mergeTwoJsonArray(progressArray,localProgress);
