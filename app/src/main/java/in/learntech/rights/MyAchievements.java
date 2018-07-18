@@ -64,6 +64,7 @@ public class MyAchievements extends AppCompatActivity implements SwipeRefreshLay
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_achievements);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Dashboard");
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null){
