@@ -212,9 +212,19 @@ public class UpdateProfileActivity extends AppCompatActivity implements IService
             updateProfile();
         }else if(id == R.id.imageView_user ){
             clickpic();
+        }else if(id == R.id.profile_logout){
+            logout();
+        }else if(id == R.id.profile_changepassword){
+            Intent intent = new Intent(this,ChangePasswordActivity.class);
+            startActivity(intent);
         }
     }
-
+    private void logout(){
+        mUserMgr.resentPreferences();
+        Intent intent = new Intent(this,LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

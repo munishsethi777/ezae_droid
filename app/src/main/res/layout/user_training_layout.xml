@@ -17,12 +17,12 @@
         <TextView
             android:id="@+id/textView_module_title"
             android:text=""
-            android:textSize="16sp"
+            android:textSize="18sp"
 
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/Blue"/>
+            android:textColor="@color/black"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
