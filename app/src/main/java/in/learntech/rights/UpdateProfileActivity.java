@@ -213,7 +213,7 @@ public class UpdateProfileActivity extends AppCompatActivity implements IService
         }else if(id == R.id.imageView_user ){
             clickpic();
         }else if(id == R.id.profile_logout){
-            logout();
+            logoutConfirm();
         }else if(id == R.id.profile_changepassword){
             Intent intent = new Intent(this,ChangePasswordActivity.class);
             startActivity(intent);
@@ -224,6 +224,24 @@ public class UpdateProfileActivity extends AppCompatActivity implements IService
         Intent intent = new Intent(this,LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+    public void logoutConfirm() {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle("Logout");
+        builder.setMessage("Do you really want to logout?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                logout();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        android.support.v7.app.AlertDialog alert = builder.create();
+        alert.show();
     }
     @Override
     public boolean onSupportNavigateUp() {

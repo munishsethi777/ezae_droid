@@ -1,5 +1,6 @@
 package in.learntech.rights;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -285,7 +286,7 @@ public class DashboardActivity extends AppCompatActivity
             Intent notesIntent = new Intent(this,UpdateProfileActivity.class);
             startActivity(notesIntent);
         } else if (id == R.id.nav_logout) {
-            logout();
+            logoutConfirm();
         } else if(id == R.id.nav_change_password){
             Intent intent = new Intent(this,ChangePasswordActivity.class);
             startActivity(intent);
@@ -308,6 +309,25 @@ public class DashboardActivity extends AppCompatActivity
         Intent intent = new Intent(this,LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void logoutConfirm() {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle("Logout");
+        builder.setMessage("Do you really want to logout?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                logout();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        android.support.v7.app.AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override
