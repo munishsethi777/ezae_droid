@@ -9,7 +9,7 @@
         <item
             android:id="@+id/nav_achivements"
             android:icon="@drawable/ic_achievements"
-            android:title="My Achievements" />
+            android:title="Dashboard" />
         <item
             android:id="@+id/nav_messages"
             android:icon="@drawable/ic_menu_messags"
