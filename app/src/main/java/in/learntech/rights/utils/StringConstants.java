@@ -49,12 +49,16 @@ public class StringConstants {
     public static final String UPDATE_USER_PROFILE = ACTION_API_URL + "UserAction.php?call=updateUserProfile&userSeq={0,number,#}&companySeq={1,number,#}&userProfileDetail={2}";
     public static final String SYNCH_USERS = ACTION_API_URL + "UserAction.php?call=synchUsersAndAdmins&userSeq={0,number,#}&companySeq={1,number,#}";
     public static final String GET_PROFILE_AND_MODULES = ACTION_API_URL + "UserAction.php?call=getProfilesAndModules&userSeq={0,number,#}&companySeq={1,number,#}";
+
     public static final String GET_LEADERBOARD_BY_MODULE = ACTION_API_URL + "UserAction.php?call=getLeaderBoardDataByModule&userSeq={0,number,#}&companySeq={1,number,#}&moduleSeq={2,number,#}";
     public static final String GET_LEADERBOARD_BY_PROFILE = ACTION_API_URL + "UserAction.php?call=getLeaderBoardDataByProfile&userSeq={0,number,#}&companySeq={1,number,#}&profileSeq={2,number,#}";
     public static final String GET_LEADERBOARD_BY_LEARNINGPLAN = ACTION_API_URL + "UserAction.php?call=getLeaderBoardDataByLearningPlan&userSeq={0,number,#}&companySeq={1,number,#}&lpSeq={2,number,#}";
     public static final String NOMINATE_TRAINING = ACTION_API_URL+"UserAction.php?call=nominateCT&userSeq={0,number,#}&companySeq={1,number,#}&trainingSeq={2,number,#}&lpSeq={3,number,#}";
+    public static final String GET_SCORES = ACTION_API_URL+"UserAction.php?call=getScoresByLearningPlan&userSeq={0,number,#}&companySeq={1,number,#}&lpSeq={2,number,#}";
+
     //LearningPlan Actions
     public static final String GET_LEARNING_PLANS = ACTION_API_URL + "LearningPlanAction.php?call=getLearningPlans&userSeq={0,number,#}&companySeq={1,number,#}";
+    public static final String GET_ALL_LEARNING_PLANS = ACTION_API_URL + "LearningPlanAction.php?call=getLearningPlansByUser&userSeq={0,number,#}&companySeq={1,number,#}";
 
     //Badge Actions
     public static final String GET_MYACHIEVEMENT_MY_BADGES = ACTION_API_URL + "BadgeAction.php?call=myAchievementMyBadges&userSeq={0,number,#}&companyseq={1,number,#}";

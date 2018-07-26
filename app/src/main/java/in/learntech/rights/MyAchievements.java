@@ -47,6 +47,7 @@ public class MyAchievements extends AppCompatActivity implements SwipeRefreshLay
     public static final String GET_MY_ACHIEVEMENTS = "myAchievements";
     public static final String GET_MY_ACHIEVEMENT_BADGES = "myAchievementMyBadges";
     public static final String GET_PROFILES_AND_MODULES = "getProfilesAndModules";
+    public static final String GET_LEARNING_PLANS = "getLearningPlans";
 
     private UserMgr mUserMgr ;
     private ServiceHandler mAuthTask = null;
@@ -58,6 +59,7 @@ public class MyAchievements extends AppCompatActivity implements SwipeRefreshLay
     private SwipeRefreshLayout swipeLayout;
     LinearLayout mainLinearLayout;
     private Spinner spinner_profile_module;
+    private Spinner spinner_learningPlans;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class MyAchievements extends AppCompatActivity implements SwipeRefreshLay
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
         spinner_profile_module = (Spinner)findViewById(R.id.spinner_profile_module) ;
+        spinner_learningPlans = (Spinner)findViewById(R.id.spinner_learning_plans);
         mUserMgr = UserMgr.getInstance(this);
         ConstraintLayout mainLayout = (ConstraintLayout) this.findViewById(R.id.myachievements_layout);
         mainLinearLayout = (LinearLayout) mainLayout.findViewById(R.id.mainLayout);
@@ -93,6 +96,7 @@ public class MyAchievements extends AppCompatActivity implements SwipeRefreshLay
         String achievementsCountUrl = MessageFormat.format(StringConstants.GET_MYACHIEVEMENT_COUNTS,args);
         String myBadgesURL = MessageFormat.format(StringConstants.GET_MYACHIEVEMENT_MY_BADGES,args);
         String getProfileAndModules = MessageFormat.format(StringConstants.GET_PROFILE_AND_MODULES,args);
+        String getLearningPlans = MessageFormat.format(StringConstants.GET_ALL_LEARNING_PLANS,args);
         mAuthTask = new ServiceHandler(achievementsCountUrl,this, GET_MY_ACHIEVEMENTS,this);
         if(swipeLayout != null){
             mAuthTask.setShowProgress(!swipeLayout.isRefreshing());
@@ -104,6 +108,11 @@ public class MyAchievements extends AppCompatActivity implements SwipeRefreshLay
         }
         mAuthTask.execute();
         mAuthTask = new ServiceHandler(getProfileAndModules,this, GET_PROFILES_AND_MODULES,this);
+        if(swipeLayout != null){
+            mAuthTask.setShowProgress(!swipeLayout.isRefreshing());
+        }
+        mAuthTask.execute();
+        mAuthTask = new ServiceHandler(getLearningPlans,this, GET_LEARNING_PLANS,this);
         if(swipeLayout != null){
             mAuthTask.setShowProgress(!swipeLayout.isRefreshing());
         }
@@ -136,11 +145,44 @@ public class MyAchievements extends AppCompatActivity implements SwipeRefreshLay
             });
     }
 
+    private void populateLearningPlans(JSONObject response)throws Exception{
+        JSONArray learningPlans = response.getJSONArray("learningplans");
+        String[] spinnerArray = new String[learningPlans.length()];
+        final HashMap<Integer,String> spinnerMap = new HashMap<Integer, String>();
+        for (int i = 0; i < learningPlans.length(); i++)
+        {
+            JSONObject json = learningPlans.getJSONObject(i);
+            spinnerMap.put(i,"score_"+json.getString("id"));
+            spinnerArray[i] = json.getString("title");
+        }
+        ArrayAdapter<String> adapter =new ArrayAdapter<String>(getApplicationContext(),R.layout.spinner_item, spinnerArray);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
+        spinner_learningPlans.setAdapter(adapter);
+        spinner_learningPlans.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+            public void onItemSelected(AdapterView<?> parent, View view, int pos,
+                                       long id) {
+                ((TextView) view).setTextColor(Color.BLACK);
+                String selectedId = spinnerMap.get(pos);
+                LeaderBoardFragment itemFragment = LeaderBoardFragment.newInstance(selectedId,swipeLayout);
+                setMyScoreFragment(itemFragment);
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
     protected void setFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction =
                 fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.layout_leaderboard,fragment).commit();
+    }
+
+    protected void setMyScoreFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction =
+                fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.layout_myscore,fragment).commit();
     }
 
     @Override
@@ -157,6 +199,8 @@ public class MyAchievements extends AppCompatActivity implements SwipeRefreshLay
                     populateBadges(response);
                 }else if(mCallName.equals(GET_PROFILES_AND_MODULES)){
                     populateProfileAndModules(response);
+                }else if(mCallName.equals(GET_LEARNING_PLANS)){
+                    populateLearningPlans(response);
                 }
             }
         }catch (Exception e){
