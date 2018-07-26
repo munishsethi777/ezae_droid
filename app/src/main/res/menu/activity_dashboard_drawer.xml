@@ -26,6 +26,10 @@
             android:id="@+id/nav_Events"
             android:icon="@drawable/ic_menu_events"
             android:title="Events" />
+        <item
+            android:id="@+id/nav_Notifications"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Notifications" />
     </group>
 
     <item android:title="Profile">
@@ -33,7 +37,7 @@
             <item
                 android:id="@+id/nav_update_profile"
                 android:icon="@drawable/ic_menu_profile"
-                android:title="Update Profile" />
+                android:title="Settings" />
             <item
                 android:id="@+id/nav_change_password"
                 android:icon="@drawable/ic_menu_passowrd"
