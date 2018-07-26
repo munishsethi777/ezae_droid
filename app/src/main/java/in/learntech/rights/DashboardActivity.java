@@ -142,7 +142,7 @@ public class DashboardActivity extends AppCompatActivity
         //mCompletedTrainings = (TextView) findViewById(R.id.textView_completed_trainings);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View hView =  navigationView.getHeaderView(0);
-        notificationCountTextView = (TextView)findViewById(R.id.notificationCount);
+        //notificationCountTextView = (TextView)findViewById(R.id.notificationCount);
         learningPlanCountTextView = (TextView)findViewById(R.id.learningPlanCount);
         messagesCountTextView = (TextView)findViewById(R.id.messagesCount);
         mUserImageView = (ImageView)hView.findViewById(R.id.imageView_user);
@@ -297,6 +297,9 @@ public class DashboardActivity extends AppCompatActivity
         else if(id == R.id.nav_Events){
             Intent intent = new Intent(this, in.learntech.rights.Events.MainActivity.class);
             startActivity(intent);
+        }else if(id == R.id.nav_Notifications){
+            Intent intent = new Intent(this, NotificationActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -405,9 +408,9 @@ public class DashboardActivity extends AppCompatActivity
         Integer notificationCount = dashboardData.getInt("notificationCount");
         Integer messagesCount = dashboardData.getInt("messages");
         if(notificationCount > 0){
-            notificationCountTextView.setText("+"+notificationCount.toString());
+            //notificationCountTextView.setText("+"+notificationCount.toString());
         }else{
-            notificationCountTextView.setText("");
+            //notificationCountTextView.setText("");
         }
         if(pendingLpCount > 0) {
             learningPlanCountTextView.setText("+"+pendingLpCount.toString());
@@ -487,19 +490,22 @@ public class DashboardActivity extends AppCompatActivity
         } else if (id == R.id.imageView_notes) {
             Intent notesIntent = new Intent(this,NotesActivity.class);
             startActivity(notesIntent);
-        } else if (id == R.id.imageView_updateProfile) {
-            Intent notesIntent = new Intent(this,UpdateProfileActivity.class);
-            startActivity(notesIntent);
-        }else if (id == R.id.imageView_notifications) {
+        } //else if (id == R.id.imageView_updateProfile) {
+           // Intent notesIntent = new Intent(this,UpdateProfileActivity.class);
+           // startActivity(notesIntent);
+        //}
+        else if (id == R.id.imageView_notifications) {
             Intent intent = new Intent(this,NotificationActivity.class);
             startActivity(intent);
         }else if (id == R.id.imageView_chat) {
             Intent intent = new Intent(this,ChatRoomActivity.class);
             startActivity(intent);
-        }else if (id == R.id.imageView_password) {
-            Intent intent = new Intent(this,ChangePasswordActivity.class);
-            startActivity(intent);
-        }else if (id == R.id.imageView_calendar) {
+        }
+        //else if (id == R.id.imageView_password) {
+           // Intent intent = new Intent(this,ChangePasswordActivity.class);
+          //  startActivity(intent);
+        //}
+        else if (id == R.id.imageView_calendar) {
             Intent intent = new Intent(this, in.learntech.rights.Events.MainActivity.class);
             startActivity(intent);
         }else if (id == R.id.imageView_logout) {
