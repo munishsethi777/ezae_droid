@@ -248,7 +248,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp">
 
-                    <LinearLayout
+                    <!--LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -283,7 +283,7 @@
                                 android:textSize="15dp"
                                 android:layout_marginTop="8dp" />
                         </LinearLayout>
-                    </LinearLayout>
+                    </LinearLayout-->
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -363,6 +363,36 @@
                                 android:textColor="@color/White"
                                 android:layout_marginTop="8dp"
                                 android:textSize="15dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center">
+                        <LinearLayout
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            android:orientation="vertical"
+                            android:background="@drawable/dash_chatrooms_block"
+                            android:padding="6dp">
+                            <ImageButton
+                                android:id="@+id/imageView_chat"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:onClick="onClick"
+                                android:src="@drawable/dash_chatrooms"
+                                android:layout_marginTop="15dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Chatrooms"
+                                android:textColor="@color/White"
+                                android:layout_marginTop="8dp"
+                                android:textSize="15dp"  />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -471,41 +501,12 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <!--LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center">
-                        <LinearLayout
-                            android:layout_width="110dp"
-                            android:layout_height="110dp"
-                            android:orientation="vertical"
-                            android:background="@drawable/dash_chatrooms_block"
-                            android:padding="6dp">
-                            <ImageButton
-                                android:id="@+id/imageView_chat"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:background="@android:color/transparent"
-                                android:onClick="onClick"
-                                android:src="@drawable/dash_chatrooms"
-                                android:layout_marginTop="15dp"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:text="Chatrooms"
-                                android:textColor="@color/White"
-                                android:layout_marginTop="8dp"
-                                android:textSize="15dp"  />
-                            </LinearLayout>
-                    </LinearLayout>
+
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -571,7 +572,7 @@
                     </LinearLayout>
 
 
-                </LinearLayout>
+                </LinearLayout-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
