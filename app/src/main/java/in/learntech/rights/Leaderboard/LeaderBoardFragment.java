@@ -35,6 +35,10 @@ public class LeaderBoardFragment extends Fragment implements IServiceHandler {
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String SELECTED_ITEM_ID = "selectedItemID";
+    private static final String GET_SCORES = "getScores";
+    private static final String GET_LEADERBOARD_BY_MODULE = "getLeaderboardByModule";
+    private static final String GET_LEADERBOARD_BY_LEARNINGPLAN = "getLeaderboardByPlan";
+    private static final String GET_LEADERBOARD_BY_PROFILE = "getLeaderboardByProfile";
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private String mSelectedId;
@@ -44,6 +48,7 @@ public class LeaderBoardFragment extends Fragment implements IServiceHandler {
     private int mCompanySeq;
     private RecyclerView mRecyclerView;
     private static SwipeRefreshLayout swipeLayout;
+    private String mCallName;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -66,7 +71,6 @@ public class LeaderBoardFragment extends Fragment implements IServiceHandler {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             mSelectedId = getArguments().getString(SELECTED_ITEM_ID);
         }
@@ -94,14 +98,20 @@ public class LeaderBoardFragment extends Fragment implements IServiceHandler {
         String selectedIdArr[] = mSelectedId.split("_");
         String prefix = selectedIdArr[0];
         String id = selectedIdArr[1];
+        String callName = GET_LEADERBOARD_BY_PROFILE;
         if(prefix.equals("module")){
             actionUrl = StringConstants.GET_LEADERBOARD_BY_MODULE;
+            callName = GET_LEADERBOARD_BY_MODULE;
         }else if(prefix.equals("lp")){
             actionUrl = StringConstants.GET_LEADERBOARD_BY_LEARNINGPLAN;
+            callName = GET_LEADERBOARD_BY_LEARNINGPLAN;
+        }else if(prefix.equals("score")){
+            actionUrl = StringConstants.GET_SCORES;
+            callName = GET_SCORES;
         }
         Object args[] = {mUserSeq,mCompanySeq,Integer.parseInt(id)};
         String url = MessageFormat.format(actionUrl,args);
-        mAuthTask = new ServiceHandler(url,this,getActivity());
+        mAuthTask = new ServiceHandler(url,this,callName,getActivity());
         if(LeaderBoardFragment.swipeLayout != null){
             mAuthTask.setShowProgress(!swipeLayout.isRefreshing());
         }
@@ -135,31 +145,58 @@ public class LeaderBoardFragment extends Fragment implements IServiceHandler {
             success = response.getInt(StringConstants.SUCCESS) == 1 ? true : false;
             message = response.getString(StringConstants.MESSAGE);
             if (success) {
-                JSONArray leaderBoardDataArr = response.getJSONArray("leaderboarddata");
                 List<LeaderboardModel> models = new ArrayList<>();
-                 if(leaderBoardDataArr.length() > 0) {
-                     for (int i = 0; i < leaderBoardDataArr.length(); i++) {
-                         JSONObject leaderboardData = leaderBoardDataArr.getJSONObject(i);
-                         LeaderboardModel model = new LeaderboardModel();
-                         String userName = leaderboardData.getString("uname");
-                         if (userName != null && !userName.equals("") && !userName.equals("null")) {
-                         } else {
-                             userName = leaderboardData.getString("username");
+                if(mCallName == GET_SCORES){
+                    JSONArray scoreDataArr = response.getJSONArray("scores");
+                    if(scoreDataArr.length() > 0) {
+                        for (int i = 0; i < scoreDataArr.length(); i++) {
+                            JSONObject scoreData = scoreDataArr.getJSONObject(i);
+                            LeaderboardModel model = new LeaderboardModel();
+                            String moduleTitle = scoreData.getString("module");
+                            model.setUserName(moduleTitle);
+                            //model.setDateDiff(scoreData.getString("dateofplaytilldiff"));
+                            model.setScore(scoreData.getString("score"));
+                            String moduleImage = scoreData.getString("moduleimage");
+                            if(moduleImage == "null" || moduleImage == "") {
+                                moduleImage = "dummy.jpg";
+                            }else{
+                                moduleImage = StringConstants.IMAGE_URL + "/modules/" + scoreData.getString("moduleimage");
+                            }
+                            model.setUserImage(moduleImage);
+                            models.add(model);
+                        }
+                    }else{
+                        LeaderboardModel model = new LeaderboardModel();
+                        model.setUserName("      No data found for selected option");
+                        models.add(model);
+
+                    }
+                }
+                else{
+                    JSONArray leaderBoardDataArr = response.getJSONArray("leaderboarddata");
+                     if(leaderBoardDataArr.length() > 0) {
+                         for (int i = 0; i < leaderBoardDataArr.length(); i++) {
+                             JSONObject leaderboardData = leaderBoardDataArr.getJSONObject(i);
+                             LeaderboardModel model = new LeaderboardModel();
+                             String userName = leaderboardData.getString("uname");
+                             if (userName != null && !userName.equals("") && !userName.equals("null")) {
+                             } else {
+                                 userName = leaderboardData.getString("username");
+                             }
+                             model.setUserName(userName);
+                             model.setDateDiff(leaderboardData.getString("dateofplaytilldiff"));
+                             model.setScore(leaderboardData.getString("totalscore"));
+                             String imagePath = StringConstants.WEB_URL + leaderboardData.getString("imagepath");
+                             model.setUserImage(imagePath);
+                             models.add(model);
                          }
-                         model.setUserName(userName);
-                         model.setDateDiff(leaderboardData.getString("dateofplaytilldiff"));
-                         model.setScore(leaderboardData.getString("totalscore"));
-                         String imagePath = StringConstants.WEB_URL + leaderboardData.getString("imagepath");
-                         model.setUserImage(imagePath);
+                     }else{
+                         LeaderboardModel model = new LeaderboardModel();
+                         model.setUserName("      No data found for selected option");
                          models.add(model);
                      }
-                 }else{
-                     LeaderboardModel model = new LeaderboardModel();
-                     model.setUserName("      No data found for selected option");
-                     models.add(model);
-
-                 }
-                mRecyclerView.setAdapter(new LeaderboardRecyclerViewAdapter(getActivity().getApplicationContext(),models));
+                }
+                mRecyclerView.setAdapter(new LeaderboardRecyclerViewAdapter(getContext(),models));
                 if(swipeLayout != null){
                     swipeLayout.setRefreshing(false);
                 }
@@ -175,7 +212,7 @@ public class LeaderBoardFragment extends Fragment implements IServiceHandler {
 
     @Override
     public void setCallName(String call) {
-
+        mCallName = call;
     }
 
     /**
