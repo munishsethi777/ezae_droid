@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "112984333092",
+    "firebase_url": "https://right-management-ff7a6.firebaseio.com",
+    "project_id": "right-management-ff7a6",
+    "storage_bucket": "right-management-ff7a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112984333092:android:dc534754be8ac4e7",
+        "android_client_info": {
+          "package_name": "in.learntech.rights"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112984333092-eu5ke4j8eu31c5010ctkfeduc23777kg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.learntech.rights",
+            "certificate_hash": "e6dde5eb4c25ceaba0ce332e9316ff407e11963f"
+          }
+        },
+        {
+          "client_id": "112984333092-d9ndedqhrfq1k1rfq1bd58g9l0fvm9vc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJNYAVsYZzGDZqP_AGXmq0kcWHNAhwSUM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112984333092-d9ndedqhrfq1k1rfq1bd58g9l0fvm9vc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
