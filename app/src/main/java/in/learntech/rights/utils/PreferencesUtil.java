@@ -72,6 +72,15 @@ public class PreferencesUtil {
         setPreferences(StringConstants.LOGGED_IN_USER_COMPANY_SEQ, String.valueOf(companySeq));
     }
 
+    public void  setHasTokenUpdated(){
+        setPreferencesBool(StringConstants.HAS_TOKEN_UPDATED, true);
+    }
+
+    public boolean hasTokenUpdated(){
+        boolean value = getPreferencesBool(StringConstants.HAS_TOKEN_UPDATED);
+        return value;
+    }
+
     public int getLoggedInUserCompanySeq(){
         String value = getPreferences(StringConstants.LOGGED_IN_USER_COMPANY_SEQ);
         int userSeq = 0;
